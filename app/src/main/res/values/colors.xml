@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorForBold">#3C7E79</color>
+
+    <color name="colorShadow">#D51E2022</color>
+    <color name="colorShadow2">#9E393C3F</color>
+    <color name="colorDarkerGray">#ececec</color>
+    <color name="colorBgPlaceHolder">#C2C2C2</color>
+
+    <color name="colorBlueDark">#ff0099cc</color>
+
+    <color name="login_From_Details">#ccffffff</color>
+    <color name="login_From_Details_Light">#1affffff</color>
+    <color name="login_From_Details_medium">#66ffffff</color>
+</resources>

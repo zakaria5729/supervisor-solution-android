@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">Supervisor Solution</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Daffodil International University</string>
+    <string name="nav_header_subtitle">info@daffodilvarsity.edu.bd</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="player_error">Error: needed updated YouTube App or %s</string>
+
+    <string name="click_to_play_the_video">Click to play the video</string>
+    <string name="teachers_initial">Teachers Initial:</string>
+
+    <string name="to">To</string>
+    <string name="subject">Subject</string>
+    <string name="body">Body</string>
+    <string name="profile_link"><u>Profile Link</u>:</string>
+    <string name="publication_project"><u>Publication/Project</u>:</string>
+    <string name="membership"><u>Membership</u>:</string>
+    <string name="training_experience"><u>Training Experience</u>:</string>
+    <string name="research_area"><u>Research Area</u>:</string>
+    <string name="department_of_cse">Department of CSE</string>
+    <string name="my_shared_preference">my_shared_preference</string>
+    <string name="show_case_preference_topic">show_case_preference_topic</string>
+    <string name="show_case_preference_teacher">show_case_preference_teacher</string>
+
+    <string name="home">Home</string>
+    <string name="topics_and_supervisors">Topics and Supervisors</string>
+    <string name="rules_and_regulations">Rules and Regulations</string>
+
+    <string name="title_defense_registration_instructions"><u>Title Defense Registration Instructions</u>:</string>
+    <string name="details_title_defense_registration_instructions">Before starting your registration for Title Defense of current semester, check if you have all the necessary information. The required information for successful registration you will need:\n\n\u25CF Your team information (Team members ID, name, DIU email address, Phone Number)\n\u25CF Your tentative title\n\u25CF Your preferred choice (Development Project/ Research Project/ Internship)\n\u25CF Your preferred area of interest (In development projects: Android, iOS Mobile Application development, Web Solutions, JAVA Applications, Game Development etc. In research projects: Data Mining, Big Data, Could Computing, Human Computer Interaction, Natural Language Processing, Machine Learning, Internet of Things (IoT), Networking, Robotics, Bioinformatics, Software Engineering, Embedded Systems, Image Processing, Pattern Recognition etc.)\n\u25CF Your preferred choice of Supervisors. You can give choice of maximum three (3) supervisors. Make sure your area of interest matched with your supervisors area of interest. A list of supervisors for current is published.</string>
+
+    <string name="title_defense_registration_process"><u>Title Defense Registration Process</u>:</string>
+    <string name="details_title_defense_registration_process">It is a 4 step registration process. <b>Only one member from each team should fill up this form. Multiple submission are strictly not encouraged.</b> \n\n<b>Firstly</b>, You have to put your team information (No of Students, Shift and Choice of Project/Internship). <b>Secondly</b>, you have to provide all the members Student ID, Name, DIU Email Address and Phone Number. <b>Thirdly</b>, you have to provide a tentative title and your area of interest. The \"Tentative Title\" should be understandable with the \"Area of Interest\". If you do not find your area in the list choose \"Others\" option and name the area. <b>Finally</b>, you have to provide three choices of your preferred Supervisor. <b>It is not guaranteed that your first choice of supervisor will be assigned.</b> Assigning supervisor is subject to the rules and regulations set by the project/internship committee.</string>
+
+    <string name="stepping_to_the_registration"><u>Stepping to the registration</u>:</string>
+    <string name="details_stepping_to_the_registration"><b>First Step:</b>\n\u25CF Choose No of Students in your team. According to the rules, maximum 3 member teams are allowed. (If you want to make a team having 4 members you have to proceed with a \"Formal Application to the Head of The Department\" and have to fill up a different form which is available in CSE department. If you have an approved application (approved by Head of the Department), then you do not have to submit this registration.\n\u25CF Choose your shift (Day or Evening). Day shift Students cannot merge a team with Evening Shift students and vice versa. Choose your choice (Project or Internship).\n\u25CF Choosing \"Project\" will include development project and research project both. \n\n<b>Second Step:</b> Provide your team members Student ID, Name, DIU Email Address and Phone Number. All the fields are mandatory to be filled. \n\n<b>Third Step:</b> Provide a Tentative Title and Area of Interest. You can change your tentative title after assigning a supervisor consulting with him/her, But you cannot change your area of interest after assigning a supervisor to your team. \n\n<b>Fourth Step:</b> Provide Three (3) supervisors name and Initial. Select your preferred supervisor initial from the drop-down list. Choices are based on your priority.</string>
+
+    <string name="cautions"><u>CAUTIONS</u>:</string>
+    <string name="details_cautions">\u25CF <b>Only one member from each team should fill up this form. Multiple submission are strictly not encouraged.</b> \n\u25CF <b>It is not guaranteed that your first choice of supervisor will be assigned. Project/Internship Committee will assign a supervisor according to the rules and regulations advised by the honorable head of the department.</b> \n\u25CF <b>After assigning a supervisor, you cannot change your supervisor before Title Defense. Changing supervisor is not appreciated at all.</b></string>
+
+    <string name="number_of_students">Number of students? <font color='red'>*</font></string>
+    <string name="day_evening">Day/Evening? <font color='red'>*</font></string>
+    <string name="project_internship">Project/Internship? <font color='red'>*</font></string>
+    <string name="internship_is_applicable_for_evening_student_only_if_any">Internship is applicable for Evening student only (if any).</string>
+    <string name="student_id_name_email_and_cell_no">Student ID, Name, Email and Cell No. <font color='red'>*</font></string>
+    <string name="write_the_student_id_name_email_and_cell_according_to_your_group">Write the student ID, Name, Email and Cell according to your group</string>
+
+    <string name="internship">Internship</string>
+    <string name="project">Project</string>
+    <string name="project_internship_title">Project/Internship Title <font color='red'>*</font></string>
+    <string name="project_internship_type">Project/Internship Type <font color='red'>*</font></string>
+    <string name="area_of_interest">Area of Interest <font color='red'>*</font></string>
+    <string name="choose_any_two_see_the_topic_and_supervisor_section">Choose any two topic. For details information about these topics, see the Topic and Supervisor section.</string>
+    <string name="supervisor_choices">Supervisor Choices <font color='red'>*</font></string>
+    <string name="i_we_do_hereby_agree_that_assigning_supervisor_according_to_the_choice_is_not_guaranteed">I/We do hereby agree that, assigning supervisor according to the choice is not guaranteed always.<font color='red'>*</font></string>
+
+    <string name="write_the_three_different_initial_of_the_supervisors_according_to_your_choice_only_initial_do_not_write_full_name_note_it_is_not_confirmed_that_you_will_get_the_supervisor_if_you_give_his_her_initial_in_all_three_choice">Write the three different initial of the supervisors according to your choice! <b>Only Initial with Capital letter, do not write full name.</b> Note: It is not confirmed that you will get the supervisor if you give his/her initial in all three choice.</string>
+    <string name="check_your_internet_connection_and_pull_to_refresh">Check your internet connection\nand pull to refresh</string>
+
+    <string-array name="area_of_interests">
+        <item>Mobile Application (Traditional)</item>
+        <item>Mobile Application (Game Development)</item>
+        <item>Web Application</item>
+        <item>Data Mining</item>
+        <item>Machine Learning</item>
+        <item>Internet of Things (IoT)</item>
+        <item>Networking</item>
+        <item>Cloud Computing</item>
+        <item>Image Processing/Computer Vision</item>
+        <item>Bioinformatics</item>
+        <item>Human Computer Interaction</item>
+        <item>Robotics</item>
+        <item>Embedded System</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="supervisors">
+        <item>SAH</item>
+        <item>MAS</item>
+        <item>AZH</item>
+        <item>KMS</item>
+        <item>MSS</item>
+        <item>SSH</item>
+    </string-array>
+
+    <string-array name="project_internship_type">
+        <item>Choose a type</item>
+        <item>Development Project</item>
+        <item>Research Project</item>
+        <item>Internship</item>
+    </string-array>
+
+    <string-array name="user_role_to_login">
+        <item>Choose a role to login</item>
+        <item>Student</item>
+        <item>Supervisor</item>
+    </string-array>
+
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

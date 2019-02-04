@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.TitleDefenseRegistrationTwoFragment">
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.card.MaterialCardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            style="@style/MaterialCardViewProperties">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student_id_name_email_and_cell_no"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@color/colorForBold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/write_the_student_id_name_email_and_cell_according_to_your_group"
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+                <!--Fist student-->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llStudentOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietIdOne"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First student ID"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLines="1" />
+                        <requestFocus />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietNameOne"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First student name"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietEmailOne"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First student email"
+                            android:imeOptions="actionNext"
+                            android:inputType="textWebEmailAddress"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietPhoneOne"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First student phone"
+                            android:imeOptions="actionDone"
+                            android:inputType="phone"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <!--Second student-->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llStudentTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietIdTwo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Second student ID"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietNameTwo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Second student name"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietEmailTwo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Second student email"
+                            android:imeOptions="actionNext"
+                            android:inputType="textWebEmailAddress"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietPhoneTwo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Second student phone"
+                            android:imeOptions="actionDone"
+                            android:inputType="phone"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <!--Third student-->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/llStudentThree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietIdThree"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Third student ID"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietNameThree"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Third student name"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietEmailThree"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Third student email"
+                            android:imeOptions="actionNext"
+                            android:inputType="textWebEmailAddress"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        style="@style/TextInputLayoutProperties">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietPhoneThree"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Third student phone"
+                            android:imeOptions="actionDone"
+                            android:inputType="phone"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBackPageTwo"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="Back"
+                        android:textColor="@android:color/black"
+                        app:rippleColor="@color/colorAccent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSignUp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Next"
+                        style="@style/MaterialButtonProperties" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|end"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="Page 2 of 3"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

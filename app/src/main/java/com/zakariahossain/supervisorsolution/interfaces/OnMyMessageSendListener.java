@@ -6,6 +6,6 @@ import androidx.fragment.app.Fragment;
 
 public interface OnMyMessageSendListener {
     void onMyTitleDefenseRegistrationMessage(Fragment fragment, TitleDefenseRegistration titleDefenseRegistration);
-    void onMyAuthenticationMessage(String messageKey);
-    void onMyForgotPasswordMessage(String messageKey);
+    void onMyAuthenticationMessage(String messageKey, String email);
+    void onMyForgotPasswordMessage(String messageKey, String email);
 }

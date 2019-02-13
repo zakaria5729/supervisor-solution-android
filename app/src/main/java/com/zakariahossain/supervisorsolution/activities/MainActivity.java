@@ -13,6 +13,7 @@ import com.zakariahossain.supervisorsolution.fragments.TabFragment;
 import com.zakariahossain.supervisorsolution.fragments.TitleDefenseRegistrationOneFragment;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
+import com.zakariahossain.supervisorsolution.utils.HandlerUtil;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 import androidx.annotation.NonNull;
@@ -23,15 +24,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMyMessageSendListener {
 
@@ -98,33 +96,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                closeVisibleSoftKeyBoard();
-                removePreviousFragmentsFromBackStack();
+                HandlerUtil.closeVisibleSoftKeyBoard(this);
+                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
                 replaceFragment(new HomeFragment());
                 break;
 
             case R.id.nav_topic_teacher:
-                closeVisibleSoftKeyBoard();
-                removePreviousFragmentsFromBackStack();
+                HandlerUtil.closeVisibleSoftKeyBoard(this);
+                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
                 replaceFragment(new TabFragment());
                 break;
 
             case R.id.nav_rule:
-                closeVisibleSoftKeyBoard();
-                removePreviousFragmentsFromBackStack();
+                HandlerUtil.closeVisibleSoftKeyBoard(this);
+                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
                 replaceFragment(new RuleFragment());
                 break;
 
             case R.id.nav_login:
-                closeVisibleSoftKeyBoard();
-                removePreviousFragmentsFromBackStack();
+                HandlerUtil.closeVisibleSoftKeyBoard(this);
+                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
                 OnMyMessageSendListener onMyMessageSendListener = this;
-                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN);
+                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
                 break;
 
             case R.id.nav_title_efense_registration:
-                closeVisibleSoftKeyBoard();
-                removePreviousFragmentsFromBackStack();
+                HandlerUtil.closeVisibleSoftKeyBoard(this);
+                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
                 replaceFragmentWithBackStack(new TitleDefenseRegistrationOneFragment());
                 break;
         }
@@ -141,13 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, fragment).commit();
     }
 
-    private void removePreviousFragmentsFromBackStack() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        while (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStackImmediate();
-        }
-    }
-
     @Override
     public void onMyTitleDefenseRegistrationMessage(Fragment fragment, TitleDefenseRegistration titleDefenseRegistration) {
         Bundle bundle = new Bundle();
@@ -158,32 +149,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onMyAuthenticationMessage(String messageKey) {
+    public void onMyAuthenticationMessage(String messageKey, String email) {
         AuthenticationFragment authenticationFragment = new AuthenticationFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION, messageKey);
+        bundle.putString("email_for_verification_code", email);
         authenticationFragment.setArguments(bundle);
 
         replaceFragmentWithBackStack(authenticationFragment);
     }
 
     @Override
-    public void onMyForgotPasswordMessage(String messageKey) {
+    public void onMyForgotPasswordMessage(String messageKey, String email) {
         ForgotAndResetPasswordFragment passwordFragment = new ForgotAndResetPasswordFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD, messageKey);
+        bundle.putString("email_for_reset_password", email);
         passwordFragment.setArguments(bundle);
 
         replaceFragmentWithBackStack(passwordFragment);
-    }
-
-    private void closeVisibleSoftKeyBoard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 }

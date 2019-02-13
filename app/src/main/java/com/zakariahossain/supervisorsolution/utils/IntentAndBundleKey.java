@@ -16,6 +16,6 @@ public class IntentAndBundleKey {
 
     public static final String KEY_FRAGMENT_FORGOT_PASSWORD = "key fragment forgot password";
     public static final String KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL = "key fragment forgot password enter email";
-    public static final String KEY_FRAGMENT_FORGOT_PASSWORD_VERIFICATION = "key fragment forgot password verification";
     public static final String KEY_FRAGMENT_FORGOT_PASSWORD_RESET = "key fragment forgot password reset";
+    public static final String KEY_FRAGMENT_EMAIL_VERIFICATION = "key fragment email verification";
 }

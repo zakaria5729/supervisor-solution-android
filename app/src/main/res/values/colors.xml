@@ -12,6 +12,7 @@
     <color name="colorBgPlaceHolder">#C2C2C2</color>
 
     <color name="colorBlueDark">#ff0099cc</color>
+    <color name="colorRed">#F44336</color>
 
     <color name="login_From_Details">#ccffffff</color>
     <color name="login_From_Details_Light">#1affffff</color>

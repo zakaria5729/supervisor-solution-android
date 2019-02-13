@@ -5,9 +5,8 @@ import java.io.Serializable;
 import com.google.gson.annotations.SerializedName;
 
 public class Supervisor implements Serializable {
-
     @SerializedName("id")
-    private String id;
+    private Integer id;
 
     @SerializedName("supervisor_name")
     private String supervisorName;
@@ -42,7 +41,7 @@ public class Supervisor implements Serializable {
     @SerializedName("profile_link")
     private String profileLink;
 
-    public Supervisor(String id, String supervisorName, String supervisorInitial, String designation, String supervisorImage, String phone, String email, String researchArea, String trainingExperience, String membership, String publicationProject, String profileLink) {
+    public Supervisor(Integer id, String supervisorName, String supervisorInitial, String designation, String supervisorImage, String phone, String email, String researchArea, String trainingExperience, String membership, String publicationProject, String profileLink) {
         this.id = id;
         this.supervisorName = supervisorName;
         this.supervisorInitial = supervisorInitial;
@@ -57,7 +56,7 @@ public class Supervisor implements Serializable {
         this.profileLink = profileLink;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -77,12 +76,12 @@ public class Supervisor implements Serializable {
         return supervisorImage;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public String getResearchArea() {

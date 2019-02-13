@@ -22,6 +22,7 @@ import com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailAct
 import com.zakariahossain.supervisorsolution.adapters.TopicAdapter;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
 import com.zakariahossain.supervisorsolution.models.Topic;
+import com.zakariahossain.supervisorsolution.models.TopicList;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
 import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
@@ -71,14 +72,15 @@ public class TopicFragment extends Fragment implements OnMyClickListener, SwipeR
         swipeRefreshLayoutTopic.setRefreshing(true);
 
         MyApiService myApiService = new NetworkCall();
-        myApiService.getTopicsFromServer(new ResponseCallback<List<Topic>>() {
+        myApiService.getTopicsFromServer(new ResponseCallback<TopicList>() {
             @Override
-            public void onSuccess(List<Topic> data) {
-                if (data != null && !data.isEmpty()) {
+            public void onSuccess(TopicList data) {
+                if (data.getTopics() != null) {
                     loadingIndicatorViewTopicLL.setVisibility(View.GONE);
                     loadingIndicatorViewTopic.hide();
 
-                    topicList = data;
+                    topicList = data.getTopics();
+
                     topicAdapter = new TopicAdapter(getContext(), topicList);
 
                     topicRecyclerView.setHasFixedSize(true);
@@ -120,7 +122,7 @@ public class TopicFragment extends Fragment implements OnMyClickListener, SwipeR
 
     @Override
     public void onMyClick(int position) {
-        Topic topic = new Topic(topicList.get(position).getTopicId(), topicList.get(position).getTopicName(),topicList.get(position).getSupervisorInitial(), topicList.get(position).getTopicDescriptionOne(), topicList.get(position).getTopicDescriptionTwo(), topicList.get(position).getTopicVideoLink(), topicList.get(position).getTopicImage());
+        Topic topic = new Topic(topicList.get(position).getId(), topicList.get(position).getTopicName(), topicList.get(position).getImagePath(), topicList.get(position).getSupervisorInitial(), topicList.get(position).getDescriptionOne(), topicList.get(position).getDescriptionTwo(), topicList.get(position).getVideoPath());
 
         Intent intent = new Intent(getContext(), TopicSupervisorDetailActivity.class);
         intent.putExtra(IntentAndBundleKey.KEY_TOPIC_AND_SUPERVISOR, "topic_intent");

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -26,6 +25,7 @@ import com.karumi.dexter.PermissionToken;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.models.Supervisor;
 import com.zakariahossain.supervisorsolution.models.Topic;
+import com.zakariahossain.supervisorsolution.models.TopicList;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 import com.zakariahossain.supervisorsolution.utils.MySharedPreference;
 import com.zakariahossain.supervisorsolution.utils.PermissionListener;
@@ -133,11 +133,11 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
 
         topicName.setText(topic.getTopicName());
         topicSupervisorInitial.setText(topic.getSupervisorInitial());
-        topicDescriptionOne.setText(topic.getTopicDescriptionOne());
-        topicDescriptionTwo.setText(topic.getTopicDescriptionTwo());
+        topicDescriptionOne.setText(topic.getDescriptionOne());
+        topicDescriptionTwo.setText(topic.getDescriptionTwo());
 
         Glide.with(TopicSupervisorDetailActivity.this)
-                .load(topic.getTopicImage())
+                .load(topic.getImagePath())
                 .into(topicImageView);
 
         appBarOffsetChangedListener();
@@ -180,7 +180,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         if (!wasRestored) {
             youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
-            youTubePlayer.cueVideo(topic.getTopicVideoLink()); //play video
+            youTubePlayer.cueVideo(topic.getVideoPath()); //play video
         }
     }
 

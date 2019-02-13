@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 
-public class TitleDefenseRegistrationOneFragment extends Fragment  implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
+public class TitleDefenseRegistrationOneFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
 
     private Context context;
     private OnMyMessageSendListener onMyMessageSendListener;
@@ -33,7 +33,7 @@ public class TitleDefenseRegistrationOneFragment extends Fragment  implements Vi
     private int numberOfStudents;
     private String dayEvening;
     private String projectInternship;
-    private String projectInternshipType = "Choose a type";
+    private String projectInternshipType;
 
     public TitleDefenseRegistrationOneFragment() {
         // Required empty public constructor
@@ -120,9 +120,9 @@ public class TitleDefenseRegistrationOneFragment extends Fragment  implements Vi
     private void nextOne() {
         String projectInternshipTitle = Objects.requireNonNull(textInputEditTextProjectInternshipTitle.getText()).toString();
 
-        if (numberOfStudents > 0 && !TextUtils.isEmpty(dayEvening) && !TextUtils.isEmpty(projectInternship) && !TextUtils.isEmpty(projectInternshipType) && !TextUtils.isEmpty(projectInternshipTitle.trim())) {
+        if (numberOfStudents > 0 && !TextUtils.isEmpty(dayEvening) && !TextUtils.isEmpty(projectInternship) && !projectInternshipType.equals("Choose a type") && !TextUtils.isEmpty(projectInternshipTitle.trim())) {
 
-            TitleDefenseRegistration defenseRegistration = new TitleDefenseRegistration(numberOfStudents,dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
+            TitleDefenseRegistration defenseRegistration = new TitleDefenseRegistration(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
 
             onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), defenseRegistration);
         } else {
@@ -132,15 +132,13 @@ public class TitleDefenseRegistrationOneFragment extends Fragment  implements Vi
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.getItemAtPosition(position).toString().equals("Choose a type")) {
-            Toast.makeText(context, "Please, choose a type", Toast.LENGTH_SHORT).show();
-        } else {
-            projectInternshipType = parent.getItemAtPosition(position).toString();
-        }
+        projectInternshipType = parent.getItemAtPosition(position).toString();
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {}
+    public void onNothingSelected(AdapterView<?> parent) {
+        projectInternshipType = "Choose a type";
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

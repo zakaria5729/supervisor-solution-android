@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 class RetrofitApiClient {
-    private static final String BASE_URL = "http://192.168.100.17/supervisor_solution/api/";
+    private static final String BASE_URL = "http://192.168.100.11/supervisor/public/";
     private static Retrofit retrofit = null;
 
     private RetrofitApiClient() {}

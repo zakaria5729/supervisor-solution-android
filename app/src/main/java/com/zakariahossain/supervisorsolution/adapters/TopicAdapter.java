@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
 import com.zakariahossain.supervisorsolution.models.Topic;
+import com.zakariahossain.supervisorsolution.models.TopicList;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
         holder.topicName.setText(topicList.get(position).getTopicName());
         Glide.with(context)
-                .load(topicList.get(position).getTopicImage())
+                .load(topicList.get(position).getImagePath())
                 .into(holder.topicImage);
     }
 

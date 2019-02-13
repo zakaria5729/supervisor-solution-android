@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +29,21 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
+import com.zakariahossain.supervisorsolution.models.LoginResponse;
+import com.zakariahossain.supervisorsolution.models.ServerResponse;
+import com.zakariahossain.supervisorsolution.models.User;
+import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
+import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
+import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
+import com.zakariahossain.supervisorsolution.utils.CircularProgressBar;
+import com.zakariahossain.supervisorsolution.utils.HandlerUtil;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -45,13 +55,16 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
     private OnMyMessageSendListener onMyMessageSendListener;
 
     private SignInButton googleSignInButton;
-    private MaterialButton loginButton, signUpButton;
+    private MaterialButton loginButton, signUpButton, verificationBackButton, verificationNextButton;
     private AppCompatSpinner userRoleSpinner;
-    private AppCompatTextView signUpTextView, loginTextView, forgotPasswordTextView;
-    private TextInputLayout editTextLoginEmail, editTextLoginPassword, editTextSignUpEmail, editTextSignUpPassword;
+    private AppCompatTextView signUpTextView, loginTextView, forgotPasswordTextView, userRoleErrorTexVew;
+    private TextInputLayout editTextLoginEmail, editTextLoginPassword, editTextSignUpName, editTextSignUpEmail, editTextSignUpPassword, editTextSignUpConfirmPassword, editTextVerificationCode;
 
-    private String userLoginRole;
+    private String userLoginRole, signUpName, signUpEmail, signUpPassword, signUpConfirmPassword, loginEmail, loginPassword, emailExtension, verificationCode;
     private GoogleSignInClient googleSignInClient;
+    private MyApiService myApiService;
+    private CircularProgressBar progressBar;
+    private AlertDialog alertDialog = null;
 
     public AuthenticationFragment() {
         // Required empty public constructor
@@ -63,13 +76,12 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
         context = container.getContext();
 
         if (getArguments() != null) {
-            String key = getArguments().getString(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION);
+            String bundleKey = getArguments().getString(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION);
 
-            if (key != null) {
-                switch (key) {
+            if (bundleKey != null) {
+                switch (bundleKey) {
                     case IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN:
                         view = inflater.inflate(R.layout.fragment_authentication_login, container, false);
-
                         setUpLoginUi(view);
                         setGooglePlusButtonText(googleSignInButton);
                         seUserRoleSpinner();
@@ -77,12 +89,19 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
 
                     case IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_SIGN_UP:
                         view = inflater.inflate(R.layout.fragment_authentication_signup, container, false);
-
                         setUpSignUpUi(view);
+                        break;
+
+                    case IntentAndBundleKey.KEY_FRAGMENT_EMAIL_VERIFICATION:
+                        view = inflater.inflate(R.layout.fragment_email_verification, container, false);
+                        setUpEmailVerificationUi(view);
                         break;
                 }
             }
         }
+
+        progressBar = new CircularProgressBar(context);
+        myApiService = new NetworkCall();
 
         if (getActivity() != null) {
             getActivity().setTitle("Authentication");
@@ -125,6 +144,7 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
         editTextLoginPassword = view.findViewById(R.id.tilLoginPassword);
         signUpTextView = view.findViewById(R.id.tvSignUp);
         forgotPasswordTextView = view.findViewById(R.id.tvForgotPassword);
+        userRoleErrorTexVew = view.findViewById(R.id.tvErrorUserRole);
         loginButton = view.findViewById(R.id.btnLogin);
         userRoleSpinner = view.findViewById(R.id.spUserRole);
         googleSignInButton = view.findViewById(R.id.btnGoogleSignIn);
@@ -137,13 +157,24 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
     }
 
     private void setUpSignUpUi(View view) {
+        editTextSignUpName = view.findViewById(R.id.tilSignUpName);
         editTextSignUpEmail = view.findViewById(R.id.tilSignUpEmail);
         editTextSignUpPassword = view.findViewById(R.id.tilSignUpPassword);
+        editTextSignUpConfirmPassword = view.findViewById(R.id.tilSignUpConfirmPassword);
         loginTextView = view.findViewById(R.id.tvLogin);
         signUpButton = view.findViewById(R.id.btnSignUp);
 
         loginTextView.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
+    }
+
+    private void setUpEmailVerificationUi(View view) {
+        editTextVerificationCode = view.findViewById(R.id.tilVerificationCode);
+        verificationBackButton = view.findViewById(R.id.btnBackVerification);
+        verificationNextButton = view.findViewById(R.id.btnNextVerification);
+
+        verificationBackButton.setOnClickListener(this);
+        verificationNextButton.setOnClickListener(this);
     }
 
     private void setGooglePlusButtonText(SignInButton signInButton) {
@@ -165,39 +196,98 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
     }
 
     private boolean getValueFromLoginTextInputLayout() {
-        String loginEmail = Objects.requireNonNull(editTextLoginEmail.getEditText()).getText().toString();
-        String loginPassword = Objects.requireNonNull(editTextLoginPassword.getEditText()).getText().toString();
+        loginEmail = Objects.requireNonNull(editTextLoginEmail.getEditText()).getText().toString();
+        loginPassword = Objects.requireNonNull(editTextLoginPassword.getEditText()).getText().toString();
 
-        if (!TextUtils.isEmpty(loginEmail.trim()) && !TextUtils.isEmpty(loginPassword.trim())) {
-            editTextLoginEmail.setBoxStrokeColor(getResources().getColor(R.color.colorPrimary));
-            return true;
+        if (Patterns.EMAIL_ADDRESS.matcher(loginEmail).matches()) {
+            String[] split = loginEmail.split("@");
+            emailExtension = split[1];
         } else {
-            if (TextUtils.isEmpty(loginEmail.trim())) {
-                editTextLoginEmail.setError("Please enter an address. (Ex: zakaria15-5729@diu.edu.bd)");
+            emailExtension = "";
+        }
+
+            if ((!TextUtils.isEmpty(loginEmail.trim()) && emailExtension.equals("diu.edu.bd")) && !TextUtils.isEmpty(loginPassword.trim()) && !userLoginRole.equals("Choose a role to login")) {
+                userRoleErrorTexVew.setVisibility(View.GONE);
+                return true;
+            } else {
+
+                if ((TextUtils.isEmpty(loginEmail.trim()) || !emailExtension.equals("diu.edu.bd"))) {
+                    editTextLoginEmail.setError("Please enter a DIU Email (Ex: example15-1234@diu.edu.bd)");
+                }
+                if (TextUtils.isEmpty(loginPassword.trim())) {
+                    editTextLoginPassword.setError("Please enter a password.");
+                }
+                if (userLoginRole.equals("Choose a role to login")) {
+                    userRoleErrorTexVew.setText("Please choose your role first");
+                    userRoleErrorTexVew.setTextColor(getResources().getColor(R.color.colorRed));
+                    userRoleErrorTexVew.setVisibility(View.VISIBLE);
+                }
+                return false;
             }
-            if (TextUtils.isEmpty(loginPassword.trim())) {
-                editTextLoginPassword.setError("Please enter a password.");
+    }
+
+    private boolean getValueFromSignUpTextInputLayout() {
+        signUpName = Objects.requireNonNull(editTextSignUpName.getEditText()).getText().toString();
+        signUpEmail = Objects.requireNonNull(editTextSignUpEmail.getEditText()).getText().toString();
+        signUpPassword = Objects.requireNonNull(editTextSignUpPassword.getEditText()).getText().toString();
+        signUpConfirmPassword = Objects.requireNonNull(editTextSignUpConfirmPassword.getEditText()).getText().toString();
+
+        if (Patterns.EMAIL_ADDRESS.matcher(signUpEmail).matches()) {
+            String[] split = signUpEmail.split("@");
+            emailExtension = split[1];
+        } else {
+            emailExtension = "";
+        }
+
+        if(signUpPassword.length() < 8) {
+            signUpPassword = "";
+        }
+
+        if (!TextUtils.isEmpty(signUpName.trim()) && (!TextUtils.isEmpty(signUpEmail.trim()) && emailExtension.equals("diu.edu.bd")) && !TextUtils.isEmpty(signUpPassword.trim()) && !TextUtils.isEmpty(signUpConfirmPassword.trim())) {
+            if(signUpPassword.equals(signUpConfirmPassword)) {
+                return true;
+            } else {
+                editTextSignUpConfirmPassword.setError("Password and confirm password not match");
+                return false;
+            }
+        } else {
+            if (TextUtils.isEmpty(signUpName.trim())) {
+                editTextSignUpName.setError("Please enter your name");
+            }
+            if (TextUtils.isEmpty(signUpEmail.trim()) || !emailExtension.equals("diu.edu.bd")) {
+                editTextSignUpEmail.setError("Please enter a DIU email (Ex: example15-1234@diu.edu.bd)");
+            }
+            if (TextUtils.isEmpty(signUpPassword.trim())) {
+                editTextSignUpPassword.setError("Password must be at least 8 characters long");
+            }
+            if (TextUtils.isEmpty(signUpConfirmPassword.trim())) {
+                editTextSignUpConfirmPassword.setError("Please retype confirm password");
             }
             return false;
         }
     }
 
-    private boolean getValueFromSignUpTextInputLayout() {
-        String signUpEmail = Objects.requireNonNull(editTextSignUpEmail.getEditText()).getText().toString();
-        String signUpPassword = Objects.requireNonNull(editTextSignUpPassword.getEditText()).getText().toString();
+    private boolean getValueFromVerificationTextInputLayout() {
+        if (getArguments() != null) {
+            loginEmail = getArguments().getString("email_for_verification_code");
+        } else {
+            loginEmail = "";
+        }
 
-        if (!TextUtils.isEmpty(signUpEmail.trim()) && !TextUtils.isEmpty(signUpPassword.trim())) {
+        verificationCode = Objects.requireNonNull(editTextVerificationCode.getEditText()).getText().toString();
+
+        if (verificationCode.length() < 6) {
+            verificationCode = "";
+        }
+
+        if (!TextUtils.isEmpty(verificationCode) && !TextUtils.isEmpty(loginEmail.trim())) {
             return true;
         } else {
-            if (TextUtils.isEmpty(signUpEmail.trim())) {
-                editTextSignUpEmail.setError("Please enter an address.");
-                editTextSignUpEmail.setBoxStrokeColor(getResources().getColor(R.color.colorPrimary));
-
+            if(TextUtils.isEmpty(loginEmail.trim())) {
+                Toast.makeText(context, "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
             }
-            if (TextUtils.isEmpty(signUpPassword.trim())) {
-                editTextSignUpPassword.setError("Please enter a password.");
-                editTextSignUpPassword.setBoxStrokeColor(getResources().getColor(R.color.colorPrimary));
-
+            if (TextUtils.isEmpty(verificationCode)) {
+                editTextVerificationCode.setError("Verification code must be 6 digit");
             }
             return false;
         }
@@ -209,17 +299,15 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
     }
 
     private void signOutWithGoogleAccount() {
-       googleSignInClient.signOut()
-               .addOnCompleteListener(new OnCompleteListener<Void>() {
-                   @Override
-                   public void onComplete(@NonNull Task<Void> task) {
-                       if (task.isSuccessful()) {
-                           Toast.makeText(context, "logout success", Toast.LENGTH_SHORT).show();
-                       } else {
-                           Toast.makeText(context, "logout failed", Toast.LENGTH_SHORT).show();
-                       }
-                   }
-               });
+        googleSignInClient.signOut()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(context, "logout failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -237,28 +325,45 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             if (account != null) {
-                String email = account.getEmail();
-                String name = account.getDisplayName();
-                Uri imageUri = account.getPhotoUrl();
-
-                if (email != null) {
-                    String[] split = email.split("@");
+                if (account.getEmail() != null) {
+                    String[] split = account.getEmail().split("@");
                     String emailExtension = split[1];
 
-                    Toast.makeText(context, ""+userLoginRole, Toast.LENGTH_SHORT).show();
-
                     if (emailExtension.equals("diu.edu.bd") && !userLoginRole.equals("Choose a role to login")) {
+                        loginOrSignInUser(account.getDisplayName(), account.getEmail(), "1", account.getId(), userLoginRole, "google_sign_in");
                         updateUI(account);
                     } else {
-                        Toast.makeText(context, "Please, choose your role first and select a DIU email", Toast.LENGTH_LONG).show();
+                        if (!emailExtension.equals("diu.edu.bd") && userLoginRole.equals("Choose a role to login")) {
+                            userRoleErrorTexVew.setText("Please choose your role first");
+                            userRoleErrorTexVew.setTextColor(getResources().getColor(R.color.colorRed));
+                            userRoleErrorTexVew.setVisibility(View.VISIBLE);
+                            Toast.makeText(context, "Please choose your role first and select a DIU email", Toast.LENGTH_LONG).show();
+                        } else {
+                            if(userLoginRole.equals("Choose a role to login") && !emailExtension.equals("diu.edu.bd")) {
+                                userRoleErrorTexVew.setText("Please choose your role first");
+                                userRoleErrorTexVew.setTextColor(getResources().getColor(R.color.colorRed));
+                                userRoleErrorTexVew.setVisibility(View.VISIBLE);
+                                Toast.makeText(context, "Please choose your role first and select a DIU email", Toast.LENGTH_LONG).show();
+                            } else {
+                                if (userLoginRole.equals("Choose a role to login")) {
+                                    userRoleErrorTexVew.setText("Please choose your role first");
+                                    userRoleErrorTexVew.setTextColor(getResources().getColor(R.color.colorRed));
+                                    userRoleErrorTexVew.setVisibility(View.VISIBLE);
+                                    Toast.makeText(context, "Please choose your role first", Toast.LENGTH_LONG).show();
+                                }
+                                if (!emailExtension.equals("diu.edu.bd")) {
+                                    Toast.makeText(context, "Please select a DIU email", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
                         signOutWithGoogleAccount();
                     }
                 }
             } else {
-                Toast.makeText(context, "null", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
             }
         } catch (ApiException e) {
-            Toast.makeText(context, "Please, choose your role first and select a DIU email", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please choose your role first and select a DIU email", Toast.LENGTH_LONG).show();
             updateUI(null);
         }
     }
@@ -280,29 +385,25 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
-                Toast.makeText(context, ""+userLoginRole, Toast.LENGTH_SHORT).show();
-
-                if (getValueFromLoginTextInputLayout() && !userLoginRole.equals("Choose a role to login")) {
-                    Toast.makeText(context, "login", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "login empty", Toast.LENGTH_SHORT).show();
+                if (getValueFromLoginTextInputLayout()) {
+                    alertDialog = progressBar.setCircularProgressBar();
+                    loginOrSignInUser("", loginEmail, loginPassword, "", userLoginRole, "login_email");
                 }
                 break;
 
             case R.id.btnSignUp:
                 if (getValueFromSignUpTextInputLayout()) {
-                    Toast.makeText(context, "login", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "login empty", Toast.LENGTH_SHORT).show();
+                    alertDialog = progressBar.setCircularProgressBar();
+                    signUpUser();
                 }
                 break;
 
             case R.id.tvSignUp:
-                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_SIGN_UP);
+                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_SIGN_UP, "");
                 break;
 
             case R.id.tvLogin:
-                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN);
+                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
                 break;
 
             case R.id.btnGoogleSignIn:
@@ -310,9 +411,110 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
                 break;
 
             case R.id.tvForgotPassword:
-                onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL);
+                onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL, "");
+                break;
+
+            case R.id.btnBackVerification:
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStackImmediate();
+                break;
+
+            case R.id.btnNextVerification:
+                if (getValueFromVerificationTextInputLayout()) {
+                    alertDialog = progressBar.setCircularProgressBar();
+                    verificationForUserLogin();
+                }
                 break;
         }
+    }
+
+    private void verificationForUserLogin() {
+        myApiService.verifyEmail(loginEmail, Integer.parseInt(verificationCode), new ResponseCallback<ServerResponse>() {
+            @Override
+            public void onSuccess(ServerResponse data) {
+                alertDialog.dismiss();
+
+                if (data != null) {
+                    if(data.getError().equals(false)) {
+                        HandlerUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                        HandlerUtil.removePreviousFragmentsFromBackStack(getChildFragmentManager());
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                alertDialog.dismiss();
+                Toast.makeText(context, th.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void signUpUser() {
+        myApiService.signUp(signUpName, signUpEmail, signUpPassword, new ResponseCallback<ServerResponse>() {
+            @Override
+            public void onSuccess(ServerResponse data) {
+                alertDialog.dismiss();
+
+                if (data != null) {
+                    if(data.getError().equals(false)) {
+                        HandlerUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                        HandlerUtil.removePreviousFragmentsFromBackStack(getChildFragmentManager());
+                        onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                alertDialog.dismiss();
+                Toast.makeText(context, th.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void loginOrSignInUser(String name, String email, String password, String token, String userRole, final String loginType) {
+        myApiService.loginOrSignIn(name, email, password, token, userRole, loginType, new ResponseCallback<LoginResponse>() {
+            @Override
+            public void onSuccess(LoginResponse data) {
+                if(loginType.equals("login_email")) {
+                    alertDialog.dismiss();
+                }
+
+                if (data != null) {
+                    if(data.getError().equals(false)) {
+                        User user = data.getUser();
+                        Toast.makeText(context, ""+user.getName(), Toast.LENGTH_SHORT).show();
+
+                    } else if (data.getError().equals(true)){
+                        if (data.getMessage().equals("Please, check your inbox and verify your email first")) {
+                            onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_EMAIL_VERIFICATION, loginEmail);
+                            Toast.makeText(context, "verify", Toast.LENGTH_LONG).show();
+
+                        } else {
+                            Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                alertDialog.dismiss();
+                Toast.makeText(context, th.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

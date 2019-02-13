@@ -2,6 +2,7 @@ package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +12,34 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
+import com.zakariahossain.supervisorsolution.models.ServerResponse;
+import com.zakariahossain.supervisorsolution.models.User;
+import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
+import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
+import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
+import com.zakariahossain.supervisorsolution.utils.CircularProgressBar;
+import com.zakariahossain.supervisorsolution.utils.HandlerUtil;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 public class ForgotAndResetPasswordFragment extends Fragment implements View.OnClickListener {
 
     private Context context;
+    private CircularProgressBar progressBar;
+    private AlertDialog alertDialog;
     private OnMyMessageSendListener onMyMessageSendListener;
+    private MyApiService myApiService;
 
-    private TextInputLayout textInputLayoutEnterEmail, textInputLayoutVerificationCode, textInputLayoutResetPassword;
+    private TextInputLayout textInputLayoutEnterEmail, textInputLayoutVerificationCode, textInputLayoutResetPassword, textInputLayoutResetConfirmPassword;
 
-    private MaterialButton enterEmailBackButton, enterEmailNextButton, verificationBackButton, verificationSendButton, resetPasswordBackButton, resetPasswordButton;
+    private MaterialButton enterEmailBackButton, enterEmailNextButton, resetPasswordBackButton, resetPasswordButton;
+
+    private String email, verificationCode, newPassword, confirmPassword;
 
     public ForgotAndResetPasswordFragment() {
         // Required empty public constructor
@@ -47,12 +61,6 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
                         setUpEnterEmailUi(view);
                         break;
 
-                    case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_VERIFICATION:
-                        view = inflater.inflate(R.layout.fragment_forgot_password_verification, container, false);
-
-                        setUpVerificationUi(view);
-                        break;
-
                     case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET:
                         view = inflater.inflate(R.layout.fragment_forgot_password_reset, container, false);
 
@@ -65,6 +73,8 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         if (getActivity() != null) {
             getActivity().setTitle("Authentication");
         }
+
+        progressBar = new CircularProgressBar(context);
 
         if (view != null) {
             return view;
@@ -82,22 +92,66 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         enterEmailNextButton.setOnClickListener(this);
     }
 
-    private void setUpVerificationUi(View view) {
-        textInputLayoutVerificationCode = view.findViewById(R.id.tilVerification);
-        verificationBackButton = view.findViewById(R.id.btnBackVerification);
-        verificationSendButton = view.findViewById(R.id.btnSendVerification);
-
-        verificationBackButton.setOnClickListener(this);
-        verificationSendButton.setOnClickListener(this);
-    }
-
     private void setUpResetPasswordUi(View view) {
+        textInputLayoutVerificationCode = view.findViewById(R.id.tilVerificationCode);
         textInputLayoutResetPassword = view.findViewById(R.id.tilResetPassword);
+        textInputLayoutResetConfirmPassword = view.findViewById(R.id.tilResetConfirmPassword);
         resetPasswordBackButton = view.findViewById(R.id.btnBackResetPassword);
         resetPasswordButton = view.findViewById(R.id.btnResetPassword);
 
         resetPasswordBackButton.setOnClickListener(this);
         resetPasswordButton.setOnClickListener(this);
+    }
+
+    private boolean getEnterEmailEditTextData() {
+        email = Objects.requireNonNull(textInputLayoutEnterEmail.getEditText()).getText().toString().trim();
+
+        if (!TextUtils.isEmpty(email)) {
+            return true;
+        } else {
+            textInputLayoutEnterEmail.setError("Enter a email address");
+            return false;
+        }
+    }
+
+    private boolean getResetPasswordEditTextData() {
+        if(getArguments() != null) {
+            email = getArguments().getString("email_for_reset_password");
+        } else {
+            email = "";
+        }
+
+        verificationCode = Objects.requireNonNull(textInputLayoutVerificationCode.getEditText()).getText().toString().trim();
+        newPassword = Objects.requireNonNull(textInputLayoutResetPassword.getEditText()).getText().toString().trim();
+        confirmPassword = Objects.requireNonNull(textInputLayoutResetConfirmPassword.getEditText()).getText().toString().trim();
+
+        if (verificationCode.length() < 6 && newPassword.length() < 8) {
+            verificationCode = "";
+            newPassword = "";
+        }
+
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(verificationCode.trim()) && !TextUtils.isEmpty(newPassword.trim()) && !TextUtils.isEmpty(confirmPassword.trim())) {
+            if (newPassword.equals(confirmPassword)) {
+                return true;
+            } else {
+                textInputLayoutResetConfirmPassword.setError("Password and confirm password not match");
+                return false;
+            }
+        } else {
+            if(TextUtils.isEmpty(verificationCode.trim())) {
+                textInputLayoutVerificationCode.setError("Verification code must be 6 digits long");
+            }
+            if(TextUtils.isEmpty(newPassword.trim())) {
+                textInputLayoutResetPassword.setError("Password must be at least 8 characters long");
+            }
+            if(TextUtils.isEmpty(confirmPassword.trim())) {
+                textInputLayoutResetConfirmPassword.setError("Please, retype confirm password");
+            }
+            if(TextUtils.isEmpty(email.trim())) {
+                Toast.makeText(context, "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
+            }
+            return false;
+        }
     }
 
     @Override
@@ -108,15 +162,10 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
                 break;
 
             case R.id.btnNextEnterEmail:
-                onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_VERIFICATION);
-                break;
-
-            case R.id.btnBackVerification:
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStackImmediate();
-                break;
-
-            case R.id.btnSendVerification:
-                onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET);
+                if (getEnterEmailEditTextData()) {
+                    alertDialog = progressBar.setCircularProgressBar();
+                    sendVerificationCode(email);
+                }
                 break;
 
             case R.id.btnBackResetPassword:
@@ -124,10 +173,67 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
                 break;
 
             case R.id.btnResetPassword:
-
+                if (getResetPasswordEditTextData()) {
+                    alertDialog = progressBar.setCircularProgressBar();
+                    resetPassword(email, verificationCode, newPassword);
+                }
                 break;
-
         }
+    }
+
+    private void resetPassword(String email, String verificationCode, String newPassword) {
+        myApiService = new NetworkCall();
+        myApiService.resetPassword(email, Integer.parseInt(verificationCode), newPassword, new ResponseCallback<ServerResponse>() {
+            @Override
+            public void onSuccess(ServerResponse data) {
+                alertDialog.dismiss();
+
+                if (data != null) {
+                    if(data.getError().equals(false)) {
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                        HandlerUtil.removePreviousFragmentsFromBackStack(getChildFragmentManager());
+                    } else {
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong! Internet connection problem or something else. Try again later", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                alertDialog.dismiss();
+                Toast.makeText(context, th.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void sendVerificationCode(final String enteredEmail) {
+        myApiService = new NetworkCall();
+        myApiService.forgotPassword(enteredEmail, new ResponseCallback<ServerResponse>() {
+            @Override
+            public void onSuccess(ServerResponse data) {
+                alertDialog.dismiss();
+
+                if (data != null) {
+                    if(data.getError().equals(false)) {
+                        HandlerUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                        onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET, email);
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong! Internet connection problem or something else. Try again later", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                alertDialog.dismiss();
+                Toast.makeText(context, th.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

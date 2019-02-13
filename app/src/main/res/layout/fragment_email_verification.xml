@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,7 +38,7 @@
                 android:textAppearance="?android:textAppearanceSmall" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilVerification"
+                android:id="@+id/tilVerificationCode"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 style="@style/TextInputLayoutProperties">
@@ -45,9 +46,10 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter verification code"
+                    android:hint="Verification code"
                     android:imeOptions="actionDone"
-                    android:inputType="textWebEmailAddress"
+                    android:inputType="number"
+                    android:maxLength="6"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,19 +72,13 @@
                     app:rippleColor="@color/colorAccent" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSendVerification"
+                    android:id="@+id/btnNextVerification"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Send"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:backgroundTint="@android:color/holo_green_dark"
-                    android:textColor="@android:color/white"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    tools:targetApi="lollipop" />
+                    android:text="Next"
+                    style="@style/MaterialButtonProperties" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </com.google.android.material.card.MaterialCardView>
-</FrameLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

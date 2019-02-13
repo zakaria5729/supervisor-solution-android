@@ -21,6 +21,7 @@ import com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailAct
 import com.zakariahossain.supervisorsolution.adapters.SupervisorAdapter;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
 import com.zakariahossain.supervisorsolution.models.Supervisor;
+import com.zakariahossain.supervisorsolution.models.SupervisorList;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
 import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
@@ -65,14 +66,14 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
         swipeRefreshLayoutSupervisor.setRefreshing(true);
 
         MyApiService myApiService = new NetworkCall();
-        myApiService.getSupervisorsFromServer(new ResponseCallback<List<Supervisor>>() {
+        myApiService.getSupervisorsFromServer(new ResponseCallback<SupervisorList>() {
             @Override
-            public void onSuccess(List<Supervisor> data) {
-                if (data != null && !data.isEmpty()) {
+            public void onSuccess(SupervisorList data) {
+                if (data != null && !data.getSupervisors().isEmpty()) {
                     loadingIndicatorViewSupervisorLL.setVisibility(View.GONE);
                     loadingIndicatorViewSupervisor.hide();
 
-                    supervisorList = data;
+                    supervisorList = data.getSupervisors();
                     supervisorAdapter = new SupervisorAdapter(getContext(), supervisorList);
 
                     supervisorRecyclerView.setHasFixedSize(true);
@@ -105,7 +106,6 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
                 }
             }
         });
-
     }
 
     @Override

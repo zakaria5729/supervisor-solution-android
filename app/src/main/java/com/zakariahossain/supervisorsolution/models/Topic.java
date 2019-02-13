@@ -6,61 +6,61 @@ import java.io.Serializable;
 
 public class Topic implements Serializable {
     @SerializedName("id")
-    private String topicId;
+    private Integer id;
 
     @SerializedName("topic_name")
     private String topicName;
+
+    @SerializedName("image_path")
+    private String imagePath;
 
     @SerializedName("supervisor_initial")
     private String supervisorInitial;
 
     @SerializedName("description_one")
-    private String topicDescriptionOne;
+    private String descriptionOne;
 
     @SerializedName("description_two")
-    private String topicDescriptionTwo;
+    private String descriptionTwo;
 
     @SerializedName("video_path")
-    private String topicVideoLink;
+    private String videoPath;
 
-    @SerializedName("image_path")
-    private String topicImage;
-
-    public Topic(String topicId, String topicName, String supervisorInitial, String topicDescriptionOne, String topicDescriptionTwo, String topicVideoLink, String topicImage) {
-        this.topicId = topicId;
+    public Topic(Integer id, String topicName, String imagePath, String supervisorInitial, String descriptionOne, String descriptionTwo, String videoPath) {
+        this.id = id;
         this.topicName = topicName;
+        this.imagePath = imagePath;
         this.supervisorInitial = supervisorInitial;
-        this.topicDescriptionOne = topicDescriptionOne;
-        this.topicDescriptionTwo = topicDescriptionTwo;
-        this.topicVideoLink = topicVideoLink;
-        this.topicImage = topicImage;
+        this.descriptionOne = descriptionOne;
+        this.descriptionTwo = descriptionTwo;
+        this.videoPath = videoPath;
     }
 
-    public String getTopicId() {
-        return topicId;
-    }
-
-    public String getSupervisorInitial() {
-        return supervisorInitial;
+    public Integer getId() {
+        return id;
     }
 
     public String getTopicName() {
         return topicName;
     }
 
-    public String getTopicDescriptionOne() {
-        return topicDescriptionOne;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public String getTopicDescriptionTwo() {
-        return topicDescriptionTwo;
+    public String getSupervisorInitial() {
+        return supervisorInitial;
     }
 
-    public String getTopicImage() {
-        return topicImage;
+    public String getDescriptionOne() {
+        return descriptionOne;
     }
 
-    public String getTopicVideoLink() {
-        return topicVideoLink;
+    public String getDescriptionTwo() {
+        return descriptionTwo;
+    }
+
+    public String getVideoPath() {
+        return videoPath;
     }
 }

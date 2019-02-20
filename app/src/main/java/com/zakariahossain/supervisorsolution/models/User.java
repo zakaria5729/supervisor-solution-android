@@ -17,11 +17,16 @@ public class User implements Serializable {
     @SerializedName("user_role")
     private String userRole;
 
-    @SerializedName("status")
-    private Integer status;
-
     @SerializedName("created_at")
     private String createdAt;
+
+    public User(Integer id, String name, String email, String userRole, String createdAt) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.userRole = userRole;
+        this.createdAt = createdAt;
+    }
 
     public Integer getId() {
         return id;
@@ -37,10 +42,6 @@ public class User implements Serializable {
 
     public String getUserRole() {
         return userRole;
-    }
-
-    public Integer getStatus() {
-        return status;
     }
 
     public String getCreatedAt() {

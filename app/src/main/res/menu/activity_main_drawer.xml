@@ -23,9 +23,10 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_title_efense_registration"
+                    android:id="@+id/nav_title_defense_registration"
                     android:icon="@drawable/ic_title_defense_registration"
-                    android:title="Title Defense Registration" />
+                    android:title="Title Defense Registration"
+                    android:visible="false"/>
 
                 <item
                     android:id="@+id/nav_login"

@@ -20,11 +20,13 @@ import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 
 public class TitleDefenseRegistrationTwoFragment extends Fragment implements View.OnClickListener {
 
+    private SharedPrefManager sharedPrefManager;
     private OnMyMessageSendListener onMyMessageSendListener;
     private TitleDefenseRegistration titleDefenseRegistrationTwo;
 
@@ -43,16 +45,21 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_title_defense_registration_two, container, false);
+        context = container.getContext();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         if (getActivity() != null) {
             getActivity().setTitle("Title Defense Registration");
         }
-        context = container.getContext();
 
+	sharedPrefManager = new SharedPrefManager(this);
         setUpPageTwoUi(view);
         getBundleDataPageTwo();
-
-        return view;
     }
 
     private void setUpPageTwoUi(View view) {
@@ -107,6 +114,15 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
                 studentThreeEditTextLL.setVisibility(View.VISIBLE);
                 break;
         }
+
+	setLoggedInStudentDataToEditText();
+    }
+
+     private void setLoggedInStudentDataToEditText() {
+	if (sharedPrefManager.isLoggedIn()) {
+            textInputEditTextNameOne.setText(sharedPrefManager.getUser().getName());
+            textInputEditTextEmailOne.setText(sharedPrefManager.getUser().getEmail());
+        }
     }
 
     private void getEditTextValuePageTwo() {
@@ -130,7 +146,7 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBackPageTwo:
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStackImmediate();
+                onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationOneFragment(), null);
                 break;
 
             case R.id.btnSignUp:

@@ -25,12 +25,11 @@ import com.karumi.dexter.PermissionToken;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.models.Supervisor;
 import com.zakariahossain.supervisorsolution.models.Topic;
-import com.zakariahossain.supervisorsolution.models.TopicList;
+import com.zakariahossain.supervisorsolution.preferences.SharedPrefManager;
+import com.zakariahossain.supervisorsolution.preferences.ShowCasePreference;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
-import com.zakariahossain.supervisorsolution.utils.MySharedPreference;
+import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 import com.zakariahossain.supervisorsolution.utils.PermissionListener;
-import com.zakariahossain.supervisorsolution.utils.PlayerConfig;
-import com.zakariahossain.supervisorsolution.utils.ShowCasePopUp;
 
 import java.util.Objects;
 
@@ -41,9 +40,13 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, View.OnClickListener {
 
+    //account in mail: zakariaallinone@gmail.com
+    private static final String YOUTUBE_API_KEY = "AIzaSyCgM8RIaByCtXNKlGCM8v2RcAGb7mPsfIk";
+
     private static final int RECOVERY_REQUEST = 123;
     private YouTubePlayerView youTubePlayerView;
-    private MySharedPreference preference;
+    private SharedPrefManager sharedPrefManager;
+    private ShowCasePreference showCasePreference;
     private PermissionListener permissionListener;
 
     private ImageView supervisorImageView;
@@ -51,6 +54,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     private AppCompatTextView topicDescriptionOne, topicDescriptionTwo, topicSupervisorInitial, topicName;
     private AppCompatTextView supervisorName, supervisorInitial, supervisorDesignation, supervisorPhone, supervisorEmail, supervisorResearchArea, supervisorTrainingExperience, supervisorMembership, supervisorPublicationProject, supervisorProfileLink;
 
+    private String intentKey;
     private Topic topic;
     private Supervisor supervisor;
     private AppBarLayout appBarLayout;
@@ -60,25 +64,39 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String intentString = getIntent().getStringExtra(IntentAndBundleKey.KEY_TOPIC_AND_SUPERVISOR);
-        preference = new MySharedPreference(this);
+        intentKey = getIntent().getStringExtra(IntentAndBundleKey.KEY_TOPIC_AND_SUPERVISOR);
 
-        if (intentString.equals("supervisor_intent")) {
-            setContentView(R.layout.activity_supervisor_detail);
-
-            setUpSupervisorUi();
-            getSupervisorDataFromIntent();
-            checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_SUPERVISOR, R.id.tvSupervisorPhone, "Phone Call and Email", "Click on the phone number to make a phone call or click on the email address to send an email");
-
-        } else if (intentString.equals("topic_intent")) {
-            setContentView(R.layout.activity_topic_detail);
-
-            setUpTopicUi();
-            getTopicDataFromIntent();
-            checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_TOPIC, R.id.btnFloatingActionOk, "Ok Button", "Click on the button to go back to the topic again");
+        if (intentKey != null) {
+            if (intentKey.equals("supervisor_intent")) {
+                setContentView(R.layout.activity_supervisor_detail);
+            } else if (intentKey.equals("topic_intent")) {
+                setContentView(R.layout.activity_topic_detail);
+            }
         }
 
         permissionListener = new PermissionListener(this);
+        sharedPrefManager = new SharedPrefManager(this);
+        showCasePreference = new ShowCasePreference(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (intentKey != null) {
+            if (intentKey.equals("supervisor_intent")) {
+                setUpSupervisorUi();
+                getSupervisorDataFromIntent();
+
+                checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_SUPERVISOR, R.id.tvSupervisorPhone, "Phone Call and Email", "Click on the phone number to make a phone call or click on the email address to send an email");
+
+            } else if (intentKey.equals("topic_intent")) {
+                setUpTopicUi();
+                getTopicDataFromIntent();
+
+                checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_TOPIC, R.id.btnFloatingActionOk, "Ok Button", "Click on the button to go back to the topic again");
+            }
+        }
     }
 
     private void setUpSupervisorUi() {
@@ -157,9 +175,9 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     }
 
     private void checkAndUpdateShowCasePreference(String preferenceName, int view, String primaryText, String secondaryText) {
-        if (!preference.checkShowCasePreference(preferenceName)) {
-            ShowCasePopUp.popupShow(this, view, primaryText, secondaryText);
-            preference.updateShowCasePreference(preferenceName);
+        if (showCasePreference.isNotShownCasePreference(preferenceName)) {
+            OthersUtil.popUpShow(this, view, primaryText, secondaryText);
+            showCasePreference.updateShowCasePreference(preferenceName);
         }
     }
 
@@ -168,11 +186,11 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     }
 
     public void playVideoClickListener(View view) {
-        getYouTubePlayerProvider().initialize(PlayerConfig.YOUTUBE_API_KEY, this);
+        getYouTubePlayerProvider().initialize(YOUTUBE_API_KEY, this);
     }
 
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-        youTubePlayerView.initialize(PlayerConfig.YOUTUBE_API_KEY, this);
+        youTubePlayerView.initialize(YOUTUBE_API_KEY, this);
         return youTubePlayerView;
     }
 
@@ -198,7 +216,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RECOVERY_REQUEST && resultCode == RESULT_OK) {
             // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(PlayerConfig.YOUTUBE_API_KEY, this);
+            getYouTubePlayerProvider().initialize(YOUTUBE_API_KEY, this);
         }
     }
 
@@ -274,7 +292,6 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
         intent.setData(Uri.parse("mailto:" + to));
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
-        //intent.setType("message/rfc822");
 
         try {
             if (intent.resolveActivity(getPackageManager()) != null) {

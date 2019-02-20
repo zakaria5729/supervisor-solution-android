@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class TopicViewPageAdapter extends FragmentPagerAdapter {
+public class ViewPageAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> tabTitleList = new ArrayList<>();
 
-    public TopicViewPageAdapter(@NonNull FragmentManager fm) {
+    public ViewPageAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 

@@ -14,14 +14,14 @@ import retrofit2.http.PUT;
 
 public interface RetrofitApiInterface {
 
-    @GET("topics")
+    @GET("topic_list")
     Call<TopicList> getTopics();
 
-    @GET("supervisors")
+    @GET("supervisor_list")
     Call<SupervisorList> getSupervisors();
 
     @FormUrlEncoded
-    @POST("create")
+    @POST("create_user")
     Call<ServerResponse> signUp(
             @Field("name") String name,
             @Field("email") String email,

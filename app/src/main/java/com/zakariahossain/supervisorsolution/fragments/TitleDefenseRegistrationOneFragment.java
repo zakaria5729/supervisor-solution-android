@@ -20,6 +20,7 @@ import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 
@@ -42,16 +43,20 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_title_defense_registration_one, container, false);
+        context = container.getContext();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         if (getActivity() != null) {
             getActivity().setTitle("Title Defense Registration");
         }
-        context = container.getContext();
 
         setUpPageOneUi(view);
         addProjectInternshipTypeSpinner();
-
-        return view;
     }
 
     private void setUpPageOneUi(View view) {

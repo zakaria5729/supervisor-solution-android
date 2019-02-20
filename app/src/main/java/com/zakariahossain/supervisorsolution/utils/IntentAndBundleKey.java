@@ -7,6 +7,7 @@ public class IntentAndBundleKey {
 
     public static final String KEY_SHOW_CASE_TOPIC = "show case topic";
     public static final String KEY_SHOW_CASE_SUPERVISOR = "show case supervisor";
+    public static final String KEY_SHOW_CASE_GOOGLE_SIGN_IN = "show case google sign in";
 
     public static final String KEY_FRAGMENT_TITLE_DEFENSE = "key fragment title defense";
 

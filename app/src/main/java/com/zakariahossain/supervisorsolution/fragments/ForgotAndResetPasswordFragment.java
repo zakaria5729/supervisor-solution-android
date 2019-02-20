@@ -13,24 +13,23 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
-import com.zakariahossain.supervisorsolution.models.User;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
 import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
-import com.zakariahossain.supervisorsolution.utils.CircularProgressBar;
-import com.zakariahossain.supervisorsolution.utils.HandlerUtil;
+import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 public class ForgotAndResetPasswordFragment extends Fragment implements View.OnClickListener {
 
     private Context context;
-    private CircularProgressBar progressBar;
+    private OthersUtil progressBar;
     private AlertDialog alertDialog;
     private OnMyMessageSendListener onMyMessageSendListener;
     private MyApiService myApiService;
@@ -39,7 +38,7 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
 
     private MaterialButton enterEmailBackButton, enterEmailNextButton, resetPasswordBackButton, resetPasswordButton;
 
-    private String email, verificationCode, newPassword, confirmPassword;
+    private String email, verificationCode, newPassword, confirmPassword, bundleKey;
 
     public ForgotAndResetPasswordFragment() {
         // Required empty public constructor
@@ -51,36 +50,49 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         context = container.getContext();
 
         if (getArguments() != null) {
-            String key = getArguments().getString(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD);
+            bundleKey = getArguments().getString(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD);
 
-            if (key != null) {
-                switch (key) {
+            if (bundleKey != null) {
+                switch (bundleKey) {
                     case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL:
                         view = inflater.inflate(R.layout.fragment_forgot_password_enter_email, container, false);
-
-                        setUpEnterEmailUi(view);
                         break;
 
                     case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET:
                         view = inflater.inflate(R.layout.fragment_forgot_password_reset, container, false);
-
-                        setUpResetPasswordUi(view);
                         break;
                 }
             }
         }
-
-        if (getActivity() != null) {
-            getActivity().setTitle("Authentication");
-        }
-
-        progressBar = new CircularProgressBar(context);
 
         if (view != null) {
             return view;
         } else {
             return inflater.inflate(R.layout.fragment_forgot_password_enter_email, container, false);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getActivity() != null) {
+            getActivity().setTitle("Authentication");
+        }
+
+        if (bundleKey != null) {
+            switch (bundleKey) {
+                case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL:
+                    setUpEnterEmailUi(view);
+                    break;
+
+                case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET:
+                    setUpResetPasswordUi(view);
+                    break;
+            }
+        }
+
+        progressBar = new OthersUtil(context);
     }
 
     private void setUpEnterEmailUi(View view) {
@@ -158,7 +170,7 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBackEnterEmail:
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStackImmediate();
+                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
                 break;
 
             case R.id.btnNextEnterEmail:
@@ -169,7 +181,7 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
                 break;
 
             case R.id.btnBackResetPassword:
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().popBackStackImmediate();
+                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_EMAIL_VERIFICATION, "");
                 break;
 
             case R.id.btnResetPassword:
@@ -190,8 +202,9 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
 
                 if (data != null) {
                     if(data.getError().equals(false)) {
+                            onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
-                        HandlerUtil.removePreviousFragmentsFromBackStack(getChildFragmentManager());
+
                     } else {
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
                     }
@@ -217,7 +230,7 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
 
                 if (data != null) {
                     if(data.getError().equals(false)) {
-                        HandlerUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                         onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET, email);
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
                     } else {

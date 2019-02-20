@@ -1,6 +1,5 @@
 package com.zakariahossain.supervisorsolution.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
@@ -8,13 +7,15 @@ import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.fragments.AuthenticationFragment;
 import com.zakariahossain.supervisorsolution.fragments.ForgotAndResetPasswordFragment;
 import com.zakariahossain.supervisorsolution.fragments.HomeFragment;
+import com.zakariahossain.supervisorsolution.fragments.ProfileFragment;
 import com.zakariahossain.supervisorsolution.fragments.RuleFragment;
 import com.zakariahossain.supervisorsolution.fragments.TabFragment;
 import com.zakariahossain.supervisorsolution.fragments.TitleDefenseRegistrationOneFragment;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
-import com.zakariahossain.supervisorsolution.utils.HandlerUtil;
+import com.zakariahossain.supervisorsolution.preferences.SharedPrefManager;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
+import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -28,12 +29,16 @@ import androidx.fragment.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMyMessageSendListener {
 
+    private OnMyMessageSendListener onMyMessageSendListener;
+    private SharedPrefManager sharedPrefManager;
     private DrawerLayout drawer;
+    private Menu navMenu;
+
+    private AppCompatTextView headerUserName, headerUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         setUpMainActivityUi(savedInstanceState);
+        sharedPrefManager = new SharedPrefManager(this);
     }
 
     private void setUpMainActivityUi(Bundle savedInstanceState) {
@@ -60,26 +66,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         View headerView = navigationView.getHeaderView(0);
-        AppCompatTextView userName = headerView.findViewById(R.id.tvUserName);
-        AppCompatTextView userEmail = headerView.findViewById(R.id.tvUserEmail);
-        ImageView userImage = headerView.findViewById(R.id.ivSupervisor);
+        headerUserName = headerView.findViewById(R.id.tvUserName);
+        headerUserEmail = headerView.findViewById(R.id.tvUserEmail);
+        //ImageView userImage = headerView.findViewById(R.id.ivSupervisor);
 
+        navMenu = navigationView.getMenu();
         navigationView.setNavigationItemSelectedListener(this);
+
+        onMyMessageSendListener = this;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+    protected void onStart() {
+        super.onStart();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
+        if (sharedPrefManager.isLoggedIn()) {
+            headerUserName.setText(sharedPrefManager.getUser().getName());
+            headerUserEmail.setText(sharedPrefManager.getUser().getEmail());
+
+            navMenu.findItem(R.id.nav_login).setIcon(R.drawable.ic_profile);
+            navMenu.findItem(R.id.nav_login).setTitle("Profile");
+
+            navMenu.findItem(R.id.nav_title_defense_registration).setVisible(true);
+        } else {
+            headerUserName.setText(getResources().getString(R.string.nav_header_title));
+            headerUserEmail.setText(getResources().getString(R.string.nav_header_subtitle));
+
+            navMenu.findItem(R.id.nav_login).setIcon(R.drawable.ic_login);
+            navMenu.findItem(R.id.nav_login).setTitle("Login");
+
+            navMenu.findItem(R.id.nav_title_defense_registration).setVisible(false);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -96,34 +113,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
-                HandlerUtil.closeVisibleSoftKeyBoard(this);
-                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
+                OthersUtil.closeVisibleSoftKeyBoard(this);
                 replaceFragment(new HomeFragment());
                 break;
 
             case R.id.nav_topic_teacher:
-                HandlerUtil.closeVisibleSoftKeyBoard(this);
-                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
+                OthersUtil.closeVisibleSoftKeyBoard(this);
                 replaceFragment(new TabFragment());
                 break;
 
             case R.id.nav_rule:
-                HandlerUtil.closeVisibleSoftKeyBoard(this);
-                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
+                OthersUtil.closeVisibleSoftKeyBoard(this);
                 replaceFragment(new RuleFragment());
                 break;
 
             case R.id.nav_login:
-                HandlerUtil.closeVisibleSoftKeyBoard(this);
-                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
-                OnMyMessageSendListener onMyMessageSendListener = this;
-                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
+                if (sharedPrefManager.isLoggedIn()) {
+                    OthersUtil.closeVisibleSoftKeyBoard(this);
+                    replaceFragment(new ProfileFragment());
+                } else {
+                    OthersUtil.closeVisibleSoftKeyBoard(this);
+                    onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
+
+                    headerUserName.setText(getResources().getString(R.string.nav_header_title));
+                    headerUserEmail.setText(getResources().getString(R.string.nav_header_subtitle));
+                }
                 break;
 
-            case R.id.nav_title_efense_registration:
-                HandlerUtil.closeVisibleSoftKeyBoard(this);
-                HandlerUtil.removePreviousFragmentsFromBackStack(getSupportFragmentManager());
-                replaceFragmentWithBackStack(new TitleDefenseRegistrationOneFragment());
+            case R.id.nav_title_defense_registration:
+                if (sharedPrefManager.isLoggedIn() && sharedPrefManager.getUser().getUserRole().equals("Student")) {
+                    OthersUtil.closeVisibleSoftKeyBoard(this);
+                    replaceFragment(new TitleDefenseRegistrationOneFragment());
+                }
                 break;
         }
 
@@ -135,17 +156,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
-    private void replaceFragmentWithBackStack(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer, fragment).commit();
-    }
-
     @Override
     public void onMyTitleDefenseRegistrationMessage(Fragment fragment, TitleDefenseRegistration titleDefenseRegistration) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE, titleDefenseRegistration);
-        fragment.setArguments(bundle);
+        if (titleDefenseRegistration != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE, titleDefenseRegistration);
+            fragment.setArguments(bundle);
+        }
 
-        replaceFragmentWithBackStack(fragment);
+        replaceFragment(fragment);
     }
 
     @Override
@@ -157,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bundle.putString("email_for_verification_code", email);
         authenticationFragment.setArguments(bundle);
 
-        replaceFragmentWithBackStack(authenticationFragment);
+        replaceFragment(authenticationFragment);
     }
 
     @Override
@@ -169,6 +188,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bundle.putString("email_for_reset_password", email);
         passwordFragment.setArguments(bundle);
 
-        replaceFragmentWithBackStack(passwordFragment);
+        replaceFragment(passwordFragment);
     }
+
+    @Override
+    public void onMyFragment(Fragment fragment) {
+        replaceFragment(fragment);
+    }
+
+    @Override
+    public void onMyHeaderViewAndNavMenuItem(String name, String email, String menuItemTitle, int icon, boolean isNavTitleDefenceShow) {
+        headerUserName.setText(name);
+        headerUserEmail.setText(email);
+
+        navMenu.findItem(R.id.nav_login).setTitle(menuItemTitle);
+        navMenu.findItem(R.id.nav_login).setIcon(icon);
+
+        if (isNavTitleDefenceShow) {
+            navMenu.findItem(R.id.nav_title_defense_registration).setVisible(true);
+        } else {
+            navMenu.findItem(R.id.nav_title_defense_registration).setVisible(false);
+        }
+    }
+
 }

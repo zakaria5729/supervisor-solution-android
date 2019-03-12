@@ -423,6 +423,7 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
                     if(data.getError().equals(false)) {
                         OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                        onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
                     } else {
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
                     }

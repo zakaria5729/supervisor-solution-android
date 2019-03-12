@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.TitleDefenseRegistrationThreeFragment">
 
-    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        <com.google.android.material.card.MaterialCardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
-            android:layout_height="wrap_content"
+            style="@style/MaterialCardViewProperties"
             android:layout_width="match_parent"
-            style="@style/MaterialCardViewProperties">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -35,31 +38,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:text="@string/choose_any_two_see_the_topic_and_supervisor_section"
+                    android:text="@string/choose_a_see_the_topic_and_supervisor_section"
                     android:textAppearance="?android:textAppearanceSmall" />
 
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/cbLinearLayout"
+                <RadioGroup
+                    android:id="@+id/rbAreaOfInterest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutAreaOfInterest"
-                    android:layout_height="wrap_content"
+                    style="@style/TextInputLayoutProperties"
                     android:layout_width="match_parent"
-                    android:focusableInTouchMode="true"
-                    style="@style/TextInputLayoutProperties">
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:elevation="8dp"
                         android:focusableInTouchMode="true"
+                        android:hint="Write down your area of interest"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:elevation="8dp"
-                        android:hint="Write down your area of interest"
                         tools:targetApi="lollipop" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,72 +83,73 @@
                     android:textAppearance="?android:textAppearanceSmall" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_height="wrap_content"
+                    style="@style/TextInputLayoutProperties"
                     android:layout_width="match_parent"
-                    style="@style/TextInputLayoutProperties">
+                    android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/acTextViewInitialOne"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusableInTouchMode="true"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:imeOptions="actionNext"
                         android:completionThreshold="1"
-                        android:hint="First supervisor initial"
-                        android:inputType="textAutoComplete"
                         android:elevation="8dp"
+                        android:focusableInTouchMode="true"
+                        android:hint="First supervisor email"
+                        android:imeOptions="actionNext"
+                        android:inputType="textAutoComplete"
                         android:maxLength="6"
                         android:maxLines="1"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
                         tools:targetApi="lollipop" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_height="wrap_content"
+                    style="@style/TextInputLayoutProperties"
                     android:layout_width="match_parent"
-                    style="@style/TextInputLayoutProperties">
+                    android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/acTextViewInitialTwo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusableInTouchMode="true"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
                         android:completionThreshold="1"
-                        android:imeOptions="actionNext"
-                        android:hint="Second supervisor initial"
-                        android:inputType="textAutoComplete"
                         android:elevation="8dp"
+                        android:focusableInTouchMode="true"
+                        android:hint="Second supervisor email"
+                        android:imeOptions="actionNext"
+                        android:inputType="textAutoComplete"
                         android:maxLength="6"
                         android:maxLines="1"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
                         tools:targetApi="lollipop" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:layout_height="wrap_content"
+                    style="@style/TextInputLayoutProperties"
                     android:layout_width="match_parent"
-                    style="@style/TextInputLayoutProperties">
+                    android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/acTextViewInitialThree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusableInTouchMode="true"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
                         android:completionThreshold="1"
-                        android:imeOptions="actionDone"
-                        android:hint="Third supervisor initial"
-                        android:inputType="textAutoComplete"
                         android:elevation="8dp"
+                        android:focusableInTouchMode="true"
+                        android:hint="Third supervisor email"
+                        android:imeOptions="actionDone"
+                        android:inputType="textAutoComplete"
                         android:maxLength="6"
                         android:maxLines="1"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
                         tools:targetApi="lollipop" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cbAgree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -162,28 +166,28 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:text="Back"
                         android:textColor="@android:color/black"
-                        app:rippleColor="@color/colorAccent"/>
+                        app:rippleColor="@color/colorAccent" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSubmit"
-                        android:layout_height="wrap_content"
+                        style="@style/MaterialButtonProperties"
                         android:layout_width="wrap_content"
-                        android:text="Submit"
-                        style="@style/MaterialButtonProperties" />
+                        android:layout_height="wrap_content"
+                        android:text="Submit" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical|end"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Page 3 of 3"/>
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|end"
+                        android:text="Page 3 of 3" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,6 +1,9 @@
 package com.zakariahossain.supervisorsolution.retrofits;
 
+import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
+import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.LoginResponse;
+import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.SupervisorList;
 import com.zakariahossain.supervisorsolution.models.TopicList;
@@ -183,6 +186,114 @@ public class NetworkCall implements MyApiService {
         Call<ServerResponse> resetPasswordCall = apiInterface.resetPassword(email, verificationCode, newPassword);
 
         resetPasswordCall.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ServerResponse> call, @NonNull Response<ServerResponse> response) {
+                if(response.isSuccessful()) {
+                    ServerResponse serverResponse = response.body();
+
+                    if (serverResponse != null) {
+                        responseCallback.onSuccess(serverResponse);
+                    } else {
+                        responseCallback.onError(new Exception(response.message()));
+                    }
+                } else {
+                    responseCallback.onError(new Exception(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ServerResponse> call, @NonNull Throwable t) {
+                responseCallback.onError(new Exception(t.getMessage()));
+            }
+        });
+    }
+
+    @Override
+    public void groupListStatus(String groupEmail, final ResponseCallback<GroupStatusList> responseCallback) {
+        Call<GroupStatusList> groupListStatusCall = apiInterface.groupListStatus(groupEmail);
+
+        groupListStatusCall.enqueue(new Callback<GroupStatusList>() {
+            @Override
+            public void onResponse(@NonNull Call<GroupStatusList> call, @NonNull Response<GroupStatusList> response) {
+                if(response.isSuccessful()) {
+                    GroupStatusList groupStatusList = response.body();
+
+                    if (groupStatusList != null) {
+                        responseCallback.onSuccess(groupStatusList);
+                    } else {
+                        responseCallback.onError(new Exception(response.message()));
+                    }
+                } else {
+                    responseCallback.onError(new Exception(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GroupStatusList> call, @NonNull Throwable t) {
+                responseCallback.onError(new Exception(t.getMessage()));
+            }
+        });
+    }
+
+    @Override
+    public void requestedGroupList(String supervisorEmail, final ResponseCallback<RequestedGroupList> responseCallback) {
+        Call<RequestedGroupList> requestedGroupListCall = apiInterface.requestedGroupList(supervisorEmail);
+
+        requestedGroupListCall.enqueue(new Callback<RequestedGroupList>() {
+            @Override
+            public void onResponse(@NonNull Call<RequestedGroupList> call, @NonNull Response<RequestedGroupList> response) {
+                if(response.isSuccessful()) {
+                    RequestedGroupList requestedGroupList = response.body();
+
+                    if (requestedGroupList != null) {
+                        responseCallback.onSuccess(requestedGroupList);
+                    } else {
+                        responseCallback.onError(new Exception(response.message()));
+                    }
+                } else {
+                    responseCallback.onError(new Exception(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<RequestedGroupList> call, @NonNull Throwable t) {
+                responseCallback.onError(new Exception(t.getMessage()));
+            }
+        });
+    }
+
+    @Override
+    public void acceptedGroupList(String supervisorEmail, final ResponseCallback<AcceptedGroupList> responseCallback) {
+        Call<AcceptedGroupList> acceptedGroupListCall = apiInterface.acceptedGroupList(supervisorEmail);
+
+        acceptedGroupListCall.enqueue(new Callback<AcceptedGroupList>() {
+            @Override
+            public void onResponse(@NonNull Call<AcceptedGroupList> call, @NonNull Response<AcceptedGroupList> response) {
+                if(response.isSuccessful()) {
+                    AcceptedGroupList acceptedGroupList = response.body();
+
+                    if (acceptedGroupList != null) {
+                        responseCallback.onSuccess(acceptedGroupList);
+                    } else {
+                        responseCallback.onError(new Exception(response.message()));
+                    }
+                } else {
+                    responseCallback.onError(new Exception(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AcceptedGroupList> call, @NonNull Throwable t) {
+                responseCallback.onError(new Exception(t.getMessage()));
+            }
+        });
+    }
+
+    @Override
+    public void groupAcceptOrDecline(String supervisorEmail, String groupEmail, int acceptOrDecline, final ResponseCallback<ServerResponse> responseCallback) {
+        Call<ServerResponse> groupAcceptOrDeclineCall = apiInterface.groupAcceptOrDecline(supervisorEmail, groupEmail, acceptOrDecline);
+
+        groupAcceptOrDeclineCall.enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(@NonNull Call<ServerResponse> call, @NonNull Response<ServerResponse> response) {
                 if(response.isSuccessful()) {

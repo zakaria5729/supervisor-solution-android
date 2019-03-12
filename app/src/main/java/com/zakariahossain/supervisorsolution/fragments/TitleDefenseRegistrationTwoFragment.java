@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
+import com.zakariahossain.supervisorsolution.preferences.SharedPrefManager;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 import java.util.Objects;
@@ -57,7 +58,7 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
             getActivity().setTitle("Title Defense Registration");
         }
 
-	sharedPrefManager = new SharedPrefManager(this);
+	sharedPrefManager = new SharedPrefManager(context);
         setUpPageTwoUi(view);
         getBundleDataPageTwo();
     }

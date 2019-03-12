@@ -23,6 +23,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.zakariahossain.supervisorsolution.R;
+import com.zakariahossain.supervisorsolution.adapters.SupervisorInitialAdapter;
 import com.zakariahossain.supervisorsolution.models.Supervisor;
 import com.zakariahossain.supervisorsolution.models.Topic;
 import com.zakariahossain.supervisorsolution.preferences.SharedPrefManager;
@@ -31,12 +32,16 @@ import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 import com.zakariahossain.supervisorsolution.utils.PermissionListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, View.OnClickListener {
 
@@ -49,6 +54,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     private ShowCasePreference showCasePreference;
     private PermissionListener permissionListener;
 
+    private RecyclerView recyclerViewInitial;
     private ImageView supervisorImageView;
     private AppCompatImageView topicImageView;
     private AppCompatTextView topicDescriptionOne, topicDescriptionTwo, topicSupervisorInitial, topicName;
@@ -94,7 +100,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
                 setUpTopicUi();
                 getTopicDataFromIntent();
 
-                checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_TOPIC, R.id.btnFloatingActionOk, "Ok Button", "Click on the button to go back to the topic again");
+                checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_TOPIC, R.id.rcvSupervisorInitial, "Supervisor Initials", "Scrolling left to right to show the more supervisor initials");
             }
         }
     }
@@ -122,6 +128,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
         topicDescriptionOne = findViewById(R.id.tvTopicDescriptionOne);
         topicDescriptionTwo = findViewById(R.id.tvTopicDescriptionTwo);
         topicSupervisorInitial = findViewById(R.id.tvSupervisorInitial);
+        recyclerViewInitial = findViewById(R.id.rcvSupervisorInitial);
     }
 
     private void getSupervisorDataFromIntent() {
@@ -150,9 +157,15 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
         topic = (Topic) getIntent().getSerializableExtra(IntentAndBundleKey.KEY_TOPIC_DATA);
 
         topicName.setText(topic.getTopicName());
-        topicSupervisorInitial.setText(topic.getSupervisorInitial());
         topicDescriptionOne.setText(topic.getDescriptionOne());
         topicDescriptionTwo.setText(topic.getDescriptionTwo());
+
+        String[] supervisorInitialList = topic.getSupervisorInitial().split(", ");
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerViewInitial.setLayoutManager(layoutManager);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        SupervisorInitialAdapter initialAdapter = new SupervisorInitialAdapter(this, supervisorInitialList);
+        recyclerViewInitial.setAdapter(initialAdapter);
 
         Glide.with(TopicSupervisorDetailActivity.this)
                 .load(topic.getImagePath())

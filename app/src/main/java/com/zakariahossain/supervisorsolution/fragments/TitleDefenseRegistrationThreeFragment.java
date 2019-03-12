@@ -2,11 +2,15 @@ package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -18,13 +22,12 @@ import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.fragment.app.Fragment;
 
 public class TitleDefenseRegistrationThreeFragment extends Fragment implements View.OnClickListener {
@@ -34,11 +37,14 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
 
     private Context context;
     private List<String> checkList;
-    private LinearLayoutCompat cbLinearLayout;
-    private AppCompatAutoCompleteTextView autoCompleteTextViewOneInitial, autoCompleteTextViewTwoInitial, autoCompleteTextViewThreeInitial;
-    private TextInputLayout textInputLayoutOtherAreaOfInterest;
+    private AppCompatCheckBox cbAgree;
+    private RadioGroup rgAreaOfInterest;
 
-    private String firstSupervisorInitial, secondSupervisorInitial, thirdSupervisorInitial, agreeCheckBox;
+    private TextInputLayout textInputLayoutOtherAreaOfInterest;
+    private AppCompatAutoCompleteTextView autoCompleteTextViewOneEmail, autoCompleteTextViewTwoEmail, autoCompleteTextViewThreeEmail;
+
+    private String firstSupervisorEmail, secondSupervisorEmail, thirdSupervisorEmail, areaOfInterest;
+    private boolean agreeCheckBox;
 
     public TitleDefenseRegistrationThreeFragment() {
         // Required empty public constructor
@@ -60,8 +66,9 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         }
 
         setUpPageThreeUi(view);
-        addCheckBoxAreaOfInterests();
+        addRadioButtonAreaOfInterests();
         addSupervisorAutoCompleteTextView();
+        agreeTermsAndCondition();
         getBundleDataPageThree();
     }
 
@@ -70,10 +77,11 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
 
         MaterialButton buttonBackPageThree = view.findViewById(R.id.btnBackPageThree);
         MaterialButton buttonSubmit = view.findViewById(R.id.btnSubmit);
-        autoCompleteTextViewOneInitial = view.findViewById(R.id.acTextViewInitialOne);
-        autoCompleteTextViewTwoInitial = view.findViewById(R.id.acTextViewInitialTwo);
-        autoCompleteTextViewThreeInitial = view.findViewById(R.id.acTextViewInitialThree);
-        cbLinearLayout = view.findViewById(R.id.cbLinearLayout);
+        autoCompleteTextViewOneEmail = view.findViewById(R.id.acTextViewInitialOne);
+        autoCompleteTextViewTwoEmail = view.findViewById(R.id.acTextViewInitialTwo);
+        autoCompleteTextViewThreeEmail = view.findViewById(R.id.acTextViewInitialThree);
+        rgAreaOfInterest = view.findViewById(R.id.rbAreaOfInterest);
+        cbAgree = view.findViewById(R.id.cbAgree);
         textInputLayoutOtherAreaOfInterest = view.findViewById(R.id.textInputLayoutAreaOfInterest);
 
         buttonBackPageThree.setOnClickListener(this);
@@ -82,45 +90,34 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
 
     private void addSupervisorAutoCompleteTextView() {
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.supervisors));
-        autoCompleteTextViewOneInitial.setAdapter(adapter1);
+        autoCompleteTextViewOneEmail.setAdapter(adapter1);
 
         ArrayAdapter<String> adapter2 = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.supervisors));
-        autoCompleteTextViewTwoInitial.setAdapter(adapter2);
+        autoCompleteTextViewTwoEmail.setAdapter(adapter2);
 
         ArrayAdapter<String> adapter3 = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.supervisors));
-        autoCompleteTextViewThreeInitial.setAdapter(adapter3);
+        autoCompleteTextViewThreeEmail.setAdapter(adapter3);
     }
 
-    private void addCheckBoxAreaOfInterests() {
-        for (String aStr : getResources().getStringArray(R.array.area_of_interests)) {
-            AppCompatCheckBox checkBox = new AppCompatCheckBox(context);
-            checkBox.setText(aStr);
-            cbLinearLayout.addView(checkBox);
+    private void addRadioButtonAreaOfInterests() {
+        RadioGroup radioGroup = new RadioGroup(context);
+        radioGroup.setOrientation(LinearLayout.VERTICAL);
+        RadioGroup.LayoutParams layoutParams;
 
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        for (final String anAreaOfInterest : getResources().getStringArray(R.array.area_of_interests)) {
+            RadioButton radioButton = new RadioButton(context);
+            radioButton.setText(anAreaOfInterest);
+            layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT);
+            radioGroup.addView(radioButton, layoutParams);
+
+            radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        checkList.add(buttonView.getText().toString());
-
-                        if (checkList.size() > 2) {
-                            Toast.makeText(context, "Sorry! You can't select more than two topic!", Toast.LENGTH_SHORT).show();
-                        }
-
-                        if (checkList.get(checkList.size() - 1).equals("Other")) {
-                            textInputLayoutOtherAreaOfInterest.setVisibility(View.VISIBLE);
-                            Toast.makeText(context, "" + checkList, Toast.LENGTH_SHORT).show();
-                        } else {
-                            textInputLayoutOtherAreaOfInterest.setVisibility(View.GONE);
-                        }
-
-                        Toast.makeText(context, "" + checkList, Toast.LENGTH_SHORT).show();
-                    } else {
-                        checkList.remove(buttonView.getText().toString());
-                    }
+                public void onClick(View v) {
+                    areaOfInterest = anAreaOfInterest;
                 }
             });
         }
+        rgAreaOfInterest.addView(radioGroup);
     }
 
     private void getBundleDataPageThree() {
@@ -153,10 +150,36 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
                 break;
 
             case R.id.btnSubmit:
-                onMyMessageSendListener.onMyFragment(new ProfileFragment());
-                Toast.makeText(getContext(), "submit", Toast.LENGTH_SHORT).show();
+                if (getSupervisorsEmail()) {
+                    if (agreeCheckBox) {
+                        onMyMessageSendListener.onMyFragment(new ProfileFragment());
+                    } else {
+
+                    }
+                } else {
+
+                }
+
+                Toast.makeText(getContext(), "submit "+areaOfInterest, Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private boolean getSupervisorsEmail() {
+        firstSupervisorEmail = autoCompleteTextViewOneEmail.getText().toString().trim();
+        secondSupervisorEmail = autoCompleteTextViewTwoEmail.getText().toString().trim();
+        thirdSupervisorEmail = autoCompleteTextViewThreeEmail.getText().toString().trim();
+
+        return !TextUtils.isEmpty(firstSupervisorEmail) && !TextUtils.isEmpty(secondSupervisorEmail) && !TextUtils.isEmpty(thirdSupervisorEmail);
+    }
+
+    private void agreeTermsAndCondition() {
+        cbAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                agreeCheckBox = isChecked;
+            }
+        });
     }
 
     @Override

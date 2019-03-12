@@ -43,7 +43,7 @@
 
     <style name="MaterialCardViewProperties" parent="Widget.MaterialComponents.CardView">
         <item name="cardCornerRadius">4dp</item>
-        <item name="cardElevation">5dp</item>
+        <item name="cardElevation">3dp</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="cardUseCompatPadding">true</item>
     </style>

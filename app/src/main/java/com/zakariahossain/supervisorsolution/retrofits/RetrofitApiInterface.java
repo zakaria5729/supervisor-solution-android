@@ -1,6 +1,9 @@
 package com.zakariahossain.supervisorsolution.retrofits;
 
+import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
+import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.LoginResponse;
+import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.SupervisorList;
 import com.zakariahossain.supervisorsolution.models.TopicList;
@@ -56,5 +59,25 @@ public interface RetrofitApiInterface {
             @Field("email") String email,
             @Field("verification_code") int verificationCode,
             @Field("new_password") String newPassword
+    );
+
+    @FormUrlEncoded
+    @POST("group_list_status")
+    Call<GroupStatusList> groupListStatus(@Field("group_email") String groupEmail);
+
+    @FormUrlEncoded
+    @POST("requested_group_list")
+    Call<RequestedGroupList> requestedGroupList(@Field("supervisor_email") String supervisorEmail);
+
+    @FormUrlEncoded
+    @POST("accepted_group_list")
+    Call<AcceptedGroupList> acceptedGroupList(@Field("supervisor_email") String supervisorEmail);
+
+    @FormUrlEncoded
+    @POST("group_accept_or_decline")
+    Call<ServerResponse> groupAcceptOrDecline(
+            @Field("supervisor_email") String supervisorEmail,
+            @Field("group_email") String groupEmail,
+            @Field("accept_or_decline") int acceptOrDecline
     );
 }

@@ -21,7 +21,8 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
                     android:src="@drawable/diu_logo_with_name"
                     android:scaleType="fitCenter"/>
 

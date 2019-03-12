@@ -1,85 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.RuleFragment"
-    android:orientation="vertical">
+    tools:context=".fragments.RuleFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a1"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/MaterialCardViewProperties"
+        tools:targetApi="lollipop">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/one_stop_instructions" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/in_the_department_of_computer_science_and_engineering_cse_of_daffodil_international_university_diu_final_year_students_are_involved_in_development_projects_research_projects_or_internship_works_there_is_no_bindings_for_students_so_far_in_choosing_any_of_the_above_mentioned_area_to_complete_the_six_credit_requirements_for_day_shift_students_projects_or_internship_will_continue_starting_from_l3_t3_and_end_after_completion_of_l4_t4_without_exceptions_for_evening_"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/one_life_one_project_one_supervisor" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/for_your_final_year_project_or_internship_you_have_to_work_under_kind_supervision_of_any_of_the_permanent_faculty_members_of_cse_department_on_condition_you_can_work_under_some_of_our_adjunct_professor_or_part_time_faculty_members_one_supervisor_and_one_co_supervisor_will_be_assigned_to_each_project_team_for_finding_present_supervisor_s_list_click_here_for_finding_general_questions_about_supervisor_who_could_be_my_supervisor_while_doing_the_registration_for_title_defense_in_l3_t3_you_have_to_provide_three_choices_for_your_supervisor_upon_your_project_area_chosen_and_expected_supervisors_criteria_project_internship_committee_will_assign_a_supervisor_and_a_co_supervisor"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/team_formations" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/one_specific_project_could_be_done_by_only_one_team_project_internship_committee_will_ensure_that_all_the_projects_presented_in_the_title_defense_are_unique_for_choosing_a_project_try_to_take_a_recent_topic_like_real_life_problem_domain_and_its_probable_computerized_solution_for_research_project_try_to_cover_the_recent_research_areas_and_state_of_the_art_condition_on_that_area_a_novel_methodology_or_improvement_in_existing_methodologies_would_be_a_better_contribution_of_your_research_for_internship_you_have_to_choose_a_it_company_and_have_to_work_on_some_projects_of_that_company_your_internship_goal_will_be_to_earn_practical_experience_by_working_in_professional_environment_for_development_or_research_project_no_of_team_member_1_to_3_four_members_could_be_allowed_by_a_formal_application_to_the_head_of_the_department_team_members_could_be_from_different_sections_but_only_one_registration_is_enough_for_forming_the_team_no_need_to_re_registration_from_each_section_for_internship_internships_are_considered_to_be_individual_work_internship_teams_will_be_one_man_army"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a9"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pre_phase_i" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/as_mentioned_above_the_main_task_as_a_final_year_student_is_to_do_registration_properly_and_attend_the_title_defense_for_day_shift_students_l3_t3_they_have_to_attend_the_title_defense_in_pre_phase_i_for_evening_shift_students_7th_semester_they_have_to_attend_the_title_defense_on_their_pre_phase_as_they_have_only_one_semester_for_pre_phase_steps_to_attend_the_title_defense_complete_title_defense_registration_online_a_supervisor_and_a_co_supervisor_will_be_assigned_by_the_project_internship_committee_contact_with_your_supervisor_and_consult_about_your_project_idea_and_preparation_of_title_defense_attend_the_title_defense_get_the_result_of_title_defense_from_your_supervisor_for_each_above_mentioned_steps_you_will_get_formal_emails_from_project_internship_committee_if_you_are_not_getting_any_email_check_if_your_email_is_properly_added_in_the_studentcse_diu_edu_bd_contact_cse_office_for_further_query_regarding_email_issues_after_successful_completion_of_title_defense_in_pre_phase_i_you_have_to_attend_another_follow_up_presentation_in_front_of_your_supervisor_after_title_defense_all_the_follow_ups_until_the_phase_ii_will_be_managed_and_instructed_by_supervisors"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a11"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_defense" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a12"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/your_final_year_project_or_internship_starts_with_the_mandatory_title_defense_title_defense_is_the_defense_where_each_team_have_to_present_their_project_idea_title_defense_presentation_focuses_on_project_internship_title_project_type_development_research_or_internship_motivation_of_the_project_objectives_of_the_project_and_expected_outcome_from_this_proposed_project_for_title_defense_presentation_you_have_to_create_a_google_site_for_your_team_the_google_site_must_have_the_above_mentioned_topics_including_your_team_information_team_name_members_name_id_and_supervisor_co_supervisors_information_name_and_designation"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a13"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pre_phase_ii" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a14"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/pre_phase_ii_is_only_for_day_shift_students_l4_t1_in_this_semester_you_have_to_face_two_follow_ups_one_before_midterm_and_one_before_semester_final_and_show_your_progress_in_project_all_the_follow_ups_are_managed_and_instructed_by_supervisors_contact_your_supervisor_to_know_the_date_of_follow_ups_project_internship_committee_will_circulate_notice_emails_to_each_supervisor_and_project_teams_about_the_follow_up_dates"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/a15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/phase_i" />
 
-</LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/in_phase_i_both_day_shift_l4_t2_and_evening_shift_8th_semester_students_have_to_be_involved_in_final_year_project_in_this_semester_you_have_to_complete_the_following_tasks_follow_up_1_follow_up_2_follow_ups_will_be_completed_as_instructed_by_supervisor_in_the_same_fashion_it_is_done_in_pre_phases"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/phase_ii" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/in_phase_ii_both_day_shift_l4_t3_and_evening_shift_9th_semester_students_have_to_be_involved_in_final_year_project_in_this_semester_you_have_to_complete_the_following_tasks_follow_up_1_pre_defense_follow_up_1_will_be_completed_as_instructed_by_supervisor_in_the_same_fashion_it_is_done_in_previous_phases_there_will_be_no_second_follow_up_in_phase_ii_but_yo_have_to_face_the_pre_defense"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pre_defense" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/pre_defense_is_considered_to_be_trail_of_final_defense_and_all_the_senior_faculty_members_are_considered_to_be_the_judge_of_pre_defense_pre_defense_presentation_is_a_pre_requisite_to_face_the_final_defense_thus_it_is_mandatory_for_pre_defense_you_have_to_complete_the_following_task_steps_of_to_attend_pre_defense_complete_all_the_follow_ups_in_previous_phases_consult_with_the_supervisor_to_send_your_team_information_to_the_project_internship_committee_within_the_deadline_get_instructions_from_project_internship_committee_through_email_attend_the_pre_defense_presentation_with_your_project_google_site_printed_report_screen_cast_videos_and_other_necessary_documents_as_instructed_in_the_email_get_the_result_of_pre_defense_from_your_supervisor"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/final_defense" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/final_defense_is_the_last_and_final_presentation_you_have_to_face_to_defend_your_final_year_project_research_or_internship_works_this_is_called_defense_as_you_have_to_defend_each_and_every_issues_requirement_analysis_project_planning_implementations_testing_validation_verification_version_control_report_writing_synchronization_between_development_work_and_report_usually_the_most_senior_faculties_are_considered_to_become_the_judge_of_final_defense_and_additionally_there_must_be_one_or_more_external_faculties_from_other_universities_steps_to_attend_the_final_defense_attend_the_pre_defense_successfully_consult_with_supervisor_and_do_modifications_as_mentioned_by_the_pre_defense_judges_get_instructions_from_project_internship_committee_through_email_attend_the_final_defense_presentation_with_your_project_google_site_printed_report_screen_cast_videos_and_other_necessary_documents_as_instructed_in_the_email_get_the_result_from_the_exam_controller_office_final_defense_is_the_last_session_for_interacting_with_the_supervisor_as_well_as_project_internship_committee"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/HeadingProperties"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/contact_persons" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:justificationMode="inter_word"
+                android:text="@string/narayan_ranjan_chakraborty_assistant_professor_office_room_room_no_111_daffodil_tower_mobile_no_8801617379897_email_narayan_daffodilvarsity_edu_bd"
+                android:textIsSelectable="true"
+                tools:targetApi="o" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.core.widget.NestedScrollView>

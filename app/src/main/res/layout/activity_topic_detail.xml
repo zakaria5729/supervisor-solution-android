@@ -88,16 +88,11 @@
                 android:text="@string/teachers_initial"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvSupervisorInitial"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvSupervisorInitial"
+                android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="8dp"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textIsSelectable="true"
-                tools:text="MAS, SSl" />
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTopicDescriptionOne"

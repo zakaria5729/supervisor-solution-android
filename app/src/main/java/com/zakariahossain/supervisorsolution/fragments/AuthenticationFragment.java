@@ -358,7 +358,7 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
                 Toast.makeText(context, "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
             }
         } catch (ApiException e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Error: "+e.getMessage()+" Try again", Toast.LENGTH_LONG).show();
         }
     }
 

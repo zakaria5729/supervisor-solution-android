@@ -60,7 +60,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/tvDesignation"
             app:layout_constraintTop_toTopOf="@+id/tvDesignation"
-            tools:text="(SAH)" />
+            tools:text="SAH" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

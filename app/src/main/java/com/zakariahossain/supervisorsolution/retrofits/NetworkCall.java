@@ -15,7 +15,7 @@ import retrofit2.Response;
 
 public class NetworkCall implements MyApiService {
 
-    private RetrofitApiInterface apiInterface = RetrofitApiClient.getRetrofitInstance().create(RetrofitApiInterface.class);
+    private RetrofitApiInterface apiInterface = RetrofitApiClient.getRetrofitInstance().getApiInterface();
 
     @Override
     public void getTopicsFromServer(final ResponseCallback<TopicList> responseCallback) {

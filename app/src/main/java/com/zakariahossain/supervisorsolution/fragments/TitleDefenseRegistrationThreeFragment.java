@@ -22,6 +22,7 @@ import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -113,6 +114,11 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
             radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(anAreaOfInterest.equals("Other")) {
+                        textInputLayoutOtherAreaOfInterest.setVisibility(View.VISIBLE);
+                    } else {
+                        textInputLayoutOtherAreaOfInterest.setVisibility(View.GONE);
+                    }
                     areaOfInterest = anAreaOfInterest;
                 }
             });
@@ -146,7 +152,7 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBackPageThree:
-                onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), null);
+                onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationOneFragment(), null);
                 break;
 
             case R.id.btnSubmit:
@@ -158,6 +164,12 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
                     }
                 } else {
 
+                }
+                if (areaOfInterest.equals("Other")) {
+                    String interest = Objects.requireNonNull(textInputLayoutOtherAreaOfInterest.getEditText()).getText().toString();
+                    if(!TextUtils.isEmpty(interest.trim())) {
+                        areaOfInterest = interest;
+                    }
                 }
 
                 Toast.makeText(getContext(), "submit "+areaOfInterest, Toast.LENGTH_SHORT).show();

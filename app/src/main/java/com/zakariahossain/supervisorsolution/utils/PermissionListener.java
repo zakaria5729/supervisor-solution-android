@@ -7,28 +7,28 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailActivity;
 
 public class PermissionListener implements com.karumi.dexter.listener.single.PermissionListener {
-    private TopicSupervisorDetailActivity detailActivity;
+    private OthersUtil activity;
 
-    public PermissionListener(TopicSupervisorDetailActivity detailActivity) {
-        this.detailActivity = detailActivity;
+    PermissionListener(OthersUtil activity) {
+        this.activity = activity;
     }
 
     @Override
     public void onPermissionGranted(PermissionGrantedResponse response) {
-        detailActivity.showPermissionGranted(response.getPermissionName());
+        activity.showPermissionGranted(response.getPermissionName());
     }
 
     @Override
     public void onPermissionDenied(PermissionDeniedResponse response) {
         if (response.isPermanentlyDenied()) {
-            detailActivity.handlePermanentDeniedPermissions(response.getPermissionName());
+            activity.handlePermanentDeniedPermissions(response.getPermissionName());
             return;
         }
-        detailActivity.showPermissionDenied(response.getPermissionName());
+        activity.showPermissionDenied(response.getPermissionName());
     }
 
     @Override
     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-        detailActivity.showPermissionRationale(token);
+        activity.showPermissionRationale(token);
     }
 }

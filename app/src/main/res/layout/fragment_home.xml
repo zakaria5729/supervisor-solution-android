@@ -1,88 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    tools:context=".fragments.HomeAndRuleFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="3dp"
+        android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             style="@style/MaterialCardViewProperties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             tools:targetApi="lollipop">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivHome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="25dp"
-                    android:paddingEnd="25dp"
-                    android:src="@drawable/diu_logo_with_name"
-                    android:scaleType="fitCenter"/>
+                    android:padding="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/diu_logo_with_name" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_defense_registration_instructions"
+                    style="@style/HeadingProperties"
                     android:layout_marginTop="8dp"
-                    style="@style/HeadingProperties"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_defense_registration_instructions" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textIsSelectable="true"
-                    android:justificationMode="inter_word"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:justificationMode="inter_word"
                     android:text="@string/details_title_defense_registration_instructions"
+                    android:textIsSelectable="true"
                     tools:targetApi="o" />
 
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/MaterialCardViewProperties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:targetApi="lollipop">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/HeadingProperties"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_defense_registration_process"
-                    style="@style/HeadingProperties"/>
+                    android:layout_marginTop="4dp"
+                    android:text="@string/title_defense_registration_process" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:textIsSelectable="true"
+                    android:layout_marginBottom="16dp"
                     android:justificationMode="inter_word"
                     android:text="@string/details_title_defense_registration_process"
+                    android:textIsSelectable="true"
                     tools:targetApi="o" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/HeadingProperties"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/stepping_to_the_registration"
-                    style="@style/HeadingProperties"/>
+                    android:text="@string/stepping_to_the_registration" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:textIsSelectable="true"
+                    android:layout_marginBottom="16dp"
                     android:justificationMode="inter_word"
                     android:text="@string/details_stepping_to_the_registration"
+                    android:textIsSelectable="true"
                     tools:targetApi="o" />
 
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/MaterialCardViewProperties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:targetApi="lollipop">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/HeadingProperties"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/cautions"
-                    style="@style/HeadingProperties"/>
+                    android:layout_marginTop="4dp"
+                    android:text="@string/cautions" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
@@ -90,12 +125,14 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:textIsSelectable="true"
                     android:justificationMode="inter_word"
                     android:text="@string/details_cautions"
+                    android:textIsSelectable="true"
                     tools:targetApi="o" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.core.widget.NestedScrollView>

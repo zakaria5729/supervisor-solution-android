@@ -57,7 +57,7 @@ class RetrofitApiClient {
         return instance;
     }
 
-    RetrofitApiInterface getApiInterface() {
-        return retrofit.create(RetrofitApiInterface.class);
+    ApiInterface getApiInterface() {
+        return retrofit.create(ApiInterface.class);
     }
 }

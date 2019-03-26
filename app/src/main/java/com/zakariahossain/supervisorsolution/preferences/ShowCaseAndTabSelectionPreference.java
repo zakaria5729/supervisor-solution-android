@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
-public class ShowCasePreference {
+public class ShowCaseAndTabSelectionPreference {
     private static final String SHARED_PREF_NAME = "show_case_shared_preference";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Context context;
 
-    public ShowCasePreference(Context context) {
+    public ShowCaseAndTabSelectionPreference(Context context) {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -52,5 +52,14 @@ public class ShowCasePreference {
             default:
                 return false;
         }
+    }
+
+    public void updateSelectedTabPosition(int selectedPosition) {
+        editor.putInt(context.getString(R.string.selected_tab_position), selectedPosition);
+        editor.apply();
+    }
+
+    public int getPreviouslyTabSelected() {
+        return sharedPreferences.getInt(context.getString(R.string.selected_tab_position), 0);
     }
 }

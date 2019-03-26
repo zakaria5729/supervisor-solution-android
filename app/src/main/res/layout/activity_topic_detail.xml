@@ -24,7 +24,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivTopicImg"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="270dp"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
@@ -37,7 +37,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="34dp"
                 android:background="@color/colorShadow2"
                 android:padding="4dp"
                 android:textAlignment="center"
@@ -45,7 +45,7 @@
                 android:textColor="@android:color/white"
                 android:textIsSelectable="true"
                 app:layout_collapseMode="parallax"
-                tools:text="Like :)" />
+                tools:text="Topic name" />
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
@@ -63,7 +63,6 @@
         android:layout_marginEnd="10dp"
         android:onClick="FloatingActionButtonOnClick"
         android:tint="@android:color/white"
-        app:fabSize="normal"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom|end|right"
         app:srcCompat="@drawable/ic_done" />
@@ -78,65 +77,84 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.card.MaterialCardView
+                style="@style/MaterialCardViewProperties"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="5sp"
-                android:paddingStart="6dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="8dp"
-                android:text="@string/teachers_initial"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                tools:targetApi="lollipop">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvSupervisorInitial"
-                android:layout_marginTop="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvTopicDescriptionOne"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5sp"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="8dp"
-                android:textIsSelectable="true" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5sp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="8dp"
+                        android:text="@string/supervisors_initial"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvSupervisorInitial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="3dp"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/item_teacher_initial_chip" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTopicDescriptionOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5sp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        android:textIsSelectable="true" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.youtube.player.YouTubePlayerView
                 android:id="@+id/youTubePlayerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:elevation="5dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:fitsSystemWindows="true"
-                android:onClick="playVideoClickListener"
                 tools:targetApi="lollipop" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.google.android.material.card.MaterialCardView
+                style="@style/MaterialCardViewProperties"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="5sp"
-                android:paddingTop="2dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:text="@string/click_to_play_the_video"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                tools:targetApi="lollipop">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvTopicDescriptionTwo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="5sp"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="8dp"
-                android:textIsSelectable="true" />
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTopicDescriptionTwo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5sp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        android:textIsSelectable="true" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>

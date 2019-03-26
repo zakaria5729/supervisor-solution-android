@@ -1,9 +1,13 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,11 +35,13 @@ import java.util.List;
 
 public class SupervisorFragment extends Fragment implements OnMyClickListener, SwipeRefreshLayout.OnRefreshListener{
 
+    private Context context;
     private List<Supervisor> supervisorList;
     private RecyclerView supervisorRecyclerView;
     private SupervisorAdapter supervisorAdapter;
     private SwipeRefreshLayout swipeRefreshLayoutSupervisor;
     private AVLoadingIndicatorView loadingIndicatorViewSupervisor;
+    private AppCompatTextView loadingIndicatorTextViewSupervisor;
     private LinearLayoutCompat loadingIndicatorViewSupervisorLL;
 
     public SupervisorFragment() {
@@ -44,34 +50,49 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_supervisor, container, false);
+        context = getContext();
+        return inflater.inflate(R.layout.fragment_supervisor, container, false);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setUpSupervisorFragmentUi(view);
-        loadSupervisorsFromServer();
+    }
 
-        return view;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
+
+        loadingIndicatorViewSupervisor.show();
+        loadSupervisorsFromServer();
     }
 
     private void setUpSupervisorFragmentUi(View view) {
         supervisorRecyclerView = view.findViewById(R.id.rvTeacher);
-        swipeRefreshLayoutSupervisor = view.findViewById(R.id.swipeRefreshLayoutTeacher);
-        loadingIndicatorViewSupervisor = view.findViewById(R.id.avLoadingViewTeacher);
-        loadingIndicatorViewSupervisorLL = view.findViewById(R.id.avLoadingViewTeacherLinearLayout);
+        swipeRefreshLayoutSupervisor = view.findViewById(R.id.swipeRefreshLayoutSupervisor);
+        loadingIndicatorViewSupervisor = view.findViewById(R.id.avLoadingViewSupervisor);
+        loadingIndicatorTextViewSupervisor = view.findViewById(R.id.avLoadingTextViewSupervisor);
+        loadingIndicatorViewSupervisorLL = view.findViewById(R.id.avLoadingViewSupervisorLinearLayout);
 
         swipeRefreshLayoutSupervisor.setOnRefreshListener(this);
-        swipeRefreshLayoutSupervisor.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayoutSupervisor.setColorSchemeResources(R.color.colorPrimaryDark);
     }
 
     private void loadSupervisorsFromServer() {
-        swipeRefreshLayoutSupervisor.setRefreshing(true);
-
         MyApiService myApiService = new NetworkCall();
+
         myApiService.getSupervisorsFromServer(new ResponseCallback<SupervisorList>() {
             @Override
             public void onSuccess(SupervisorList data) {
                 if (data != null && !data.getSupervisors().isEmpty()) {
-                    loadingIndicatorViewSupervisorLL.setVisibility(View.GONE);
                     loadingIndicatorViewSupervisor.hide();
+                    loadingIndicatorViewSupervisorLL.setVisibility(View.GONE);
+                    swipeRefreshLayoutSupervisor.setRefreshing(false);
 
                     supervisorList = data.getSupervisors();
                     supervisorAdapter = new SupervisorAdapter(getContext(), supervisorList);
@@ -80,17 +101,15 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
                     supervisorRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     supervisorRecyclerView.setAdapter(supervisorAdapter);
                     supervisorAdapter.notifyDataSetChanged();
-
-                    swipeRefreshLayoutSupervisor.setRefreshing(false);
                     supervisorAdapter.setOnMyClickListener(SupervisorFragment.this);
 
                 } else {
                     swipeRefreshLayoutSupervisor.setRefreshing(false);
-                    Toast.makeText(getContext(), "No data found. Internet connection problem or something else.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "No data found.", Toast.LENGTH_SHORT).show();
 
                     if (supervisorList == null || supervisorList.isEmpty()) {
-                        loadingIndicatorViewSupervisorLL.setVisibility(View.VISIBLE);
-                        loadingIndicatorViewSupervisor.show();
+                        loadingIndicatorViewSupervisor.hide();
+                        loadingIndicatorTextViewSupervisor.setText("No data found.");
                     }
                 }
             }
@@ -98,11 +117,11 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
             @Override
             public void onError(Throwable th) {
                 swipeRefreshLayoutSupervisor.setRefreshing(false);
-                Toast.makeText(getContext(), "Error: " + th.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Error: " + th.getMessage(), Toast.LENGTH_SHORT).show();
 
                 if (supervisorList == null || supervisorList.isEmpty()) {
-                    loadingIndicatorViewSupervisorLL.setVisibility(View.VISIBLE);
-                    loadingIndicatorViewSupervisor.show();
+                    loadingIndicatorTextViewSupervisor.setText(context.getResources().getString(R.string.check_your_internet_connection_and_pull_to_refresh));
+                    loadingIndicatorTextViewSupervisor.setTextColor(context.getResources().getColor(R.color.colorAccent));
                 }
             }
         });
@@ -110,6 +129,7 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayoutSupervisor.setRefreshing(true);
         loadSupervisorsFromServer();
     }
 
@@ -117,10 +137,13 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
     public void onMyClick(int position) {
         Supervisor supervisor = new Supervisor(supervisorList.get(position).getId(), supervisorList.get(position).getSupervisorName(), supervisorList.get(position).getSupervisorInitial(), supervisorList.get(position).getDesignation(), supervisorList.get(position).getSupervisorImage(), supervisorList.get(position).getPhone(), supervisorList.get(position).getEmail(), supervisorList.get(position).getResearchArea(), supervisorList.get(position).getTrainingExperience(), supervisorList.get(position).getMembership(), supervisorList.get(position).getPublicationProject(), supervisorList.get(position).getProfileLink());
 
-        Intent intent = new Intent(getContext(), TopicSupervisorDetailActivity.class);
+        Intent intent = new Intent(context, TopicSupervisorDetailActivity.class);
         intent.putExtra(IntentAndBundleKey.KEY_TOPIC_AND_SUPERVISOR, "supervisor_intent");
         intent.putExtra(IntentAndBundleKey.KEY_SUPERVISOR_DATA, supervisor);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
+        context.startActivity(intent);
     }
+
+    @Override
+    public void onMyClickRequestOrAcceptListener(int position, int requestedOrAccepted) {}
 }

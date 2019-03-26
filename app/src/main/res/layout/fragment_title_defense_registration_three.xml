@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="3dp"
     tools:context=".fragments.TitleDefenseRegistrationThreeFragment">
 
     <androidx.core.widget.NestedScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" >
 
         <com.google.android.material.card.MaterialCardView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -99,7 +100,6 @@
                         android:hint="First supervisor email"
                         android:imeOptions="actionNext"
                         android:inputType="textAutoComplete"
-                        android:maxLength="6"
                         android:maxLines="1"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
@@ -121,7 +121,6 @@
                         android:hint="Second supervisor email"
                         android:imeOptions="actionNext"
                         android:inputType="textAutoComplete"
-                        android:maxLength="6"
                         android:maxLines="1"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
@@ -143,7 +142,6 @@
                         android:hint="Third supervisor email"
                         android:imeOptions="actionDone"
                         android:inputType="textAutoComplete"
-                        android:maxLength="6"
                         android:maxLines="1"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"

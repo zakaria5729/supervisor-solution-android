@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MaterialCardViewProperties"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRequestedOrAcceptedGroupName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_login"
+            android:drawablePadding="8dp"
+            tools:text="fdfdlfkl dfdfdjkfdkjfldkf dfjdkfdjkfdfj dfjf"
+            android:textAppearance="?android:textAppearanceMedium" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRequestedOrAcceptedGroupEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            tools:text="fdfdlfkl dfdfdjkfdkjfldkf dfjdkfdjkfdfj dfjf"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:textAppearance="?android:textAppearanceSmall" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPendingOrAccept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            tools:text="Pending"
+            android:textAppearance="?android:textAppearanceSmall" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

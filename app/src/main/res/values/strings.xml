@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Supervisor Solution</string>
+    <string name="app_name">DIUSS</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Daffodil International University</string>
@@ -7,9 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="player_error">Error: needed updated YouTube App or %s</string>
-
-    <string name="click_to_play_the_video">Click to play the video</string>
-    <string name="teachers_initial">Teachers Initial:</string>
+    <string name="supervisors_initial">Supervisors initial on this topic</string>
 
     <string name="to">To</string>
     <string name="subject">Subject</string>
@@ -23,6 +21,7 @@
     <string name="my_shared_preference">my_shared_preference</string>
     <string name="show_case_preference_topic">show_case_preference_topic</string>
     <string name="show_case_preference_teacher">show_case_preference_teacher</string>
+    <string name="selected_tab_position">selected tab position</string>
 
     <string name="home">Home</string>
     <string name="topics_and_supervisors">Topics and Supervisors</string>
@@ -134,5 +133,10 @@
 
     <string name="contact_persons">CONTACT PERSONS</string>
     <string name="narayan_ranjan_chakraborty_assistant_professor_office_room_room_no_111_daffodil_tower_mobile_no_8801617379897_email_narayan_daffodilvarsity_edu_bd"><b>Narayan Ranjan Chakraborty</b> \nAssistant Professor \nOffice Room: Room No-111, Daffodil Tower \nMobile No: +8801617379897 \nEmail: narayan@daffodilvarsity.edu.bd \n\n<b>Shah Md. Tanvir Siddiquee</b>\nSenior Lecturer\nOffice Room: Room No-111, Daffodil Tower\nMobile No: +8801712560297\nEmail: tanvir.cse@diu.edu.bd\n\n<b>Ahmed Al Marouf</b>\nLecturer\nOffice Room: Room-502, 5th Floor, CSE Building\nMobile No: +8801911784448\nEmail: marouf.cse@diu.edu.bd\n\n<b>Anup Majumder</b>\nLecturer\nOffice Room: Room-512, 5th Floor, CSE Building\nMobile No: +8801725228874\nEmail: anup.cse@diu.edu.bd</string>
+
+    <string name="semester_wise_project_timeline">Semester-wise Project Timeline</string>
+    <string name="u25cf_for_day_shift_students">● For Day Shift Students:</string>
+    <string name="for_evening_shift_students">● For Evening Shift Students</string>
+    <string name="level_term">Did you completed <b>L3-T2</b> (8 semester) for day shift students or <b>L2-T3</b> (6 semester) for evening shift students?</string>
 
 </resources>

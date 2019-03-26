@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="colorForBold">#3C7E79</color>
+    <color name="colorForBold">#4B5481</color>
 
-    <color name="colorShadow">#D51E2022</color>
+    <color name="colorShadow">#C427292C</color>
     <color name="colorShadow2">#9E393C3F</color>
     <color name="colorDarkerGray">#ececec</color>
     <color name="colorBgPlaceHolder">#C2C2C2</color>
 
-    <color name="colorBlueDark">#ff0099cc</color>
-    <color name="colorRed">#F44336</color>
+    <color name="colorGreen">#1C9B0D</color>
+    <color name="colorPink">#BD4572</color>
 
     <color name="login_From_Details">#ccffffff</color>
     <color name="login_From_Details_Light">#1affffff</color>

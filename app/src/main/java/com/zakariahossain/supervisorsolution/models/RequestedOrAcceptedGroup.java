@@ -18,6 +18,13 @@ public class RequestedOrAcceptedGroup implements Serializable {
     @SerializedName("phone")
     private String phone;
 
+    public RequestedOrAcceptedGroup(Integer studentId, String name, String email, String phone) {
+        this.studentId = studentId;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+
     public Integer getStudentId() {
         return studentId;
     }

@@ -1,5 +1,7 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
+import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,14 +15,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.adapters.ViewPageAdapter;
-import com.zakariahossain.supervisorsolution.preferences.SharedPrefManager;
+import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
+import com.zakariahossain.supervisorsolution.preferences.ShowCaseAndTabSelectionPreference;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
-public class TabFragment extends Fragment {
+import java.util.Objects;
+
+public class TabFragment extends Fragment implements OnFragmentBackPressedListener{
+
+    private TabLayout tabLayout;
+    private OnMyMessageListener onMyMessageListener;
+    private ShowCaseAndTabSelectionPreference tabSelectionPreference;
 
     public TabFragment() {
         // Required empty public constructor
@@ -33,8 +44,16 @@ public class TabFragment extends Fragment {
         if (getActivity() != null) {
             getActivity().setTitle("Topic and Supervisor");
         }
+        tabSelectionPreference = new ShowCaseAndTabSelectionPreference(container.getContext());
 
-        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tabLayout = view.findViewById(R.id.tabLayout);
         ViewPager viewPager = view.findViewById(R.id.viewPager);
 
         ViewPageAdapter topicViewPageAdapter = new ViewPageAdapter(getChildFragmentManager());
@@ -44,7 +63,37 @@ public class TabFragment extends Fragment {
         viewPager.setAdapter(topicViewPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        return view;
+        tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabSelectionPreference.updateSelectedTabPosition(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Objects.requireNonNull(tabLayout.getTabAt(tabSelectionPreference.getPreviouslyTabSelected())).select();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
     }
 
     @Override
@@ -61,7 +110,24 @@ public class TabFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        try {
+            onMyMessageListener = (OnMyMessageListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implements OnMyMessageSendListener methods.");
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean onFragmentBackPressed() {
+        onMyMessageListener.onMyHomeOrRule(IntentAndBundleKey.KEY_FRAGMENT_HOME);
         return true;
     }
 }

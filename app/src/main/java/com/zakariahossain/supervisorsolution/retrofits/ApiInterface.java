@@ -4,18 +4,23 @@ import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
 import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.LoginResponse;
 import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
+import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.SupervisorList;
 import com.zakariahossain.supervisorsolution.models.TopicList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
-public interface RetrofitApiInterface {
+public interface ApiInterface {
 
     @GET("topic_list")
     Call<TopicList> getTopics();
@@ -62,6 +67,14 @@ public interface RetrofitApiInterface {
     );
 
     @FormUrlEncoded
+    @PUT("change_password")
+    Call<ServerResponse> changePassword(
+            @Field("email") String email,
+            @Field("current_password") String currentPassword,
+            @Field("new_password") String newPassword
+    );
+
+    @FormUrlEncoded
     @POST("group_list_status")
     Call<GroupStatusList> groupListStatus(@Field("group_email") String groupEmail);
 
@@ -80,4 +93,17 @@ public interface RetrofitApiInterface {
             @Field("group_email") String groupEmail,
             @Field("accept_or_decline") int acceptOrDecline
     );
+
+    @FormUrlEncoded
+    @POST("title_defense_registration")
+    Call<ServerResponse> titleDefenseRegistration(
+            @Field("project_internship") String projectInternship,
+            @Field("project_internship_type") String projectInternshipType,
+            @Field("project_internship_title") String projectInternshipTitle,
+            @Field("area_of_interest") String areaOfInterest,
+            @Field("day_evening") String dayEvening,
+            @Field("student_list") List<RequestedOrAcceptedGroup> studentList,
+            @Field("supervisor_list") List<String> supervisorList
+            );
+
 }

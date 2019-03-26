@@ -30,14 +30,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvUserName"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:maxLines="1"
-            android:ellipsize="end"
             android:textColor="@android:color/white"
+            android:textIsSelectable="true"
             android:text="@string/nav_header_title"
            android:textAppearance="?android:textAppearanceMedium" />
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -46,9 +43,8 @@
         android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
         android:textColor="@android:color/white"
-        android:ellipsize="end"
+        android:textIsSelectable="true"
         android:text="@string/nav_header_subtitle" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

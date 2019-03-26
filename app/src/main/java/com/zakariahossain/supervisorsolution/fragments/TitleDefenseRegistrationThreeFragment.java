@@ -1,8 +1,10 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,35 +18,43 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
+import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
+import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
+import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
+import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
+import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
+import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.fragment.app.Fragment;
 
-public class TitleDefenseRegistrationThreeFragment extends Fragment implements View.OnClickListener {
+public class TitleDefenseRegistrationThreeFragment extends Fragment implements View.OnClickListener, OnFragmentBackPressedListener {
 
-    private OnMyMessageSendListener onMyMessageSendListener;
+    private OnMyMessageListener onMyMessageSendListener;
     private TitleDefenseRegistration titleDefenseRegistrationThree;
 
     private Context context;
-    private List<String> checkList;
     private AppCompatCheckBox cbAgree;
     private RadioGroup rgAreaOfInterest;
+    private List<RequestedOrAcceptedGroup> studentList;
+    private List<String> supervisorList;
 
     private TextInputLayout textInputLayoutOtherAreaOfInterest;
     private AppCompatAutoCompleteTextView autoCompleteTextViewOneEmail, autoCompleteTextViewTwoEmail, autoCompleteTextViewThreeEmail;
 
-    private String firstSupervisorEmail, secondSupervisorEmail, thirdSupervisorEmail, areaOfInterest;
+    private String areaOfInterest;
     private boolean agreeCheckBox;
 
     public TitleDefenseRegistrationThreeFragment() {
@@ -66,15 +76,33 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
             getActivity().setTitle("Title Defense Registration");
         }
 
+        studentList = new ArrayList<>();
+        supervisorList = new ArrayList<>();
+
         setUpPageThreeUi(view);
+        agreeTermsAndCondition();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
         addRadioButtonAreaOfInterests();
         addSupervisorAutoCompleteTextView();
-        agreeTermsAndCondition();
         getBundleDataPageThree();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
+    }
+
     private void setUpPageThreeUi(View view) {
-        checkList = new ArrayList<>();
+        List<String> checkList = new ArrayList<>();
 
         MaterialButton buttonBackPageThree = view.findViewById(R.id.btnBackPageThree);
         MaterialButton buttonSubmit = view.findViewById(R.id.btnSubmit);
@@ -110,6 +138,7 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
             radioButton.setText(anAreaOfInterest);
             layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT);
             radioGroup.addView(radioButton, layoutParams);
+            radioGroup.check(radioGroup.getChildAt(0).getId()); //default checked at 0 position
 
             radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,15 +163,21 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         if (titleDefenseRegistrationThree != null) {
             switch (titleDefenseRegistrationThree.getNumberOfStudents()) {
                 case 1:
-
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
                     break;
 
                 case 2:
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
 
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
                     break;
 
                 case 3:
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
 
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
+
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdThree()), titleDefenseRegistrationThree.getEditTextNameThree(), titleDefenseRegistrationThree.getEditTextEmailThree(), titleDefenseRegistrationThree.getEditTextPhoneThree()));
                     break;
             }
         }
@@ -152,37 +187,65 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBackPageThree:
+                OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                 onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationOneFragment(), null);
                 break;
 
             case R.id.btnSubmit:
-                if (getSupervisorsEmail()) {
+                if (getSupervisorsEmailAndAreaOfInterest()) {
                     if (agreeCheckBox) {
-                        onMyMessageSendListener.onMyFragment(new ProfileFragment());
-                    } else {
+                        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                        MyApiService myApiService = new NetworkCall();
 
+                        myApiService.titleDefenseRegistration(titleDefenseRegistrationThree.getProjectInternship(), titleDefenseRegistrationThree.getProjectInternshipType(), titleDefenseRegistrationThree.getProjectInternshipTitle(), areaOfInterest, titleDefenseRegistrationThree.getDayEvening(), studentList, supervisorList, new ResponseCallback<ServerResponse>() {
+                            @Override
+                            public void onSuccess(ServerResponse data) {
+                                if (data != null) {
+                                    if(data.getError().equals(false)) {
+                                        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                                        onMyMessageSendListener.onMyFragment(new ProfileFragment());
+                                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getContext(), "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable th) {
+                                Toast.makeText(context, "Error" +th.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(context, "Please, tik the agree checkbox", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-
+                    Toast.makeText(context, "Please fill up all the fields", Toast.LENGTH_SHORT).show();
                 }
-                if (areaOfInterest.equals("Other")) {
-                    String interest = Objects.requireNonNull(textInputLayoutOtherAreaOfInterest.getEditText()).getText().toString();
-                    if(!TextUtils.isEmpty(interest.trim())) {
-                        areaOfInterest = interest;
-                    }
-                }
-
-                Toast.makeText(getContext(), "submit "+areaOfInterest, Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
-    private boolean getSupervisorsEmail() {
-        firstSupervisorEmail = autoCompleteTextViewOneEmail.getText().toString().trim();
-        secondSupervisorEmail = autoCompleteTextViewTwoEmail.getText().toString().trim();
-        thirdSupervisorEmail = autoCompleteTextViewThreeEmail.getText().toString().trim();
+    private boolean getSupervisorsEmailAndAreaOfInterest() {
+        if (areaOfInterest.equals("Other")) {
+            areaOfInterest = Objects.requireNonNull(textInputLayoutOtherAreaOfInterest.getEditText()).getText().toString();
+        }
 
-        return !TextUtils.isEmpty(firstSupervisorEmail) && !TextUtils.isEmpty(secondSupervisorEmail) && !TextUtils.isEmpty(thirdSupervisorEmail);
+        String firstSupervisorEmail = autoCompleteTextViewOneEmail.getText().toString().trim();
+        String secondSupervisorEmail = autoCompleteTextViewTwoEmail.getText().toString().trim();
+        String thirdSupervisorEmail = autoCompleteTextViewThreeEmail.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(areaOfInterest.trim()) && Patterns.EMAIL_ADDRESS.matcher(firstSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(secondSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(thirdSupervisorEmail).matches()) {
+            supervisorList.add(firstSupervisorEmail);
+            supervisorList.add(secondSupervisorEmail);
+            supervisorList.add(thirdSupervisorEmail);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void agreeTermsAndCondition() {
@@ -195,13 +258,19 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     }
 
     @Override
+    public boolean onFragmentBackPressed() {
+        onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationOneFragment(), null);
+        return true;
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
-            onMyMessageSendListener = (OnMyMessageSendListener) context;
+            onMyMessageSendListener = (OnMyMessageListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implements onMyTitleDefenseRegistrationMessage method.");
+            throw new ClassCastException(context.toString() + " must implements OnMyMessageSendListener methods.");
         }
     }
 }

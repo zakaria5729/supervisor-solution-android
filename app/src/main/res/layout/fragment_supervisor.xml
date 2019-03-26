@@ -7,7 +7,7 @@
     tools:context=".fragments.SupervisorFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayoutTeacher"
+        android:id="@+id/swipeRefreshLayoutSupervisor"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,28 +20,28 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/avLoadingViewTeacherLinearLayout"
+        android:id="@+id/avLoadingViewSupervisorLinearLayout"
         android:layout_gravity="center"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/avLoadingViewTeacher"
+            android:id="@+id/avLoadingViewSupervisor"
             style="@style/AVLoadingIndicatorView"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:indicatorName="LineScalePulseOutRapidIndicator"
-            app:indicatorColor="@android:color/holo_green_dark" />
+            app:indicatorColor="@color/colorPrimaryDark" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/avLoadingTextViewSupervisor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:layout_margin="8dp"
-            android:text="@string/check_your_internet_connection_and_pull_to_refresh"/>
+            android:text="Loading supervisors, please wait..."/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </FrameLayout>

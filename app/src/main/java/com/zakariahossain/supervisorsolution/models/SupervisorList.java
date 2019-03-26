@@ -11,7 +11,7 @@ public class SupervisorList implements Serializable
     private Boolean error;
 
     @SerializedName("supervisors")
-    private List<Supervisor> supervisors = null;
+    private List<Supervisor> supervisors;
 
     public Boolean getError() {
         return error;

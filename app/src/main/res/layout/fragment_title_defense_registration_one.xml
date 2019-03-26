@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="3dp"
     tools:context=".fragments.TitleDefenseRegistrationOneFragment">
 
     <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" >
 
         <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -171,7 +172,7 @@
                         android:elevation="8dp"
                         android:focusableInTouchMode="true"
                         android:hint="Title"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionGo"
                         android:inputType="text"
                         android:maxLines="1"
                         tools:targetApi="lollipop" />

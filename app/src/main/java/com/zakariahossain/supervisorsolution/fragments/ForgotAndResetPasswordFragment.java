@@ -1,17 +1,24 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
@@ -26,19 +33,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-public class ForgotAndResetPasswordFragment extends Fragment implements View.OnClickListener {
+public class ForgotAndResetPasswordFragment extends Fragment implements View.OnClickListener, OnFragmentBackPressedListener {
 
     private Context context;
+    private View view;
+
     private OthersUtil progressBar;
     private AlertDialog alertDialog;
-    private OnMyMessageSendListener onMyMessageSendListener;
+    private OnMyMessageListener onMyMessageSendListener;
     private MyApiService myApiService;
 
     private TextInputLayout textInputLayoutEnterEmail, textInputLayoutVerificationCode, textInputLayoutResetPassword, textInputLayoutResetConfirmPassword;
 
-    private MaterialButton enterEmailBackButton, enterEmailNextButton, resetPasswordBackButton, resetPasswordButton;
-
-    private String email, verificationCode, newPassword, confirmPassword, bundleKey;
+    private String email;
+    private String verificationCode;
+    private String newPassword;
+    private String bundleKey;
 
     public ForgotAndResetPasswordFragment() {
         // Required empty public constructor
@@ -46,7 +56,6 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = null;
         context = container.getContext();
 
         if (getArguments() != null) {
@@ -56,10 +65,18 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
                 switch (bundleKey) {
                     case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL:
                         view = inflater.inflate(R.layout.fragment_forgot_password_enter_email, container, false);
+
+                        if (getActivity() != null) {
+                            getActivity().setTitle("Email Verification");
+                        }
                         break;
 
                     case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET:
                         view = inflater.inflate(R.layout.fragment_forgot_password_reset, container, false);
+
+                        if (getActivity() != null) {
+                            getActivity().setTitle("Reset Password");
+                        }
                         break;
                 }
             }
@@ -76,10 +93,6 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getActivity() != null) {
-            getActivity().setTitle("Authentication");
-        }
-
         if (bundleKey != null) {
             switch (bundleKey) {
                 case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL:
@@ -95,54 +108,75 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         progressBar = new OthersUtil(context);
     }
 
+
     private void setUpEnterEmailUi(View view) {
         textInputLayoutEnterEmail = view.findViewById(R.id.tilEnterEmail);
-        enterEmailBackButton = view.findViewById(R.id.btnBackEnterEmail);
-        enterEmailNextButton = view.findViewById(R.id.btnNextEnterEmail);
+        MaterialButton enterEmailBackButton = view.findViewById(R.id.btnBackEnterEmail);
+        MaterialButton enterEmailNextButton = view.findViewById(R.id.btnNextEnterEmail);
+        TextInputEditText editTextEnterEmail = view.findViewById(R.id.etEnterEmail);
+
+        textInputLayoutEnterEmail.requestFocus();
 
         enterEmailBackButton.setOnClickListener(this);
         enterEmailNextButton.setOnClickListener(this);
+        editTextEnterEmail.setOnEditorActionListener(editorActionListener);
     }
 
     private void setUpResetPasswordUi(View view) {
         textInputLayoutVerificationCode = view.findViewById(R.id.tilVerificationCode);
         textInputLayoutResetPassword = view.findViewById(R.id.tilResetPassword);
         textInputLayoutResetConfirmPassword = view.findViewById(R.id.tilResetConfirmPassword);
-        resetPasswordBackButton = view.findViewById(R.id.btnBackResetPassword);
-        resetPasswordButton = view.findViewById(R.id.btnResetPassword);
+        MaterialButton resetPasswordBackButton = view.findViewById(R.id.btnBackResetPassword);
+        MaterialButton resetPasswordButton = view.findViewById(R.id.btnResetPassword);
+        TextInputEditText editTextResetConfirmPassword = view.findViewById(R.id.etResetConfirmPassword);
+
+        textInputLayoutVerificationCode.requestFocus();
 
         resetPasswordBackButton.setOnClickListener(this);
         resetPasswordButton.setOnClickListener(this);
+        editTextResetConfirmPassword.setOnEditorActionListener(editorActionListener);
     }
 
     private boolean getEnterEmailEditTextData() {
         email = Objects.requireNonNull(textInputLayoutEnterEmail.getEditText()).getText().toString().trim();
 
-        if (!TextUtils.isEmpty(email)) {
+        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return true;
         } else {
-            textInputLayoutEnterEmail.setError("Enter a email address");
+            textInputLayoutEnterEmail.setError("Please enter a valid email address");
             return false;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 
     private boolean getResetPasswordEditTextData() {
         if(getArguments() != null) {
-            email = getArguments().getString("email_for_reset_password");
+            email = getArguments().getString(IntentAndBundleKey.KEY_EMAIL_FOR_RESET_PASSWORD);
         } else {
             email = "";
         }
 
         verificationCode = Objects.requireNonNull(textInputLayoutVerificationCode.getEditText()).getText().toString().trim();
         newPassword = Objects.requireNonNull(textInputLayoutResetPassword.getEditText()).getText().toString().trim();
-        confirmPassword = Objects.requireNonNull(textInputLayoutResetConfirmPassword.getEditText()).getText().toString().trim();
+        String confirmPassword = Objects.requireNonNull(textInputLayoutResetConfirmPassword.getEditText()).getText().toString().trim();
 
-        if (verificationCode.length() < 6 && newPassword.length() < 8) {
+        if (verificationCode.length() < 6) {
             verificationCode = "";
+        }
+
+        if (newPassword.length() < 8 || newPassword.contains(" ")) {
             newPassword = "";
         }
 
-        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(verificationCode.trim()) && !TextUtils.isEmpty(newPassword.trim()) && !TextUtils.isEmpty(confirmPassword.trim())) {
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(verificationCode.trim()) && OthersUtil.passwordPatternCheck(newPassword) && !TextUtils.isEmpty(confirmPassword.trim())) {
             if (newPassword.equals(confirmPassword)) {
                 return true;
             } else {
@@ -153,8 +187,11 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
             if(TextUtils.isEmpty(verificationCode.trim())) {
                 textInputLayoutVerificationCode.setError("Verification code must be 6 digits long");
             }
-            if(TextUtils.isEmpty(newPassword.trim())) {
-                textInputLayoutResetPassword.setError("Password must be at least 8 characters long");
+            if (!OthersUtil.passwordPatternCheck(newPassword)) {
+                textInputLayoutResetPassword.setError("Password must be combined as alphabets, numbers(a-z, 0-9)");
+            }
+            if (TextUtils.isEmpty(newPassword.trim())) {
+                textInputLayoutResetPassword.setError("Password must be at least 8 characters long without a whitespace");
             }
             if(TextUtils.isEmpty(confirmPassword.trim())) {
                 textInputLayoutResetConfirmPassword.setError("Please, retype confirm password");
@@ -170,7 +207,8 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBackEnterEmail:
-                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
+                OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                onMyMessageSendListener.onMyFragment(new LoginFragment());
                 break;
 
             case R.id.btnNextEnterEmail:
@@ -181,7 +219,8 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
                 break;
 
             case R.id.btnBackResetPassword:
-                onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_EMAIL_VERIFICATION, "");
+                OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL, email);
                 break;
 
             case R.id.btnResetPassword:
@@ -193,7 +232,29 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         }
     }
 
-    private void resetPassword(String email, String verificationCode, String newPassword) {
+    private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            switch (actionId) {
+                case EditorInfo.IME_ACTION_SEND:
+                    if (getEnterEmailEditTextData()) {
+                        alertDialog = progressBar.setCircularProgressBar();
+                        sendVerificationCode(email);
+                    }
+                    break;
+
+                case EditorInfo.IME_ACTION_GO:
+                    if (getResetPasswordEditTextData()) {
+                        alertDialog = progressBar.setCircularProgressBar();
+                        resetPassword(email, verificationCode, newPassword);
+                    }
+                    break;
+            }
+            return true;
+        }
+    };
+
+    private void resetPassword(final String email, String verificationCode, String newPassword) {
         myApiService = new NetworkCall();
         myApiService.resetPassword(email, Integer.parseInt(verificationCode), newPassword, new ResponseCallback<ServerResponse>() {
             @Override
@@ -202,7 +263,8 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
 
                 if (data != null) {
                     if(data.getError().equals(false)) {
-                            onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
+                        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                            onMyMessageSendListener.onMyFragmentAndEmail(new LoginFragment(), email);
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
 
                     } else {
@@ -254,9 +316,26 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         super.onAttach(context);
 
         try {
-            onMyMessageSendListener = (OnMyMessageSendListener) context;
+            onMyMessageSendListener = (OnMyMessageListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implements onMyTitleDefenseRegistrationMessage method.");
+            throw new ClassCastException(context.toString() + " must implements OnMyMessageSendListener methods.");
         }
+    }
+
+    @Override
+    public boolean onFragmentBackPressed() {
+        if (bundleKey != null) {
+            switch (bundleKey) {
+                case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL:
+                    onMyMessageSendListener.onMyFragment(new LoginFragment());
+                    break;
+
+                case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET:
+                    onMyMessageSendListener.onMyForgotPasswordMessage(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL, email);
+                    break;
+            }
+        }
+
+        return true;
     }
 }

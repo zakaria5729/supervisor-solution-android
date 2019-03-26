@@ -6,7 +6,8 @@
     android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AuthenticationFragment">
+    android:padding="3dp"
+    tools:context=".fragments.SignUpFragment">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/MaterialCardViewProperties"
@@ -93,6 +94,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:errorEnabled="true"
+                app:counterEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/tilSignUpConfirmPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -118,6 +120,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:errorEnabled="true"
+                app:counterEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -130,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Confirm password"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionGo"
                     android:inputType="textPassword"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -141,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:backgroundTint="@android:color/holo_green_dark"
+                android:backgroundTint="@color/colorGreen"
                 android:padding="8dp"
                 android:text="@string/sign_up"
                 app:layout_constraintBottom_toTopOf="@+id/textView7"
@@ -177,7 +180,7 @@
                 android:paddingTop="1dp"
                 android:text="@string/login"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorGreen"
                 app:layout_constraintBottom_toBottomOf="@+id/textView7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

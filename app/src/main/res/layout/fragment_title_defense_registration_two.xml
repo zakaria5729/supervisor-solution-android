@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="3dp"
     tools:context=".fragments.TitleDefenseRegistrationTwoFragment">
 
     <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
         <com.google.android.material.card.MaterialCardView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -245,7 +246,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Third student phone"
-                            android:imeOptions="actionDone"
+                            android:imeOptions="actionGo"
                             android:inputType="phone"
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -273,6 +274,7 @@
                         android:id="@+id/btnSignUp"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="Next"
                         style="@style/MaterialButtonProperties" />
 

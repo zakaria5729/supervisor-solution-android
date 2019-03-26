@@ -37,13 +37,13 @@
     <style name="MaterialButtonProperties" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginTop">8dp</item>
-        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/colorBlueDark</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/colorGreen</item>
         <item name="rippleColor">@color/colorAccent</item>
     </style>
 
     <style name="MaterialCardViewProperties" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">4dp</item>
-        <item name="cardElevation">3dp</item>
+        <item name="cardCornerRadius">5dp</item>
+        <item name="cardElevation">2dp</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="cardUseCompatPadding">true</item>
     </style>

@@ -1,6 +1,7 @@
 package com.zakariahossain.supervisorsolution.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,15 +38,17 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
 
     @Override
     public void onBindViewHolder(@NonNull SupervisorViewHolder holder, int position) {
-        String designation = supervisorList.get(position).getDesignation()+",";
+        String designation = supervisorList.get(position).getDesignation() + ",";
 
         holder.supervisorName.setText(supervisorList.get(position).getSupervisorName());
         holder.supervisorDesignation.setText(designation);
         holder.supervisorInitial.setText(supervisorList.get(position).getSupervisorInitial());
 
-        Glide.with(context)
-                .load(supervisorList.get(position).getSupervisorImage())
-                .into(holder.supervisorImage);
+        if (!TextUtils.isEmpty(supervisorList.get(position).getSupervisorImage())) {
+            Glide.with(context)
+                    .load(supervisorList.get(position).getSupervisorImage())
+                    .into(holder.supervisorImage);
+        }
     }
 
     @Override
@@ -74,6 +77,7 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
                 public void onClick(View v) {
                     if (onMyClickListener != null) {
                         int position = getAdapterPosition();
+
                         if (position != RecyclerView.NO_POSITION) {
                             onMyClickListener.onMyClick(position);
                         }

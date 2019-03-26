@@ -7,12 +7,12 @@ import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.models.User;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
-public class SharedPrefManager {
+public class UserSharedPrefManager {
     private static final String SHARED_PREF_NAME = "supervisor_shared_preference";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    public SharedPrefManager(Context context) {
+    public UserSharedPrefManager(Context context) {
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         editor.apply();

@@ -10,7 +10,7 @@ public class TopicList implements Serializable {
     private Boolean error;
 
     @SerializedName("topics")
-    private List<Topic> topics = null;
+    private List<Topic> topics;
 
     public Boolean getError() {
         return error;

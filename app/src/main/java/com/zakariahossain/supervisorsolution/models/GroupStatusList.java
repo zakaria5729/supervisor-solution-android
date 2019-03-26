@@ -10,7 +10,7 @@ public class GroupStatusList implements Serializable {
     private Boolean error;
 
     @SerializedName("group_list_status")
-    private List<GroupStatus> groupStatusList = null;
+    private List<GroupStatus> groupStatusList;
 
     public Boolean getError() {
         return error;

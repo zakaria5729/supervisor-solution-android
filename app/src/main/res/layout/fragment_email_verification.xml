@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="3dp"
     tools:context=".fragments.ForgotAndResetPasswordFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -25,7 +26,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/student_id_name_email_and_cell_no"
+                android:text="Email Verification Code"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/colorForBold" />
 
@@ -34,20 +35,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="@string/write_the_student_id_name_email_and_cell_according_to_your_group"
+                android:text="Check your email inbox and enter verification code which is 6 digit long"
                 android:textAppearance="?android:textAppearanceSmall" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilVerificationCode"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                app:counterEnabled="true"
+                app:counterMaxLength="6"
+                app:errorEnabled="true"
                 style="@style/TextInputLayoutProperties">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etVerificationCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Verification code"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionSend"
                     android:inputType="number"
                     android:maxLength="6"
                     android:maxLines="1" />
@@ -72,10 +77,11 @@
                     app:rippleColor="@color/colorAccent" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnNextVerification"
+                    android:id="@+id/btnSendVerification"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Next"
+                    android:text="Send"
+                    android:imeOptions="actionSend"
                     style="@style/MaterialButtonProperties" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 

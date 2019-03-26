@@ -15,6 +15,7 @@
         android:roundIcon="@drawable/ic_school_black_24dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.WebViewAndGroupListDetailsActivity" />
         <activity android:name=".activities.TrialActivity" />
         <activity
             android:name=".activities.MainActivity"

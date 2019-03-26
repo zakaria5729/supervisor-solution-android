@@ -15,12 +15,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
+        app:tabMaxWidth="0dp"
         app:tabIndicatorColor="@android:color/holo_red_light"
         app:tabIndicatorGravity="bottom"
         app:tabIndicatorHeight="5dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/darker_gray" />
+        app:tabTextColor="@android:color/darker_gray"
+        tools:targetApi="lollipop" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

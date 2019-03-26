@@ -44,9 +44,9 @@
                 android:title="Share" />
 
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_feedback_email"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Feedback" />
         </menu>
     </item>
 

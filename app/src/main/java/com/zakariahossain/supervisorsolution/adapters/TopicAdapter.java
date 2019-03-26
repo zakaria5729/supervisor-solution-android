@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
 import com.zakariahossain.supervisorsolution.models.Topic;
@@ -16,13 +18,21 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
 
     private Context context;
+    //private static int screenOrientation;
     private List<Topic> topicList;
     private static OnMyClickListener onMyClickListener;
+
+    /*public TopicAdapter(Context context, List<Topic> topicList, int screenOrientation) {
+        this.context = context;
+        this.topicList = topicList;
+        TopicAdapter.screenOrientation = screenOrientation;
+    }*/
 
     public TopicAdapter(Context context, List<Topic> topicList) {
         this.context = context;
@@ -56,12 +66,20 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     static class TopicViewHolder extends RecyclerView.ViewHolder {
         private AppCompatImageView topicImage;
         private AppCompatTextView topicName;
+        private RelativeLayout topicRelativeLayout;
 
         TopicViewHolder(@NonNull View itemView) {
             super(itemView);
 
             topicImage = itemView.findViewById(R.id.ivTopicImage);
-            topicName = itemView.findViewById(R.id.tvTopicName);
+            topicName = itemView.findViewById(R.id.tvItemTopicName);
+            topicRelativeLayout = itemView.findViewById(R.id.rlTopic);
+
+           /* if (screenOrientation == 0) {
+                topicRelativeLayout.getLayoutParams().height = 200;
+            } else if (screenOrientation == 1) {
+                topicRelativeLayout.getLayoutParams().height = 250;
+            }*/
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

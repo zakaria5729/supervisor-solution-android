@@ -1,23 +1,26 @@
 package com.zakariahossain.supervisorsolution.activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.navigation.NavigationView;
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.fragments.AuthenticationFragment;
 import com.zakariahossain.supervisorsolution.fragments.ForgotAndResetPasswordFragment;
-import com.zakariahossain.supervisorsolution.fragments.HomeFragment;
+import com.zakariahossain.supervisorsolution.fragments.HomeAndRuleFragment;
+import com.zakariahossain.supervisorsolution.fragments.LoginFragment;
 import com.zakariahossain.supervisorsolution.fragments.ProfileFragment;
-import com.zakariahossain.supervisorsolution.fragments.RuleFragment;
 import com.zakariahossain.supervisorsolution.fragments.TabFragment;
 import com.zakariahossain.supervisorsolution.fragments.TitleDefenseRegistrationOneFragment;
-import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
-import com.zakariahossain.supervisorsolution.preferences.SharedPrefManager;
+import com.zakariahossain.supervisorsolution.preferences.ShowCaseAndTabSelectionPreference;
+import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,15 +32,15 @@ import androidx.fragment.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMyMessageSendListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMyMessageListener {
 
-    private OnMyMessageSendListener onMyMessageSendListener;
-    private SharedPrefManager sharedPrefManager;
+    private OnMyMessageListener onMyMessageListener;
+    private UserSharedPrefManager sharedPrefManager;
     private DrawerLayout drawer;
+    private NavigationView navigationView;
     private Menu navMenu;
-
     private AppCompatTextView headerUserName, headerUserEmail;
 
     @Override
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         setUpMainActivityUi(savedInstanceState);
-        sharedPrefManager = new SharedPrefManager(this);
+        sharedPrefManager = new UserSharedPrefManager(this);
     }
 
     private void setUpMainActivityUi(Bundle savedInstanceState) {
@@ -54,14 +57,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        onMyMessageListener = this;
+
         if (savedInstanceState == null) {
-            replaceFragment(new HomeFragment());
+            onMyMessageListener.onMyHomeOrRule(IntentAndBundleKey.KEY_FRAGMENT_HOME);
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
@@ -72,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navMenu = navigationView.getMenu();
         navigationView.setNavigationItemSelectedListener(this);
-
-        onMyMessageSendListener = this;
     }
 
     @Override
@@ -87,14 +90,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navMenu.findItem(R.id.nav_login).setIcon(R.drawable.ic_profile);
             navMenu.findItem(R.id.nav_login).setTitle("Profile");
 
-            navMenu.findItem(R.id.nav_title_defense_registration).setVisible(true);
+            if (sharedPrefManager.getUser().getUserRole().equals("Student")) {
+                navMenu.findItem(R.id.nav_title_defense_registration).setVisible(true);
+            } else if (sharedPrefManager.getUser().getUserRole().equals("Supervisor")){
+                navMenu.findItem(R.id.nav_title_defense_registration).setVisible(false);
+            }
         } else {
             headerUserName.setText(getResources().getString(R.string.nav_header_title));
             headerUserEmail.setText(getResources().getString(R.string.nav_header_subtitle));
 
             navMenu.findItem(R.id.nav_login).setIcon(R.drawable.ic_login);
             navMenu.findItem(R.id.nav_login).setTitle("Login");
-
             navMenu.findItem(R.id.nav_title_defense_registration).setVisible(false);
         }
     }
@@ -104,7 +110,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+            if (!(fragment instanceof OnFragmentBackPressedListener) || !((OnFragmentBackPressedListener) fragment).onFragmentBackPressed()) {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -114,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_home:
                 OthersUtil.closeVisibleSoftKeyBoard(this);
-                replaceFragment(new HomeFragment());
+                onMyMessageListener.onMyHomeOrRule(IntentAndBundleKey.KEY_FRAGMENT_HOME);
                 break;
 
             case R.id.nav_topic_teacher:
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_rule:
                 OthersUtil.closeVisibleSoftKeyBoard(this);
-                replaceFragment(new RuleFragment());
+                onMyMessageListener.onMyHomeOrRule(IntentAndBundleKey.KEY_FRAGMENT_RULE);
                 break;
 
             case R.id.nav_login:
@@ -133,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     replaceFragment(new ProfileFragment());
                 } else {
                     OthersUtil.closeVisibleSoftKeyBoard(this);
-                    onMyMessageSendListener.onMyAuthenticationMessage(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION_LOGIN, "");
+                    replaceFragment(new LoginFragment());
 
                     headerUserName.setText(getResources().getString(R.string.nav_header_title));
                     headerUserEmail.setText(getResources().getString(R.string.nav_header_subtitle));
@@ -141,10 +150,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_title_defense_registration:
-                if (sharedPrefManager.isLoggedIn() && sharedPrefManager.getUser().getUserRole().equals("Student")) {
-                    OthersUtil.closeVisibleSoftKeyBoard(this);
-                    replaceFragment(new TitleDefenseRegistrationOneFragment());
-                }
+                OthersUtil.closeVisibleSoftKeyBoard(this);
+                levelAndTermCompletionAlert();
+                break;
+
+            case R.id.nav_feedback_email:
+                new OthersUtil(this).openEmailDialog("zakaria15-5729@diu.edu.bd", "Send us feedback");
                 break;
         }
 
@@ -152,7 +163,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void levelAndTermCompletionAlert() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Course Completion")
+                .setMessage(R.string.level_term)
+                .setIcon(R.drawable.ic_pending)
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .setCancelable(false)
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button yesButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                Button noButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                yesButton.setTextColor(getResources().getColor(R.color.colorGreen));
+
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        replaceFragment(new TitleDefenseRegistrationOneFragment());
+                    }
+                });
+
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        navigationView.setCheckedItem(R.id.nav_home);
+                        onMyMessageListener.onMyHomeOrRule(IntentAndBundleKey.KEY_FRAGMENT_HOME);
+                    }
+                });
+            }
+        });
+        dialog.show();
+    }
+
     private void replaceFragment(Fragment fragment) {
+        new ShowCaseAndTabSelectionPreference(this).updateSelectedTabPosition(0); //set selected tab position 0 when replace any fragment
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
@@ -168,15 +220,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onMyAuthenticationMessage(String messageKey, String email) {
-        AuthenticationFragment authenticationFragment = new AuthenticationFragment();
-
+    public void onMyFragmentAndEmail(Fragment fragment, String email) {
         Bundle bundle = new Bundle();
-        bundle.putString(IntentAndBundleKey.KEY_FRAGMENT_AUTHENTICATION, messageKey);
-        bundle.putString("email_for_verification_code", email);
-        authenticationFragment.setArguments(bundle);
+        bundle.putString("key_email", email);
+        fragment.setArguments(bundle);
 
-        replaceFragment(authenticationFragment);
+        replaceFragment(fragment);
     }
 
     @Override
@@ -185,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Bundle bundle = new Bundle();
         bundle.putString(IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD, messageKey);
-        bundle.putString("email_for_reset_password", email);
+        bundle.putString(IntentAndBundleKey.KEY_EMAIL_FOR_RESET_PASSWORD, email);
         passwordFragment.setArguments(bundle);
 
         replaceFragment(passwordFragment);
@@ -197,18 +246,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onMyHeaderViewAndNavMenuItem(String name, String email, String menuItemTitle, int icon, boolean isNavTitleDefenceShow) {
+    public void onMyHomeOrRule(String messageKey) {
+        HomeAndRuleFragment homeAndRuleFragment = new HomeAndRuleFragment();
+        Bundle bundle = new Bundle();
+
+        if (messageKey.equals(IntentAndBundleKey.KEY_FRAGMENT_HOME)) {
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+
+        bundle.putString(IntentAndBundleKey.KEY_FRAGMENT_HOME_OR_RULE, messageKey);
+        homeAndRuleFragment.setArguments(bundle);
+        replaceFragment(homeAndRuleFragment);
+    }
+
+    @Override
+    public void onMyHeaderViewAndNavMenuItem(String name, String email, String menuItemTitle, int icon) {
         headerUserName.setText(name);
         headerUserEmail.setText(email);
 
         navMenu.findItem(R.id.nav_login).setTitle(menuItemTitle);
         navMenu.findItem(R.id.nav_login).setIcon(icon);
 
-        if (isNavTitleDefenceShow) {
+        if (sharedPrefManager.isLoggedIn() && sharedPrefManager.getUser().getUserRole().equals("Student")) {
             navMenu.findItem(R.id.nav_title_defense_registration).setVisible(true);
+        } else if (sharedPrefManager.isLoggedIn() && sharedPrefManager.getUser().getUserRole().equals("Supervisor")){
+            navMenu.findItem(R.id.nav_title_defense_registration).setVisible(false);
         } else {
             navMenu.findItem(R.id.nav_title_defense_registration).setVisible(false);
         }
     }
-
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AuthenticationFragment">
+    android:padding="3dp"
+    tools:context=".fragments.LoginFragment">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
         style="@style/MaterialCardViewProperties"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +24,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView2"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="75dp"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/diu_logo_with_name"
@@ -34,6 +33,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="spread" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -43,7 +43,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="4dp"
                 android:elevation="16dp"
                 android:stateListAnimator="@null"
                 app:layout_constraintBottom_toTopOf="@+id/tilLoginEmail"
@@ -53,16 +53,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView2"
                 tools:targetApi="lollipop" />
 
-            <TextView
-                android:id="@+id/tvUserRole"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvErrorUserRole"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginStart="14dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/spUserRole"
                 app:layout_constraintTop_toBottomOf="@+id/spUserRole"
-                tools:text="Please, choose your role first" />
+                tools:text="Please, choose your role first"
+                tools:visibility="visible" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLoginEmail"
@@ -70,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/tilLoginPassword"
@@ -97,19 +98,19 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:errorEnabled="true"
-                app:passwordToggleEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/btnLogin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilLoginEmail">
+                app:layout_constraintTop_toBottomOf="@+id/tilLoginEmail"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etLoginEmail1"
+                    android:id="@+id/etLoginPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionGo"
                     android:inputType="textWebPassword"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -120,8 +121,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:backgroundTint="@android:color/holo_blue_dark"
-                android:padding="12dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="8dp"
                 android:text="@string/login"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 app:layout_constraintBottom_toTopOf="@+id/tvForgotPassword"
@@ -129,13 +130,14 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tilLoginPassword"
+                app:rippleColor="@color/colorAccent"
                 tools:targetApi="lollipop" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="28dp"
                 android:text="Forgot password?"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
                 app:layout_constraintBottom_toTopOf="@+id/appCompatTextView"
@@ -147,9 +149,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/btnGoogleSignIn"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -202,8 +203,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="Don't have an Account?"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
                 app:layout_constraintBottom_toBottomOf="parent"

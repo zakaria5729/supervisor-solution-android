@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="3dp"
+        tools:context=".fragments.RequestedAndAcceptedGroupDetailsFragment">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvStudentOne"
+            style="@style/MaterialCardViewProperties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:context=".fragments.RequestedAndAcceptedGroupDetailsFragment"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/appCompatTextView3"
+                    style="@style/HeadingProperties"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/colorDarkerGray"
+                    android:text="Group Details Information" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentOneName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:layout_marginTop="4dp"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentOneEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentOneId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentOnePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    tools:text="n1" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvStudentTwo"
+            style="@style/MaterialCardViewProperties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:context=".fragments.RequestedAndAcceptedGroupDetailsFragment"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentTwoName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentTwoEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentTwoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentTwoPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    tools:text="n1" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvStudentThree"
+            style="@style/MaterialCardViewProperties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:context=".fragments.RequestedAndAcceptedGroupDetailsFragment"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentThreeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentThreeEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentThreeId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textIsSelectable="true"
+                    tools:text="n1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStudentThreePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    tools:text="n1" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeclineGroup"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint="@color/colorAccent"
+                android:text="Decline"
+                android:imeOptions="actionGo"
+                android:textColor="@android:color/white"
+                app:rippleColor="@color/colorPrimaryDark"
+                tools:targetApi="lollipop" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAcceptGroup"
+                style="@style/MaterialButtonProperties"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionGo"
+                android:text="Accept" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSendGroupMail"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorGreen"
+            android:textColor="@android:color/white"
+            app:rippleColor="@color/colorAccent"
+            android:imeOptions="actionSend"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Send Mail to this group"
+            tools:targetApi="lollipop"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>

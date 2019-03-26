@@ -11,7 +11,12 @@ public class AcceptedGroupList implements Serializable {
     private Boolean error;
 
     @SerializedName("accepted_group_list")
-    private List<List<RequestedOrAcceptedGroup>> acceptedGroupList = null;
+    private List<List<RequestedOrAcceptedGroup>> acceptedGroupList;
+
+    public AcceptedGroupList(Boolean error, List<List<RequestedOrAcceptedGroup>> acceptedGroupList) {
+        this.error = error;
+        this.acceptedGroupList = acceptedGroupList;
+    }
 
     public Boolean getError() {
         return error;

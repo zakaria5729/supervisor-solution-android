@@ -1,22 +1,26 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageSendListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
+import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
-import com.zakariahossain.supervisorsolution.preferences.SharedPrefManager;
+import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
+import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 
 import java.util.Objects;
 
@@ -25,10 +29,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 
-public class TitleDefenseRegistrationTwoFragment extends Fragment implements View.OnClickListener {
+public class TitleDefenseRegistrationTwoFragment extends Fragment implements View.OnClickListener, OnFragmentBackPressedListener {
 
-    private SharedPrefManager sharedPrefManager;
-    private OnMyMessageSendListener onMyMessageSendListener;
+    private UserSharedPrefManager sharedPrefManager;
+    private OnMyMessageListener onMyMessageSendListener;
     private TitleDefenseRegistration titleDefenseRegistrationTwo;
 
     private Context context;
@@ -58,9 +62,23 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
             getActivity().setTitle("Title Defense Registration");
         }
 
-	sharedPrefManager = new SharedPrefManager(context);
+        sharedPrefManager = new UserSharedPrefManager(context);
         setUpPageTwoUi(view);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         getBundleDataPageTwo();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
     }
 
     private void setUpPageTwoUi(View view) {
@@ -88,6 +106,7 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
 
         buttonBackPageTwo.setOnClickListener(this);
         buttonNextPageTwo.setOnClickListener(this);
+        textInputEditTextPhoneThree.setOnEditorActionListener(editorActionListener);
     }
 
     private void getBundleDataPageTwo() {
@@ -116,11 +135,8 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
                 break;
         }
 
-	setLoggedInStudentDataToEditText();
-    }
-
-     private void setLoggedInStudentDataToEditText() {
-	if (sharedPrefManager.isLoggedIn()) {
+        //setLoggedInStudentDataToEditText
+        if (sharedPrefManager.isLoggedIn()) {
             textInputEditTextNameOne.setText(sharedPrefManager.getUser().getName());
             textInputEditTextEmailOne.setText(sharedPrefManager.getUser().getEmail());
         }
@@ -147,6 +163,7 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBackPageTwo:
+                OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                 onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationOneFragment(), null);
                 break;
 
@@ -166,6 +183,7 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
 
                     defenseRegistration = new TitleDefenseRegistration(titleDefenseRegistrationTwo.getNumberOfStudents(), titleDefenseRegistrationTwo.getDayEvening(), titleDefenseRegistrationTwo.getProjectInternship(), titleDefenseRegistrationTwo.getProjectInternshipType(), titleDefenseRegistrationTwo.getProjectInternshipTitle(), editTextIdOne, editTextNameOne, editTextEmailOne, editTextPhoneOne);
 
+                    OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                     onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defenseRegistration);
                 } else {
                     Toast.makeText(context, "Please, fill up all the elements", Toast.LENGTH_SHORT).show();
@@ -177,6 +195,7 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
 
                     defenseRegistration = new TitleDefenseRegistration(titleDefenseRegistrationTwo.getNumberOfStudents(), titleDefenseRegistrationTwo.getDayEvening(), titleDefenseRegistrationTwo.getProjectInternship(), titleDefenseRegistrationTwo.getProjectInternshipType(), titleDefenseRegistrationTwo.getProjectInternshipTitle(), editTextIdOne, editTextNameOne, editTextEmailOne, editTextPhoneOne, editTextIdTwo, editTextNameTwo, editTextEmailTwo, editTextPhoneTwo);
 
+                    OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                     onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defenseRegistration);
                 } else {
                     Toast.makeText(context, "Please, fill up all the elements", Toast.LENGTH_SHORT).show();
@@ -188,6 +207,7 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
 
                     defenseRegistration = new TitleDefenseRegistration(titleDefenseRegistrationTwo.getNumberOfStudents(), titleDefenseRegistrationTwo.getDayEvening(), titleDefenseRegistrationTwo.getProjectInternship(), titleDefenseRegistrationTwo.getProjectInternshipType(), titleDefenseRegistrationTwo.getProjectInternshipTitle(), editTextIdOne, editTextNameOne, editTextEmailOne, editTextPhoneOne, editTextIdTwo, editTextNameTwo, editTextEmailTwo, editTextPhoneTwo, editTextIdThree, editTextNameThree, editTextEmailThree, editTextPhoneThree);
 
+                    OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                     onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defenseRegistration);
                 } else {
                     Toast.makeText(context, "Please, fill up all the elements", Toast.LENGTH_SHORT).show();
@@ -196,14 +216,32 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
         }
     }
 
+    private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            switch (actionId) {
+                case EditorInfo.IME_ACTION_GO:
+                    nextTwo();
+                    break;
+            }
+            return true;
+        }
+    };
+
+    @Override
+    public boolean onFragmentBackPressed() {
+        onMyMessageSendListener.onMyFragment(new TitleDefenseRegistrationOneFragment());
+        return true;
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         try {
-            onMyMessageSendListener = (OnMyMessageSendListener) context;
+            onMyMessageSendListener = (OnMyMessageListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implements onMyTitleDefenseRegistrationMessage method.");
+            throw new ClassCastException(context.toString() + " must implements OnMyMessageSendListener methods.");
         }
     }
 }

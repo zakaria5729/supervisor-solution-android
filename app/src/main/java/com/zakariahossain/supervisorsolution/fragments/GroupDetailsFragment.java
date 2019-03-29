@@ -14,7 +14,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;

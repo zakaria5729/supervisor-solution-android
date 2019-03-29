@@ -1,10 +1,6 @@
 package com.zakariahossain.supervisorsolution.interfaces;
 
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.fragment.app.Fragment;
 

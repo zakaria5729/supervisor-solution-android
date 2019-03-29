@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class RequestedOrAcceptedGroup implements Serializable {
+public class Student implements Serializable {
 
     @SerializedName("student_id")
     private Integer studentId;
@@ -18,7 +18,7 @@ public class RequestedOrAcceptedGroup implements Serializable {
     @SerializedName("phone")
     private String phone;
 
-    public RequestedOrAcceptedGroup(Integer studentId, String name, String email, String phone) {
+    public Student(Integer studentId, String name, String email, String phone) {
         this.studentId = studentId;
         this.name = name;
         this.email = email;

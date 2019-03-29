@@ -1,9 +1,6 @@
 package com.zakariahossain.supervisorsolution.activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
@@ -14,22 +11,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.fragments.ProfileFragment;
-import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
-import com.zakariahossain.supervisorsolution.models.ServerResponse;
-import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
-import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
-import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
-import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
-import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
-import com.zakariahossain.supervisorsolution.utils.OthersUtil;
-
-import java.util.ArrayList;
 
 public class WebViewAndGroupListDetailsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 

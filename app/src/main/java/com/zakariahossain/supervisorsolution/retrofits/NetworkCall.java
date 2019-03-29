@@ -4,12 +4,10 @@ import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
 import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.LoginResponse;
 import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.SupervisorList;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.models.TopicList;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import retrofit2.Call;
@@ -346,9 +344,42 @@ public class NetworkCall implements MyApiService {
         });
     }
 
-    @Override
-    public void titleDefenseRegistration(String projectInternship, String projectInternshipType, String projectInternshipTitle, String areaOfInterest, String dayEvening, List<RequestedOrAcceptedGroup> studentList, List<String> supervisorList, final ResponseCallback<ServerResponse> responseCallback) {
+    /*@Override
+    public void titleDefenseRegistration(String projectInternship, String projectInternshipType, String projectInternshipTitle, String areaOfInterest, String dayEvening, List<RequestedOrAcceptedGroup> studentList, List<Super> supervisorList, final ResponseCallback<ServerResponse> responseCallback) {
+
         Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(projectInternship, projectInternshipType, projectInternshipTitle, areaOfInterest, dayEvening, studentList, supervisorList);
+
+        *//*Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(studentList, supervisorList);*//*
+
+        titleDefenseRegistrationCall.enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ServerResponse> call, @NonNull Response<ServerResponse> response) {
+                if(response.isSuccessful()) {
+                    ServerResponse serverResponse = response.body();
+
+                    if (serverResponse != null) {
+                        responseCallback.onSuccess(serverResponse);
+                    } else {
+                        responseCallback.onError(new Exception(response.message()));
+                    }
+                } else {
+                    responseCallback.onError(new Exception(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ServerResponse> call, @NonNull Throwable t) {
+                responseCallback.onError(new Exception(t.getMessage()));
+            }
+        });
+    }*/
+
+    @Override
+    public void titleDefenseRegistration(TitleDefense titleDefense, final ResponseCallback<ServerResponse> responseCallback) {
+
+        Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(titleDefense);
+
+        /*Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(studentList, supervisorList);*/
 
         titleDefenseRegistrationCall.enqueue(new Callback<ServerResponse>() {
             @Override

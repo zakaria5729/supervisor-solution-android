@@ -12,18 +12,26 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 class RetrofitApiClient {
     private static final String BASIC_AUTH = "Basic " + Base64.encodeToString(("diu_supervisor_solution:admin@diu_supervisor_solution").getBytes(), Base64.NO_WRAP);
-    private static final String BASE_URL = "http://192.168.100.4/supervisor/public/";
+    private static final String BASE_URL = "http://192.168.100.12/supervisor/public/";
 
     private static RetrofitApiClient instance;
     private Retrofit retrofit;
 
     private RetrofitApiClient() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+
+
+        /*OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @NonNull
                     @Override
@@ -37,12 +45,13 @@ class RetrofitApiClient {
                         Request request = requestBuilder.build();
                         return chain.proceed(request);
                     }
-                }).build();
+                }).build();*/
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
+                /*.client(okHttpClient)*/
+                .client(httpClient.build())
                 .build();
     }
 

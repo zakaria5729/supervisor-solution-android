@@ -11,9 +11,9 @@ public class RequestedGroupList implements Serializable {
     private Boolean error;
 
     @SerializedName("requested_group_list")
-    private List<List<RequestedOrAcceptedGroup>> requestedGroupList;
+    private List<List<Student>> requestedGroupList;
 
-    public RequestedGroupList(Boolean error, List<List<RequestedOrAcceptedGroup>> requestedGroupList) {
+    public RequestedGroupList(Boolean error, List<List<Student>> requestedGroupList) {
         this.error = error;
         this.requestedGroupList = requestedGroupList;
     }
@@ -22,7 +22,7 @@ public class RequestedGroupList implements Serializable {
         return error;
     }
 
-    public List<List<RequestedOrAcceptedGroup>> getRequestedGroupList() {
+    public List<List<Student>> getRequestedGroupList() {
         return requestedGroupList;
     }
 }

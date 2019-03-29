@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
+import com.zakariahossain.supervisorsolution.models.Student;
+import com.zakariahossain.supervisorsolution.models.Super;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
@@ -32,7 +35,6 @@ import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,8 +50,8 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     private Context context;
     private AppCompatCheckBox cbAgree;
     private RadioGroup rgAreaOfInterest;
-    private List<RequestedOrAcceptedGroup> studentList;
-    private List<String> supervisorList;
+    private List<Student> studentList;
+    private List<Super> supervisorList;
 
     private TextInputLayout textInputLayoutOtherAreaOfInterest;
     private AppCompatAutoCompleteTextView autoCompleteTextViewOneEmail, autoCompleteTextViewTwoEmail, autoCompleteTextViewThreeEmail;
@@ -143,7 +145,7 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
             radioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(anAreaOfInterest.equals("Other")) {
+                    if (anAreaOfInterest.equals("Other")) {
                         textInputLayoutOtherAreaOfInterest.setVisibility(View.VISIBLE);
                     } else {
                         textInputLayoutOtherAreaOfInterest.setVisibility(View.GONE);
@@ -160,24 +162,38 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
             titleDefenseRegistrationThree = (TitleDefenseRegistration) getArguments().getSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE);
         }
 
+        studentList = new ArrayList<>();
+
         if (titleDefenseRegistrationThree != null) {
             switch (titleDefenseRegistrationThree.getNumberOfStudents()) {
                 case 1:
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+                    /*studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));*/
+
+                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
                     break;
 
                 case 2:
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
 
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
+                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
+
+                    /*studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));*/
                     break;
 
                 case 3:
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+
+                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
+
+                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdThree()), titleDefenseRegistrationThree.getEditTextNameThree(), titleDefenseRegistrationThree.getEditTextEmailThree(), titleDefenseRegistrationThree.getEditTextPhoneThree()));
+
+                    /*studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
 
                     studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
 
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdThree()), titleDefenseRegistrationThree.getEditTextNameThree(), titleDefenseRegistrationThree.getEditTextEmailThree(), titleDefenseRegistrationThree.getEditTextPhoneThree()));
+                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdThree()), titleDefenseRegistrationThree.getEditTextNameThree(), titleDefenseRegistrationThree.getEditTextEmailThree(), titleDefenseRegistrationThree.getEditTextPhoneThree()));*/
                     break;
             }
         }
@@ -197,7 +213,9 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
                         OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
                         MyApiService myApiService = new NetworkCall();
 
-                        myApiService.titleDefenseRegistration(titleDefenseRegistrationThree.getProjectInternship(), titleDefenseRegistrationThree.getProjectInternshipType(), titleDefenseRegistrationThree.getProjectInternshipTitle(), areaOfInterest, titleDefenseRegistrationThree.getDayEvening(), studentList, supervisorList, new ResponseCallback<ServerResponse>() {
+                        TitleDefense titleDefense = new TitleDefense(titleDefenseRegistrationThree.getProjectInternship(), titleDefenseRegistrationThree.getProjectInternshipType(), titleDefenseRegistrationThree.getProjectInternshipTitle(), areaOfInterest, titleDefenseRegistrationThree.getDayEvening(), studentList, supervisorList);
+
+                        myApiService.titleDefenseRegistration(titleDefense, new ResponseCallback<ServerResponse>() {
                             @Override
                             public void onSuccess(ServerResponse data) {
                                 if (data != null) {
@@ -229,18 +247,22 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     }
 
     private boolean getSupervisorsEmailAndAreaOfInterest() {
-        if (areaOfInterest.equals("Other")) {
+        /*if (areaOfInterest.equals("Other")) {
             areaOfInterest = Objects.requireNonNull(textInputLayoutOtherAreaOfInterest.getEditText()).getText().toString();
-        }
+        }*/
+
+        Log.e("inter", areaOfInterest);
 
         String firstSupervisorEmail = autoCompleteTextViewOneEmail.getText().toString().trim();
         String secondSupervisorEmail = autoCompleteTextViewTwoEmail.getText().toString().trim();
         String thirdSupervisorEmail = autoCompleteTextViewThreeEmail.getText().toString().trim();
 
         if (!TextUtils.isEmpty(areaOfInterest.trim()) && Patterns.EMAIL_ADDRESS.matcher(firstSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(secondSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(thirdSupervisorEmail).matches()) {
-            supervisorList.add(firstSupervisorEmail);
-            supervisorList.add(secondSupervisorEmail);
-            supervisorList.add(thirdSupervisorEmail);
+            supervisorList = new ArrayList<>();
+
+            supervisorList.add(new Super(firstSupervisorEmail));
+            supervisorList.add(new Super(secondSupervisorEmail));
+            supervisorList.add(new Super(thirdSupervisorEmail));
 
             return true;
         } else {

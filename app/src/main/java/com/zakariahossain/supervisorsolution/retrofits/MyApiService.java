@@ -4,13 +4,10 @@ import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
 import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.LoginResponse;
 import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.SupervisorList;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.models.TopicList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public interface MyApiService {
     void getTopicsFromServer(ResponseCallback<TopicList> responseCallback);
@@ -37,5 +34,7 @@ public interface MyApiService {
 
     void groupAcceptOrDecline(String supervisorEmail, String groupEmail, int acceptOrDecline, ResponseCallback<ServerResponse> responseCallback);
 
-    void titleDefenseRegistration(String projectInternship, String projectInternshipType, String projectInternshipTitle, String areaOfInterest, String dayEvening, List<RequestedOrAcceptedGroup> studentList, List<String> supervisorList, ResponseCallback<ServerResponse> responseCallback);
+    /*void titleDefenseRegistration(String projectInternship, String projectInternshipType, String projectInternshipTitle, String areaOfInterest, String dayEvening, List<RequestedOrAcceptedGroup> studentList, List<Super> supervisorList, ResponseCallback<ServerResponse> responseCallback);*/
+
+    void titleDefenseRegistration(TitleDefense titleDefense, ResponseCallback<ServerResponse> responseCallback);
 }

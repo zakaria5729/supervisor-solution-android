@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
+import com.zakariahossain.supervisorsolution.models.Student;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AcceptedGroupAdapter extends RecyclerView.Adapter<AcceptedGroupAdapter.AcceptedGroupViewHolder> {
 
     private Context context;
-    private List<List<RequestedOrAcceptedGroup>> acceptedGroupList;
+    private List<List<Student>> acceptedGroupList;
     private static OnMyClickListener onMyClickListener;
 
-    public AcceptedGroupAdapter(Context context, List<List<RequestedOrAcceptedGroup>> acceptedGroupList) {
+    public AcceptedGroupAdapter(Context context, List<List<Student>> acceptedGroupList) {
         this.context = context;
         this.acceptedGroupList = acceptedGroupList;
     }
@@ -35,7 +35,7 @@ public class AcceptedGroupAdapter extends RecyclerView.Adapter<AcceptedGroupAdap
 
     @Override
     public void onBindViewHolder(@NonNull AcceptedGroupAdapter.AcceptedGroupViewHolder holder, int position) {
-        List<RequestedOrAcceptedGroup> groupList = acceptedGroupList.get(position);
+        List<Student> groupList = acceptedGroupList.get(position);
 
         holder.acceptedTextView.setText("Accepted");
         holder.acceptedTextView.setTextColor(context.getResources().getColor(R.color.colorGreen));

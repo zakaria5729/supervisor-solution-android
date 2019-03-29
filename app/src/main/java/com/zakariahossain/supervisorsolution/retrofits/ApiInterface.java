@@ -4,13 +4,10 @@ import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
 import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.LoginResponse;
 import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.SupervisorList;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.models.TopicList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -94,16 +91,17 @@ public interface ApiInterface {
             @Field("accept_or_decline") int acceptOrDecline
     );
 
-    @FormUrlEncoded
-    @POST("title_defense_registration")
+    /*@POST("title_defense_registration")
     Call<ServerResponse> titleDefenseRegistration(
-            @Field("project_internship") String projectInternship,
-            @Field("project_internship_type") String projectInternshipType,
-            @Field("project_internship_title") String projectInternshipTitle,
-            @Field("area_of_interest") String areaOfInterest,
-            @Field("day_evening") String dayEvening,
-            @Field("student_list") List<RequestedOrAcceptedGroup> studentList,
-            @Field("supervisor_list") List<String> supervisorList
-            );
+            @Query("project_internship") String projectInternship,
+            @Query("project_internship_type") String projectInternshipType,
+            @Query("project_internship_title") String projectInternshipTitle,
+            @Query("area_of_interest") String areaOfInterest,
+            @Query("day_evening") String dayEvening,
+            @Body List<RequestedOrAcceptedGroup> studentList,
+            @Body List<Super> supervisorList
+            );*/
 
+    @POST("title_defense_registration")
+    Call<ServerResponse> titleDefenseRegistration(@Body TitleDefense titleDefense);
 }

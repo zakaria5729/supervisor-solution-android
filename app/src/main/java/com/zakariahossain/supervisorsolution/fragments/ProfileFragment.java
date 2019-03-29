@@ -1,7 +1,6 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,14 +10,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.activities.WebViewAndGroupListDetailsActivity;
 import com.zakariahossain.supervisorsolution.adapters.AcceptedGroupAdapter;
 import com.zakariahossain.supervisorsolution.adapters.GroupStatusAdapter;
 import com.zakariahossain.supervisorsolution.adapters.RequestedGroupAdapter;
@@ -29,7 +26,7 @@ import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
 import com.zakariahossain.supervisorsolution.models.GroupStatus;
 import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
-import com.zakariahossain.supervisorsolution.models.RequestedOrAcceptedGroup;
+import com.zakariahossain.supervisorsolution.models.Student;
 import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
@@ -59,8 +56,8 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
     private AcceptedGroupAdapter acceptedGroupAdapter;
     private GroupStatusAdapter groupListStatusAdapter;
     private List<GroupStatus> groupStatusList;
-    private List<List<RequestedOrAcceptedGroup>> requestedGroupList;
-    private List<List<RequestedOrAcceptedGroup>> acceptedGroupList;
+    private List<List<Student>> requestedGroupList;
+    private List<List<Student>> acceptedGroupList;
 
     private MaterialCardView requestedGroupListCardView, acceptedGroupListCardView, groupListStatusCardView;
     private AppCompatTextView userName, userEmail, userRoleAndCreatedDate;
@@ -330,8 +327,8 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
         if (view.getId() == R.id.btnSendMailToAllAcceptedGroups) {
             StringBuilder emailRecipients = new StringBuilder();
 
-            for (List<RequestedOrAcceptedGroup> req: acceptedGroupList) {
-                for (RequestedOrAcceptedGroup  r: req) {
+            for (List<Student> req: acceptedGroupList) {
+                for (Student  r: req) {
                     emailRecipients.append(r.getEmail()).append(",");
                 }
             }

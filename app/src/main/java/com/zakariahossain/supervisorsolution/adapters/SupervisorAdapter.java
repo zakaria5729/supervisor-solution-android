@@ -5,12 +5,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
-import com.zakariahossain.supervisorsolution.models.Supervisor;
+import com.zakariahossain.supervisorsolution.models.SupervisorList;
 
 import java.util.List;
 
@@ -21,10 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.SupervisorViewHolder> {
 
     private Context context;
-    private List<Supervisor> supervisorList;
-    private static OnMyClickListener onMyClickListener;
+    private List<SupervisorList.Supervisor> supervisorList;
+    private OnMyClickListener onMyClickListener;
 
-    public SupervisorAdapter(Context context, List<Supervisor> supervisorList) {
+    public SupervisorAdapter(Context context, List<SupervisorList.Supervisor> supervisorList) {
         this.context = context;
         this.supervisorList = supervisorList;
     }
@@ -60,7 +61,7 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
         onMyClickListener = myClickListener;
     }
 
-    static class SupervisorViewHolder extends RecyclerView.ViewHolder {
+    class SupervisorViewHolder extends RecyclerView.ViewHolder {
         private ImageView supervisorImage;
         private AppCompatTextView supervisorName, supervisorDesignation, supervisorInitial;
 
@@ -71,6 +72,8 @@ public class SupervisorAdapter extends RecyclerView.Adapter<SupervisorAdapter.Su
             supervisorName = itemView.findViewById(R.id.tvSupervisorName);
             supervisorDesignation = itemView.findViewById(R.id.tvDesignation);
             supervisorInitial = itemView.findViewById(R.id.tvInitial);
+
+            supervisorImage.setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,11 +1,11 @@
 package com.zakariahossain.supervisorsolution.interfaces;
 
-import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 
 import androidx.fragment.app.Fragment;
 
 public interface OnMyMessageListener {
-    void onMyTitleDefenseRegistrationMessage(Fragment fragment, TitleDefenseRegistration titleDefenseRegistration);
+    void onMyTitleDefenseRegistrationMessage(Fragment fragment, TitleDefense titleDefense);
     void onMyFragmentAndEmail(Fragment fragment, String email);
     void onMyForgotPasswordMessage(String messageKey, String email);
 

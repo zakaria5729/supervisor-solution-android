@@ -6,14 +6,17 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -23,9 +26,8 @@ import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedLis
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.models.Student;
-import com.zakariahossain.supervisorsolution.models.Super;
+import com.zakariahossain.supervisorsolution.models.Supervisor;
 import com.zakariahossain.supervisorsolution.models.TitleDefense;
-import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
 import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
@@ -38,6 +40,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.Fragment;
@@ -45,15 +48,16 @@ import androidx.fragment.app.Fragment;
 public class TitleDefenseRegistrationThreeFragment extends Fragment implements View.OnClickListener, OnFragmentBackPressedListener {
 
     private OnMyMessageListener onMyMessageSendListener;
-    private TitleDefenseRegistration titleDefenseRegistrationThree;
+    private TitleDefense titleDefense;
 
     private Context context;
     private AppCompatCheckBox cbAgree;
     private RadioGroup rgAreaOfInterest;
     private List<Student> studentList;
-    private List<Super> supervisorList;
+    private List<Supervisor> supervisorList;
+    private AlertDialog alertDialog;
 
-    private TextInputLayout textInputLayoutOtherAreaOfInterest;
+    private TextInputLayout textInputLayoutOtherAreaOfInterest, tilFirstSupervisorEmail, tilSecondSupervisorEmail, tilThirdSupervisorEmail;
     private AppCompatAutoCompleteTextView autoCompleteTextViewOneEmail, autoCompleteTextViewTwoEmail, autoCompleteTextViewThreeEmail;
 
     private String areaOfInterest;
@@ -104,8 +108,6 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     }
 
     private void setUpPageThreeUi(View view) {
-        List<String> checkList = new ArrayList<>();
-
         MaterialButton buttonBackPageThree = view.findViewById(R.id.btnBackPageThree);
         MaterialButton buttonSubmit = view.findViewById(R.id.btnSubmit);
         autoCompleteTextViewOneEmail = view.findViewById(R.id.acTextViewInitialOne);
@@ -113,10 +115,14 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         autoCompleteTextViewThreeEmail = view.findViewById(R.id.acTextViewInitialThree);
         rgAreaOfInterest = view.findViewById(R.id.rbAreaOfInterest);
         cbAgree = view.findViewById(R.id.cbAgree);
+        tilFirstSupervisorEmail = view.findViewById(R.id.tilFirstSupervisorEmail);
+        tilSecondSupervisorEmail = view.findViewById(R.id.tilSecondSupervisorEmail);
+        tilThirdSupervisorEmail = view.findViewById(R.id.tilThirdSupervisorEmail);
         textInputLayoutOtherAreaOfInterest = view.findViewById(R.id.textInputLayoutAreaOfInterest);
 
         buttonBackPageThree.setOnClickListener(this);
         buttonSubmit.setOnClickListener(this);
+        Objects.requireNonNull(tilThirdSupervisorEmail.getEditText()).setOnEditorActionListener(editorActionListener);
     }
 
     private void addSupervisorAutoCompleteTextView() {
@@ -159,41 +165,29 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
 
     private void getBundleDataPageThree() {
         if (getArguments() != null) {
-            titleDefenseRegistrationThree = (TitleDefenseRegistration) getArguments().getSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE);
+            titleDefense = (TitleDefense) getArguments().getSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE);
         }
 
         studentList = new ArrayList<>();
 
-        if (titleDefenseRegistrationThree != null) {
-            switch (titleDefenseRegistrationThree.getNumberOfStudents()) {
+        if (titleDefense != null) {
+            switch (titleDefense.getNumberOfStudents()) {
                 case 1:
-                    /*studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));*/
-
-                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdOne()), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
                     break;
 
                 case 2:
-                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdOne()), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
 
-                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
-
-                    /*studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
-
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));*/
+                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdTwo()), titleDefense.getEditTextNameTwo(), titleDefense.getEditTextEmailTwo(), titleDefense.getEditTextPhoneTwo()));
                     break;
 
                 case 3:
-                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
+                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdOne()), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
 
-                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
+                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdTwo()), titleDefense.getEditTextNameTwo(), titleDefense.getEditTextEmailTwo(), titleDefense.getEditTextPhoneTwo()));
 
-                    studentList.add(new Student(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdThree()), titleDefenseRegistrationThree.getEditTextNameThree(), titleDefenseRegistrationThree.getEditTextEmailThree(), titleDefenseRegistrationThree.getEditTextPhoneThree()));
-
-                    /*studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdOne()), titleDefenseRegistrationThree.getEditTextNameOne(), titleDefenseRegistrationThree.getEditTextEmailOne(), titleDefenseRegistrationThree.getEditTextPhoneOne()));
-
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdTwo()), titleDefenseRegistrationThree.getEditTextNameTwo(), titleDefenseRegistrationThree.getEditTextEmailTwo(), titleDefenseRegistrationThree.getEditTextPhoneTwo()));
-
-                    studentList.add(new RequestedOrAcceptedGroup(Integer.parseInt(titleDefenseRegistrationThree.getEditTextIdThree()), titleDefenseRegistrationThree.getEditTextNameThree(), titleDefenseRegistrationThree.getEditTextEmailThree(), titleDefenseRegistrationThree.getEditTextPhoneThree()));*/
+                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdThree()), titleDefense.getEditTextNameThree(), titleDefense.getEditTextEmailThree(), titleDefense.getEditTextPhoneThree()));
                     break;
             }
         }
@@ -210,40 +204,46 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
             case R.id.btnSubmit:
                 if (getSupervisorsEmailAndAreaOfInterest()) {
                     if (agreeCheckBox) {
-                        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
-                        MyApiService myApiService = new NetworkCall();
-
-                        TitleDefense titleDefense = new TitleDefense(titleDefenseRegistrationThree.getProjectInternship(), titleDefenseRegistrationThree.getProjectInternshipType(), titleDefenseRegistrationThree.getProjectInternshipTitle(), areaOfInterest, titleDefenseRegistrationThree.getDayEvening(), studentList, supervisorList);
-
-                        myApiService.titleDefenseRegistration(titleDefense, new ResponseCallback<ServerResponse>() {
-                            @Override
-                            public void onSuccess(ServerResponse data) {
-                                if (data != null) {
-                                    if(data.getError().equals(false)) {
-                                        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
-                                        onMyMessageSendListener.onMyFragment(new ProfileFragment());
-                                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                } else {
-                                    Toast.makeText(getContext(), "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-                            @Override
-                            public void onError(Throwable th) {
-                                Toast.makeText(context, "Error" +th.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        alertDialog = new OthersUtil(context).setCircularProgressBar();
+                        nextThree();
                     } else {
                         Toast.makeText(context, "Please, tik the agree checkbox", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(context, "Please fill up all the fields", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
+    }
+
+    private void nextThree() {
+        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+
+        TitleDefense titleDefense1 = new TitleDefense(titleDefense.getProjectInternship(), titleDefense.getProjectInternshipType(), titleDefense.getProjectInternshipTitle(), areaOfInterest, titleDefense.getDayEvening(), studentList, supervisorList);
+
+        MyApiService myApiService = new NetworkCall();
+        myApiService.titleDefenseRegistration(titleDefense1, new ResponseCallback<ServerResponse>() {
+            @Override
+            public void onSuccess(ServerResponse data) {
+                alertDialog.dismiss();
+
+                if (data != null) {
+                    if(data.getError().equals(false)) {
+                        OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                        onMyMessageSendListener.onMyFragment(new ProfileFragment());
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable th) {
+                alertDialog.dismiss();
+                Toast.makeText(context, "Error" +th.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private boolean getSupervisorsEmailAndAreaOfInterest() {
@@ -260,15 +260,44 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         if (!TextUtils.isEmpty(areaOfInterest.trim()) && Patterns.EMAIL_ADDRESS.matcher(firstSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(secondSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(thirdSupervisorEmail).matches()) {
             supervisorList = new ArrayList<>();
 
-            supervisorList.add(new Super(firstSupervisorEmail));
-            supervisorList.add(new Super(secondSupervisorEmail));
-            supervisorList.add(new Super(thirdSupervisorEmail));
-
+            supervisorList.add(new Supervisor(firstSupervisorEmail));
+            supervisorList.add(new Supervisor(secondSupervisorEmail));
+            supervisorList.add(new Supervisor(thirdSupervisorEmail));
             return true;
+
         } else {
+            if (!Patterns.EMAIL_ADDRESS.matcher(firstSupervisorEmail).matches()) {
+                tilFirstSupervisorEmail.setError("Please enter first supervisor email");
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(secondSupervisorEmail).matches()) {
+                tilSecondSupervisorEmail.setError("Please enter second supervisor email");
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(thirdSupervisorEmail).matches()) {
+                tilThirdSupervisorEmail.setError("Please enter third supervisor email");
+            }
+
             return false;
         }
     }
+
+    private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            switch (actionId) {
+                case EditorInfo.IME_ACTION_GO:
+                    if (getSupervisorsEmailAndAreaOfInterest()) {
+                        if (agreeCheckBox) {
+                            alertDialog = new OthersUtil(context).setCircularProgressBar();
+                            nextThree();
+                        } else {
+                            Toast.makeText(context, "Please, tik the agree checkbox", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    break;
+            }
+            return true;
+        }
+    };
 
     private void agreeTermsAndCondition() {
         cbAgree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
@@ -37,6 +38,7 @@ public class HomeAndRuleFragment extends Fragment {
                         view = inflater.inflate(R.layout.fragment_home, container, false);
                         if (getActivity() != null) {
                             getActivity().setTitle("DIU Supervisor Solution");
+                            view.findViewById(R.id.ivHome).setAnimation(AnimationUtils.loadAnimation(container.getContext(), R.anim.zoom_in));
                         }
                         break;
 
@@ -45,7 +47,7 @@ public class HomeAndRuleFragment extends Fragment {
 
                         if (getActivity() != null) {
                             getActivity().setTitle("Rules and Regulations");
-
+                            view.findViewById(R.id.ivDayShift).setAnimation(AnimationUtils.loadAnimation(container.getContext(), R.anim.zoom_in));
                         }
                         break;
                 }
@@ -65,17 +67,6 @@ public class HomeAndRuleFragment extends Fragment {
 
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        }
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            OnMyMessageListener onMyMessageSendListener = (OnMyMessageListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implements OnMyMessageSendListener methods.");
         }
     }
 }

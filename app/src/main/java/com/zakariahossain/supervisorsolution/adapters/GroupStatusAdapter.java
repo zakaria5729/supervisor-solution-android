@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
-import com.zakariahossain.supervisorsolution.models.GroupStatus;
+import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GroupStatusAdapter extends RecyclerView.Adapter<GroupStatusAdapter.GroupListStatusHolder> {
 
     private Context context;
-    private List<GroupStatus> groupStatusList;
-    private static OnMyClickListener onMyClickListener;
+    private List<GroupStatusList.GroupStatus> groupStatusList;
+    private OnMyClickListener onMyClickListener;
 
-    public GroupStatusAdapter(Context context, List<GroupStatus> groupStatusList) {
+    public GroupStatusAdapter(Context context, List<GroupStatusList.GroupStatus> groupStatusList) {
         this.context = context;
         this.groupStatusList = groupStatusList;
     }
@@ -58,7 +58,7 @@ public class GroupStatusAdapter extends RecyclerView.Adapter<GroupStatusAdapter.
         onMyClickListener = listener;
     }
 
-    static class GroupListStatusHolder extends RecyclerView.ViewHolder {
+    class GroupListStatusHolder extends RecyclerView.ViewHolder {
         private AppCompatTextView supervisorEmailTextView, pendingOrAcceptTextView;
 
         GroupListStatusHolder(@NonNull View itemView) {

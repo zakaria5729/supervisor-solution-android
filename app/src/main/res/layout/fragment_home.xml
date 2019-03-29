@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvHome"
             style="@style/MaterialCardViewProperties"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
                     android:id="@+id/ivHome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="20dp"
+                    android:padding="18dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/diu_logo_with_name" />
 

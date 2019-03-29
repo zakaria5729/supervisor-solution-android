@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
-import com.zakariahossain.supervisorsolution.models.Supervisor;
-import com.zakariahossain.supervisorsolution.models.Topic;
+import com.zakariahossain.supervisorsolution.models.SupervisorList;
+import com.zakariahossain.supervisorsolution.models.TopicList;
 
 import java.util.List;
 
@@ -23,13 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TrialAdapter extends RecyclerView.Adapter<TrialAdapter.TrialViewHolder> {
 
     private Context context;
-    private List<Topic> topicList;
-    private List<Supervisor> supervisorList;
+    private List<TopicList.Topic> topicList;
+    private List<SupervisorList.Supervisor> supervisorList;
     private static int adapterNumber;
     private View view;
     private static OnMyClickListener onMyClickListener;
 
-    public TrialAdapter(Context context, List<Topic> topicList, int adapterNumber) {
+    public TrialAdapter(Context context, List<TopicList.Topic> topicList, int adapterNumber) {
         this.context = context;
         this.topicList = topicList;
         TrialAdapter.adapterNumber = adapterNumber;

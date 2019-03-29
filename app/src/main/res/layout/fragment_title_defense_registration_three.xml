@@ -81,21 +81,23 @@
                     android:id="@+id/textView0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/write_the_three_different_initial_of_the_supervisors_according_to_your_choice_only_initial_do_not_write_full_name_note_it_is_not_confirmed_that_you_will_get_the_supervisor_if_you_give_his_her_initial_in_all_three_choice"
                     android:textAppearance="?android:textAppearanceSmall" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutProperties"
+                    android:id="@+id/tilFirstSupervisorEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    style="@style/TextInputLayoutProperties">
 
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/acTextViewInitialOne"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:elevation="8dp"
+                        android:elevation="2dp"
                         android:focusableInTouchMode="true"
                         android:hint="First supervisor email"
                         android:imeOptions="actionNext"
@@ -107,16 +109,18 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutProperties"
+                    android:id="@+id/tilSecondSupervisorEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    style="@style/TextInputLayoutProperties">
 
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/acTextViewInitialTwo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:elevation="8dp"
+                        android:elevation="2dp"
                         android:focusableInTouchMode="true"
                         android:hint="Second supervisor email"
                         android:imeOptions="actionNext"
@@ -128,19 +132,21 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutProperties"
+                    android:id="@+id/tilThirdSupervisorEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    style="@style/TextInputLayoutProperties">
 
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/acTextViewInitialThree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:completionThreshold="1"
-                        android:elevation="8dp"
+                        android:elevation="2dp"
                         android:focusableInTouchMode="true"
                         android:hint="Third supervisor email"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionGo"
                         android:inputType="textAutoComplete"
                         android:maxLines="1"
                         android:paddingStart="12dp"
@@ -152,7 +158,7 @@
                     android:id="@+id/cbAgree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/i_we_do_hereby_agree_that_assigning_supervisor_according_to_the_choice_is_not_guaranteed" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat

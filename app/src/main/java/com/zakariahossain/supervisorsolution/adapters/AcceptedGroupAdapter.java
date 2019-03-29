@@ -19,7 +19,7 @@ public class AcceptedGroupAdapter extends RecyclerView.Adapter<AcceptedGroupAdap
 
     private Context context;
     private List<List<Student>> acceptedGroupList;
-    private static OnMyClickListener onMyClickListener;
+    private OnMyClickListener onMyClickListener;
 
     public AcceptedGroupAdapter(Context context, List<List<Student>> acceptedGroupList) {
         this.context = context;
@@ -55,7 +55,7 @@ public class AcceptedGroupAdapter extends RecyclerView.Adapter<AcceptedGroupAdap
         onMyClickListener = myClickListener;
     }
 
-    static class AcceptedGroupViewHolder extends RecyclerView.ViewHolder {
+    class AcceptedGroupViewHolder extends RecyclerView.ViewHolder {
         private AppCompatTextView acceptedGroupNameTextView, acceptedGroupEmailTextView, acceptedTextView;
 
         AcceptedGroupViewHolder(@NonNull View itemView) {

@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +96,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, On
         loginTextView.setOnClickListener(this);
         signUpButton.setOnClickListener(this);
         editTextSignUpConfirmPassword.setOnEditorActionListener(editorActionListener);
+
+        view.findViewById(R.id.imageView).setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
     }
 
     @Override

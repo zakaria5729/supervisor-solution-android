@@ -10,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
-import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 import com.zakariahossain.supervisorsolution.utils.OthersUtil;
@@ -33,15 +32,14 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
 
     private UserSharedPrefManager sharedPrefManager;
     private OnMyMessageListener onMyMessageSendListener;
-    private TitleDefenseRegistration titleDefenseRegistrationTwo;
+    private TitleDefense titleDefense;
 
     private Context context;
-    private TextInputEditText textInputEditTextIdOne, textInputEditTextNameOne, textInputEditTextEmailOne, textInputEditTextPhoneOne, textInputEditTextIdTwo, textInputEditTextNameTwo, textInputEditTextEmailTwo, textInputEditTextPhoneTwo, textInputEditTextIdThree, textInputEditTextNameThree, textInputEditTextEmailThree, textInputEditTextPhoneThree;
+    private TextInputLayout textInputLayoutIdOne, textInputLayoutNameOne, textInputLayoutEmailOne, textInputLayoutPhoneOne, textInputLayoutIdTwo, textInputLayoutNameTwo, textInputLayoutEmailTwo, textInputLayoutPhoneTwo, textInputLayoutIdThree, textInputLayoutNameThree, textInputLayoutEmailThree, textInputLayoutPhoneThree;
 
     private LinearLayoutCompat studentOneEditTextLL, studentTwoEditTextLL, studentThreeEditTextLL;
 
     private int numberOfStudents;
-    private String editTextIdOne, editTextNameOne, editTextEmailOne, editTextPhoneOne, editTextIdTwo, editTextNameTwo, editTextEmailTwo, editTextPhoneTwo, editTextIdThree, editTextNameThree, editTextEmailThree, editTextPhoneThree;
 
     public TitleDefenseRegistrationTwoFragment() {
         // Required empty public constructor
@@ -86,77 +84,65 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
         studentTwoEditTextLL = view.findViewById(R.id.llStudentTwo);
         studentThreeEditTextLL = view.findViewById(R.id.llStudentThree);
 
-        textInputEditTextIdOne = view.findViewById(R.id.tietIdOne);
-        textInputEditTextNameOne = view.findViewById(R.id.tietNameOne);
-        textInputEditTextEmailOne = view.findViewById(R.id.tietEmailOne);
-        textInputEditTextPhoneOne = view.findViewById(R.id.tietPhoneOne);
+        textInputLayoutIdOne = view.findViewById(R.id.tilIdOne);
+        textInputLayoutNameOne = view.findViewById(R.id.tilNameOne);
+        textInputLayoutEmailOne = view.findViewById(R.id.tilEmailOne);
+        textInputLayoutPhoneOne = view.findViewById(R.id.tilPhoneOne);
 
-        textInputEditTextIdTwo = view.findViewById(R.id.tietIdTwo);
-        textInputEditTextNameTwo = view.findViewById(R.id.tietNameTwo);
-        textInputEditTextEmailTwo = view.findViewById(R.id.tietEmailTwo);
-        textInputEditTextPhoneTwo = view.findViewById(R.id.tietPhoneTwo);
+        textInputLayoutIdTwo = view.findViewById(R.id.tilIdTwo);
+        textInputLayoutNameTwo = view.findViewById(R.id.tilNameTwo);
+        textInputLayoutEmailTwo = view.findViewById(R.id.tilEmailTwo);
+        textInputLayoutPhoneTwo = view.findViewById(R.id.tilPhoneTwo);
 
-        textInputEditTextIdThree = view.findViewById(R.id.tietIdThree);
-        textInputEditTextNameThree = view.findViewById(R.id.tietNameThree);
-        textInputEditTextEmailThree = view.findViewById(R.id.tietEmailThree);
-        textInputEditTextPhoneThree = view.findViewById(R.id.tietPhoneThree);
+        textInputLayoutIdThree = view.findViewById(R.id.tilIdThree);
+        textInputLayoutNameThree = view.findViewById(R.id.tilNameThree);
+        textInputLayoutEmailThree = view.findViewById(R.id.tilEmailThree);
+        textInputLayoutPhoneThree = view.findViewById(R.id.tilPhoneThree);
 
         MaterialButton buttonBackPageTwo = view.findViewById(R.id.btnBackPageTwo);
         MaterialButton buttonNextPageTwo = view.findViewById(R.id.btnSignUp);
 
         buttonBackPageTwo.setOnClickListener(this);
         buttonNextPageTwo.setOnClickListener(this);
-        textInputEditTextPhoneThree.setOnEditorActionListener(editorActionListener);
     }
 
     private void getBundleDataPageTwo() {
         if (getArguments() != null) {
-            titleDefenseRegistrationTwo = (TitleDefenseRegistration) getArguments().getSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE);
+            titleDefense = (TitleDefense) getArguments().getSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE);
         }
 
-        if (titleDefenseRegistrationTwo != null) {
-            numberOfStudents = titleDefenseRegistrationTwo.getNumberOfStudents();
+        if (titleDefense != null) {
+            numberOfStudents = titleDefense.getNumberOfStudents();
         }
 
         switch (numberOfStudents) {
             case 1:
                 studentOneEditTextLL.setVisibility(View.VISIBLE);
+                Objects.requireNonNull(textInputLayoutPhoneOne.getEditText()).setOnEditorActionListener(editorActionListener);
                 break;
 
             case 2:
                 studentOneEditTextLL.setVisibility(View.VISIBLE);
                 studentTwoEditTextLL.setVisibility(View.VISIBLE);
+                Objects.requireNonNull(textInputLayoutPhoneOne.getEditText()).setImeOptions(EditorInfo.IME_ACTION_NEXT);
+                Objects.requireNonNull(textInputLayoutPhoneTwo.getEditText()).setOnEditorActionListener(editorActionListener);
                 break;
 
             case 3:
                 studentOneEditTextLL.setVisibility(View.VISIBLE);
                 studentTwoEditTextLL.setVisibility(View.VISIBLE);
                 studentThreeEditTextLL.setVisibility(View.VISIBLE);
+                Objects.requireNonNull(textInputLayoutPhoneOne.getEditText()).setImeOptions(EditorInfo.IME_ACTION_NEXT);
+                Objects.requireNonNull(textInputLayoutPhoneTwo.getEditText()).setImeOptions(EditorInfo.IME_ACTION_NEXT);
+                Objects.requireNonNull(textInputLayoutPhoneThree.getEditText()).setOnEditorActionListener(editorActionListener);
                 break;
         }
 
         //setLoggedInStudentDataToEditText
         if (sharedPrefManager.isLoggedIn()) {
-            textInputEditTextNameOne.setText(sharedPrefManager.getUser().getName());
-            textInputEditTextEmailOne.setText(sharedPrefManager.getUser().getEmail());
+            Objects.requireNonNull(textInputLayoutNameOne.getEditText()).setText(sharedPrefManager.getUser().getName());
+            Objects.requireNonNull(textInputLayoutEmailOne.getEditText()).setText(sharedPrefManager.getUser().getEmail());
         }
-    }
-
-    private void getEditTextValuePageTwo() {
-        editTextIdOne = Objects.requireNonNull(textInputEditTextIdOne.getText()).toString();
-        editTextNameOne = Objects.requireNonNull(textInputEditTextNameOne.getText()).toString();
-        editTextEmailOne = Objects.requireNonNull(textInputEditTextEmailOne.getText()).toString();
-        editTextPhoneOne = Objects.requireNonNull(textInputEditTextPhoneOne.getText()).toString();
-
-        editTextIdTwo = Objects.requireNonNull(textInputEditTextIdTwo.getText()).toString();
-        editTextNameTwo = Objects.requireNonNull(textInputEditTextNameTwo.getText()).toString();
-        editTextEmailTwo = Objects.requireNonNull(textInputEditTextEmailTwo.getText()).toString();
-        editTextPhoneTwo = Objects.requireNonNull(textInputEditTextPhoneTwo.getText()).toString();
-
-        editTextIdThree = Objects.requireNonNull(textInputEditTextIdThree.getText()).toString();
-        editTextNameThree = Objects.requireNonNull(textInputEditTextNameThree.getText()).toString();
-        editTextEmailThree = Objects.requireNonNull(textInputEditTextEmailThree.getText()).toString();
-        editTextPhoneThree = Objects.requireNonNull(textInputEditTextPhoneThree.getText()).toString();
     }
 
     @Override
@@ -174,45 +160,77 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
     }
 
     private void nextTwo() {
-        getEditTextValuePageTwo();
-        TitleDefenseRegistration defenseRegistration;
+        TitleDefense defense;
 
         switch (numberOfStudents) {
             case 1:
-                if (!TextUtils.isEmpty(editTextIdOne.trim()) && !TextUtils.isEmpty(editTextNameOne.trim()) && !TextUtils.isEmpty(editTextEmailOne.trim()) && !TextUtils.isEmpty(editTextPhoneOne.trim())) {
+                if (checkTextInputLayoutEditText(textInputLayoutIdOne) && checkTextInputLayoutEditText(textInputLayoutNameOne) && checkTextInputLayoutEditText(textInputLayoutEmailOne) && checkTextInputLayoutEditText(textInputLayoutPhoneOne)) {
 
-                    defenseRegistration = new TitleDefenseRegistration(titleDefenseRegistrationTwo.getNumberOfStudents(), titleDefenseRegistrationTwo.getDayEvening(), titleDefenseRegistrationTwo.getProjectInternship(), titleDefenseRegistrationTwo.getProjectInternshipType(), titleDefenseRegistrationTwo.getProjectInternshipTitle(), editTextIdOne, editTextNameOne, editTextEmailOne, editTextPhoneOne);
+                    defense = new TitleDefense(titleDefense.getNumberOfStudents(), titleDefense.getDayEvening(), titleDefense.getProjectInternship(), titleDefense.getProjectInternshipType(), titleDefense.getProjectInternshipTitle(), Objects.requireNonNull(textInputLayoutIdOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutNameOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutEmailOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutPhoneOne.getEditText()).getText().toString());
 
                     OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
-                    onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defenseRegistration);
+                    onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defense);
                 } else {
-                    Toast.makeText(context, "Please, fill up all the elements", Toast.LENGTH_SHORT).show();
+                    checkTextInputLayoutEditText(textInputLayoutIdOne);
+                    checkTextInputLayoutEditText(textInputLayoutNameOne);
+                    checkTextInputLayoutEditText(textInputLayoutEmailOne);
+                    checkTextInputLayoutEditText(textInputLayoutPhoneOne);
                 }
                 break;
 
             case 2:
-                if (!TextUtils.isEmpty(editTextIdOne.trim()) && !TextUtils.isEmpty(editTextNameOne.trim()) && !TextUtils.isEmpty(editTextEmailOne.trim()) && !TextUtils.isEmpty(editTextPhoneOne.trim()) && !TextUtils.isEmpty(editTextIdTwo.trim()) && !TextUtils.isEmpty(editTextNameTwo.trim()) && !TextUtils.isEmpty(editTextEmailTwo.trim()) && !TextUtils.isEmpty(editTextPhoneTwo.trim())) {
+                    if (checkTextInputLayoutEditText(textInputLayoutIdOne) && checkTextInputLayoutEditText(textInputLayoutNameOne) && checkTextInputLayoutEditText(textInputLayoutEmailOne) && checkTextInputLayoutEditText(textInputLayoutPhoneOne) && checkTextInputLayoutEditText(textInputLayoutIdTwo) && checkTextInputLayoutEditText(textInputLayoutNameTwo) && checkTextInputLayoutEditText(textInputLayoutEmailTwo) && checkTextInputLayoutEditText(textInputLayoutPhoneTwo)) {
 
-                    defenseRegistration = new TitleDefenseRegistration(titleDefenseRegistrationTwo.getNumberOfStudents(), titleDefenseRegistrationTwo.getDayEvening(), titleDefenseRegistrationTwo.getProjectInternship(), titleDefenseRegistrationTwo.getProjectInternshipType(), titleDefenseRegistrationTwo.getProjectInternshipTitle(), editTextIdOne, editTextNameOne, editTextEmailOne, editTextPhoneOne, editTextIdTwo, editTextNameTwo, editTextEmailTwo, editTextPhoneTwo);
+                    defense = new TitleDefense(titleDefense.getNumberOfStudents(), titleDefense.getDayEvening(), titleDefense.getProjectInternship(), titleDefense.getProjectInternshipType(), titleDefense.getProjectInternshipTitle(), Objects.requireNonNull(textInputLayoutIdOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutNameOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutEmailOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutPhoneOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutIdTwo.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutNameTwo.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutEmailTwo.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutPhoneTwo.getEditText()).getText().toString());
 
                     OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
-                    onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defenseRegistration);
+                    onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defense);
                 } else {
-                    Toast.makeText(context, "Please, fill up all the elements", Toast.LENGTH_SHORT).show();
+                        checkTextInputLayoutEditText(textInputLayoutIdOne);
+                        checkTextInputLayoutEditText(textInputLayoutNameOne);
+                        checkTextInputLayoutEditText(textInputLayoutEmailOne);
+                        checkTextInputLayoutEditText(textInputLayoutPhoneOne);
+                        checkTextInputLayoutEditText(textInputLayoutIdTwo);
+                        checkTextInputLayoutEditText(textInputLayoutNameTwo);
+                        checkTextInputLayoutEditText(textInputLayoutEmailTwo);
+                        checkTextInputLayoutEditText(textInputLayoutPhoneTwo);
                 }
                 break;
 
             case 3:
-                if (!TextUtils.isEmpty(editTextIdOne.trim()) && !TextUtils.isEmpty(editTextNameOne.trim()) && !TextUtils.isEmpty(editTextEmailOne.trim()) && !TextUtils.isEmpty(editTextPhoneOne.trim()) && !TextUtils.isEmpty(editTextIdTwo.trim()) && !TextUtils.isEmpty(editTextNameTwo.trim()) && !TextUtils.isEmpty(editTextEmailTwo.trim()) && !TextUtils.isEmpty(editTextPhoneTwo.trim()) && !TextUtils.isEmpty(editTextIdThree.trim()) && !TextUtils.isEmpty(editTextNameThree.trim()) && !TextUtils.isEmpty(editTextEmailThree.trim()) && !TextUtils.isEmpty(editTextPhoneThree.trim())) {
+                if (checkTextInputLayoutEditText(textInputLayoutIdOne) && checkTextInputLayoutEditText(textInputLayoutNameOne) && checkTextInputLayoutEditText(textInputLayoutEmailOne) && checkTextInputLayoutEditText(textInputLayoutPhoneOne) && checkTextInputLayoutEditText(textInputLayoutIdTwo) && checkTextInputLayoutEditText(textInputLayoutNameTwo) && checkTextInputLayoutEditText(textInputLayoutEmailTwo) && checkTextInputLayoutEditText(textInputLayoutPhoneTwo) && checkTextInputLayoutEditText(textInputLayoutIdThree) && checkTextInputLayoutEditText(textInputLayoutNameThree) && checkTextInputLayoutEditText(textInputLayoutEmailThree) && checkTextInputLayoutEditText(textInputLayoutPhoneThree)) {
 
-                    defenseRegistration = new TitleDefenseRegistration(titleDefenseRegistrationTwo.getNumberOfStudents(), titleDefenseRegistrationTwo.getDayEvening(), titleDefenseRegistrationTwo.getProjectInternship(), titleDefenseRegistrationTwo.getProjectInternshipType(), titleDefenseRegistrationTwo.getProjectInternshipTitle(), editTextIdOne, editTextNameOne, editTextEmailOne, editTextPhoneOne, editTextIdTwo, editTextNameTwo, editTextEmailTwo, editTextPhoneTwo, editTextIdThree, editTextNameThree, editTextEmailThree, editTextPhoneThree);
+
+                    defense = new TitleDefense(titleDefense.getNumberOfStudents(), titleDefense.getDayEvening(), titleDefense.getProjectInternship(), titleDefense.getProjectInternshipType(), titleDefense.getProjectInternshipTitle(), Objects.requireNonNull(textInputLayoutIdOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutNameOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutEmailOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutPhoneOne.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutIdTwo.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutNameTwo.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutEmailTwo.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutPhoneTwo.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutIdThree.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutNameThree.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutEmailThree.getEditText()).getText().toString(), Objects.requireNonNull(textInputLayoutPhoneThree.getEditText()).getText().toString());
 
                     OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
-                    onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defenseRegistration);
+                    onMyMessageSendListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationThreeFragment(), defense);
                 } else {
-                    Toast.makeText(context, "Please, fill up all the elements", Toast.LENGTH_SHORT).show();
+                    checkTextInputLayoutEditText(textInputLayoutIdOne);
+                    checkTextInputLayoutEditText(textInputLayoutNameOne);
+                    checkTextInputLayoutEditText(textInputLayoutEmailOne);
+                    checkTextInputLayoutEditText(textInputLayoutPhoneOne);
+                    checkTextInputLayoutEditText(textInputLayoutIdTwo);
+                    checkTextInputLayoutEditText(textInputLayoutNameTwo);
+                    checkTextInputLayoutEditText(textInputLayoutEmailTwo);
+                    checkTextInputLayoutEditText(textInputLayoutPhoneTwo);
+                    checkTextInputLayoutEditText(textInputLayoutIdThree);
+                    checkTextInputLayoutEditText(textInputLayoutNameThree);
+                    checkTextInputLayoutEditText(textInputLayoutEmailThree);
+                    checkTextInputLayoutEditText(textInputLayoutPhoneThree);
                 }
                 break;
+        }
+    }
+
+    private boolean checkTextInputLayoutEditText(TextInputLayout textInputLayout) {
+        String textInputLayoutValue = Objects.requireNonNull(textInputLayout.getEditText()).getText().toString();
+
+        if (TextUtils.isEmpty(textInputLayoutValue)) {
+            textInputLayout.setError("Field can not be empty");
+            return false;
+        } else {
+            return true;
         }
     }
 

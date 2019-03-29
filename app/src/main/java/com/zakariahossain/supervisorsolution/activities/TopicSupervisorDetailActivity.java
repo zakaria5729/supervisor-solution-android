@@ -5,21 +5,22 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.adapters.SupervisorInitialAdapter;
-import com.zakariahossain.supervisorsolution.models.Supervisor;
-import com.zakariahossain.supervisorsolution.models.Topic;
-import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
+import com.zakariahossain.supervisorsolution.models.SupervisorList;
+import com.zakariahossain.supervisorsolution.models.TopicList;
 import com.zakariahossain.supervisorsolution.preferences.ShowCaseAndTabSelectionPreference;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 import com.zakariahossain.supervisorsolution.utils.OthersUtil;
@@ -47,8 +48,8 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     private AppCompatTextView supervisorName, supervisorInitial, supervisorDesignation, supervisorPhone, supervisorEmail, supervisorResearchArea, supervisorTrainingExperience, supervisorMembership, supervisorPublicationProject, supervisorProfileLink, supervisorResearchAreaTag, supervisorTrainingExperienceTag, supervisorMembershipTag, supervisorPublicationProjectTag, supervisorProfileLinkTag;
 
     private String intentKey;
-    private Topic topic;
-    private Supervisor supervisor;
+    private TopicList.Topic topic;
+    private SupervisorList.Supervisor supervisor;
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -67,7 +68,6 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
             }
         }
 
-        UserSharedPrefManager userSharedPrefManager = new UserSharedPrefManager(this);
         showCasePreference = new ShowCaseAndTabSelectionPreference(this);
     }
 
@@ -77,12 +77,14 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
 
         if (intentKey != null) {
             if (intentKey.equals("supervisor_intent")) {
-                getSupervisorDataFromIntent();
+                getAndSetSupervisorDataFromIntent();
+                supervisorImageView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.zoom_in));
 
                 checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_SUPERVISOR, R.id.tvSupervisorPhone, "Phone Call and Email", "Click on the phone number to make a phone call or click on the email address to send an email");
 
             } else if (intentKey.equals("topic_intent")) {
-                getTopicDataFromIntent();
+                getAndSetTopicDataFromIntent();
+                topicImageView.setAnimation(AnimationUtils.loadAnimation(this, R.anim.zoom_in));
 
                 checkAndUpdateShowCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_TOPIC, R.id.rcvSupervisorInitial, "Supervisors Initial on this topic", "Scrolling left to right to show the more supervisors initial. And click on the initial to copy initial to clip board");
             }
@@ -128,14 +130,19 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
         topicName = findViewById(R.id.tvTopicName);
         topicDescriptionOne = findViewById(R.id.tvTopicDescriptionOne);
         topicDescriptionTwo = findViewById(R.id.tvTopicDescriptionTwo);
-        AppCompatTextView topicSupervisorInitial = findViewById(R.id.tvSupervisorInitial);
         recyclerViewInitial = findViewById(R.id.rcvSupervisorInitial);
     }
 
-    private void getSupervisorDataFromIntent() {
-        supervisor = (Supervisor) getIntent().getSerializableExtra(IntentAndBundleKey.KEY_SUPERVISOR_DATA);
+    private void getAndSetSupervisorDataFromIntent() {
+        supervisor = (SupervisorList.Supervisor) getIntent().getSerializableExtra(IntentAndBundleKey.KEY_SUPERVISOR_DATA);
 
         if (supervisor != null) {
+            if (!TextUtils.isEmpty(supervisor.getSupervisorImage())) {
+                Glide.with(this)
+                        .load(supervisor.getSupervisorImage())
+                        .into(supervisorImageView);
+            }
+
             String initial = supervisor.getSupervisorInitial() + ",";
             String designation = supervisor.getDesignation() + ",";
 
@@ -174,37 +181,35 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
                 supervisorProfileLink.setPaintFlags(supervisorProfileLink.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 supervisorProfileLink.setText(supervisor.getProfileLink());
             }
-
-            if (!TextUtils.isEmpty(supervisor.getSupervisorImage())) {
-                Glide.with(this)
-                        .load(supervisor.getSupervisorImage())
-                        .into(supervisorImageView);
-            }
         }
 
         supervisorPhone.setOnClickListener(this);
         supervisorEmail.setOnClickListener(this);
     }
 
-    private void getTopicDataFromIntent() {
-        topic = (Topic) getIntent().getSerializableExtra(IntentAndBundleKey.KEY_TOPIC_DATA);
+    private void getAndSetTopicDataFromIntent() {
+        topic = (TopicList.Topic) getIntent().getSerializableExtra(IntentAndBundleKey.KEY_TOPIC_DATA);
 
-        topicName.setText(topic.getTopicName());
-        topicDescriptionOne.setText(topic.getDescriptionOne());
-        topicDescriptionTwo.setText(topic.getDescriptionTwo());
+        if (topic != null) {
+            if (!TextUtils.isEmpty(topic.getImagePath())) {
+                Glide.with(TopicSupervisorDetailActivity.this)
+                        .load(topic.getImagePath())
+                        .into(topicImageView);
+            }
 
-        String[] supervisorInitialList = topic.getSupervisorInitial().split(", ");
+            topicName.setText(topic.getTopicName());
+            topicDescriptionOne.setText(topic.getDescriptionOne());
+            topicDescriptionTwo.setText(topic.getDescriptionTwo());
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerViewInitial.setLayoutManager(layoutManager);
-        recyclerViewInitial.setHasFixedSize(true);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        SupervisorInitialAdapter initialAdapter = new SupervisorInitialAdapter(this, supervisorInitialList);
-        recyclerViewInitial.setAdapter(initialAdapter);
+            String[] supervisorInitialList = topic.getSupervisorInitial().split(", ");
 
-        Glide.with(TopicSupervisorDetailActivity.this)
-                .load(topic.getImagePath())
-                .into(topicImageView);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerViewInitial.setLayoutManager(layoutManager);
+            recyclerViewInitial.setHasFixedSize(true);
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            SupervisorInitialAdapter initialAdapter = new SupervisorInitialAdapter(this, supervisorInitialList);
+            recyclerViewInitial.setAdapter(initialAdapter);
+        }
 
         appBarOffsetChangedListener();
     }
@@ -230,7 +235,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     }
 
     public void FloatingActionButtonOnClick(View view) {
-        finish();
+        onBackPressed();
     }
 
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {

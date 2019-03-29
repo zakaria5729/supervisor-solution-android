@@ -1,16 +1,17 @@
 package com.zakariahossain.supervisorsolution.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
-import com.zakariahossain.supervisorsolution.models.Topic;
 import com.zakariahossain.supervisorsolution.models.TopicList;
 
 import java.util.List;
@@ -18,23 +19,15 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
 
     private Context context;
-    //private static int screenOrientation;
-    private List<Topic> topicList;
-    private static OnMyClickListener onMyClickListener;
+    private List<TopicList.Topic> topicList;
+    private OnMyClickListener onMyClickListener;
 
-    /*public TopicAdapter(Context context, List<Topic> topicList, int screenOrientation) {
-        this.context = context;
-        this.topicList = topicList;
-        TopicAdapter.screenOrientation = screenOrientation;
-    }*/
-
-    public TopicAdapter(Context context, List<Topic> topicList) {
+    public TopicAdapter(Context context, List<TopicList.Topic> topicList) {
         this.context = context;
         this.topicList = topicList;
     }
@@ -49,9 +42,11 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
         holder.topicName.setText(topicList.get(position).getTopicName());
-        Glide.with(context)
-                .load(topicList.get(position).getImagePath())
-                .into(holder.topicImage);
+        if (!TextUtils.isEmpty(topicList.get(position).getImagePath())) {
+            Glide.with(context)
+                    .load(topicList.get(position).getImagePath())
+                    .into(holder.topicImage);
+        }
     }
 
     @Override
@@ -63,23 +58,18 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         onMyClickListener = myClickListener;
     }
 
-    static class TopicViewHolder extends RecyclerView.ViewHolder {
+    class TopicViewHolder extends RecyclerView.ViewHolder {
         private AppCompatImageView topicImage;
         private AppCompatTextView topicName;
-        private RelativeLayout topicRelativeLayout;
 
         TopicViewHolder(@NonNull View itemView) {
             super(itemView);
 
             topicImage = itemView.findViewById(R.id.ivTopicImage);
             topicName = itemView.findViewById(R.id.tvItemTopicName);
-            topicRelativeLayout = itemView.findViewById(R.id.rlTopic);
 
-           /* if (screenOrientation == 0) {
-                topicRelativeLayout.getLayoutParams().height = 200;
-            } else if (screenOrientation == 1) {
-                topicRelativeLayout.getLayoutParams().height = 250;
-            }*/
+            topicImage.setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+            topicName.setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

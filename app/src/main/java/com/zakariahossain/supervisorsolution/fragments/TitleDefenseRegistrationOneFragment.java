@@ -1,8 +1,8 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -12,17 +12,18 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
-import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 
@@ -30,7 +31,6 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 
@@ -40,11 +40,11 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
     private OnMyMessageListener onMyMessageListener;
     private AppCompatSpinner spProjectInternship;
     private TextInputEditText editTextProjectInternshipTitle;
+    private TextInputLayout tilProjectInternshipTitle;
 
     private int numberOfStudents;
-    private String dayEvening;
-    private String projectInternship;
-    private String projectInternshipType;
+    private RadioButton rbOneNumOfStudents, rbDay, rbProject;
+    private String dayEvening, projectInternship, projectInternshipType, projectInternshipTitle;
 
     public TitleDefenseRegistrationOneFragment() {
         // Required empty public constructor
@@ -88,7 +88,11 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
         RadioGroup radioGroupNumberOfStudents = view.findViewById(R.id.rgNumberOfStudents);
         RadioGroup radioGroupDayEvening = view.findViewById(R.id.rgDayEvening);
         RadioGroup radioGroupProjectInternship = view.findViewById(R.id.rgProjectInternship);
-        editTextProjectInternshipTitle = view.findViewById(R.id.tietProjectInternshipTitle);
+        rbDay = view.findViewById(R.id.rbDay);
+        rbProject = view.findViewById(R.id.rbProject);
+        rbOneNumOfStudents = view.findViewById(R.id.rbStudentNumberOne);
+        editTextProjectInternshipTitle = view.findViewById(R.id.etProjectInternshipTitle);
+        tilProjectInternshipTitle = view.findViewById(R.id.tilProjectInternshipTitle);
 
         buttonNextPageOne.setOnClickListener(this);
         radioGroupNumberOfStudents.setOnCheckedChangeListener(this);
@@ -97,18 +101,6 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
         spProjectInternship.setOnItemSelectedListener(this);
         editTextProjectInternshipTitle.setOnEditorActionListener(editorActionListener);
     }
-
-    private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_GO:
-                    nextOne();
-                    break;
-            }
-            return true;
-        }
-    };
 
     private void addProjectInternshipTypeSpinner() {
         ArrayAdapter<String> projectInternshipAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.project_internship_type));
@@ -153,22 +145,44 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnNextPageOne:
-                nextOne();
+                if (getAllData()) {
+                    TitleDefense titleDefense = new TitleDefense(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
+
+                    OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                    onMyMessageListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), titleDefense);
+                }
                 break;
         }
     }
 
-    private void nextOne() {
-        String projectInternshipTitle = Objects.requireNonNull(editTextProjectInternshipTitle.getText()).toString();
+    private boolean getAllData() {
+        projectInternshipTitle = Objects.requireNonNull(editTextProjectInternshipTitle.getText()).toString();
 
         if (numberOfStudents > 0 && !TextUtils.isEmpty(dayEvening) && !TextUtils.isEmpty(projectInternship) && !projectInternshipType.equals("Choose a type") && !TextUtils.isEmpty(projectInternshipTitle.trim())) {
+            return true;
 
-            TitleDefenseRegistration defenseRegistration = new TitleDefenseRegistration(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
-
-            OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
-            onMyMessageListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), defenseRegistration);
         } else {
-            Toast.makeText(context, "Please, fill up all the elements", Toast.LENGTH_SHORT).show();
+            if (projectInternshipType.equals("Choose a type")) {
+                TextView projectInternshipType = (TextView) spProjectInternship.getSelectedView();
+                projectInternshipType.setTextColor(Color.RED);
+            }
+            if (TextUtils.isEmpty(projectInternshipTitle.trim())) {
+                tilProjectInternshipTitle.setError("Project or internship title can not be empty");
+            }
+            if (numberOfStudents <= 0) {
+                Toast.makeText(context, "Please select number of students", Toast.LENGTH_SHORT).show();
+                rbOneNumOfStudents.setTextColor(Color.RED);
+            }
+            if (TextUtils.isEmpty(dayEvening)) {
+                Toast.makeText(context, "Please select day or evening", Toast.LENGTH_SHORT).show();
+                rbDay.setTextColor(Color.RED);
+            }
+            if (TextUtils.isEmpty(projectInternship)) {
+                Toast.makeText(context, "Please select project or internship", Toast.LENGTH_SHORT).show();
+                rbProject.setTextColor(Color.RED);
+            }
+
+            return false;
         }
     }
 
@@ -181,6 +195,22 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
     public void onNothingSelected(AdapterView<?> parent) {
         projectInternshipType = "Choose a type";
     }
+
+    private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            switch (actionId) {
+                case EditorInfo.IME_ACTION_GO:
+                    if (getAllData()) {
+                        TitleDefense titleDefense = new TitleDefense(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
+
+                        onMyMessageListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), titleDefense);
+                    }
+                    break;
+            }
+            return true;
+        }
+    };
 
     @Override
     public void onAttach(@NonNull Context context) {

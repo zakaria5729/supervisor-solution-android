@@ -24,7 +24,6 @@ import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailActivity;
 import com.zakariahossain.supervisorsolution.adapters.SupervisorAdapter;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
-import com.zakariahossain.supervisorsolution.models.Supervisor;
 import com.zakariahossain.supervisorsolution.models.SupervisorList;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
@@ -36,7 +35,7 @@ import java.util.List;
 public class SupervisorFragment extends Fragment implements OnMyClickListener, SwipeRefreshLayout.OnRefreshListener{
 
     private Context context;
-    private List<Supervisor> supervisorList;
+    private List<SupervisorList.Supervisor> supervisorList;
     private RecyclerView supervisorRecyclerView;
     private SupervisorAdapter supervisorAdapter;
     private SwipeRefreshLayout swipeRefreshLayoutSupervisor;
@@ -135,7 +134,7 @@ public class SupervisorFragment extends Fragment implements OnMyClickListener, S
 
     @Override
     public void onMyClick(int position) {
-        Supervisor supervisor = new Supervisor(supervisorList.get(position).getId(), supervisorList.get(position).getSupervisorName(), supervisorList.get(position).getSupervisorInitial(), supervisorList.get(position).getDesignation(), supervisorList.get(position).getSupervisorImage(), supervisorList.get(position).getPhone(), supervisorList.get(position).getEmail(), supervisorList.get(position).getResearchArea(), supervisorList.get(position).getTrainingExperience(), supervisorList.get(position).getMembership(), supervisorList.get(position).getPublicationProject(), supervisorList.get(position).getProfileLink());
+        SupervisorList.Supervisor supervisor = new SupervisorList.Supervisor(supervisorList.get(position).getId(), supervisorList.get(position).getSupervisorName(), supervisorList.get(position).getSupervisorInitial(), supervisorList.get(position).getDesignation(), supervisorList.get(position).getSupervisorImage(), supervisorList.get(position).getPhone(), supervisorList.get(position).getEmail(), supervisorList.get(position).getResearchArea(), supervisorList.get(position).getTrainingExperience(), supervisorList.get(position).getMembership(), supervisorList.get(position).getPublicationProject(), supervisorList.get(position).getProfileLink());
 
         Intent intent = new Intent(context, TopicSupervisorDetailActivity.class);
         intent.putExtra(IntentAndBundleKey.KEY_TOPIC_AND_SUPERVISOR, "supervisor_intent");

@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +34,6 @@ import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.LoginResponse;
-import com.zakariahossain.supervisorsolution.models.User;
 import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.preferences.ShowCaseAndTabSelectionPreference;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
@@ -143,6 +143,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
         googleSignInButton.setOnClickListener(this);
         userRoleSpinner.setOnItemSelectedListener(this);
         editTextLoginPassword.setOnEditorActionListener(editorActionListener);
+
+        googleSignInButton.setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
+        view.findViewById(R.id.imageView2).setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
     }
 
     private void setGooglePlusButtonText(SignInButton signInButton) {
@@ -314,7 +317,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
 
                 if (data != null) {
                     if(data.getError().equals(false)) {
-                        User user = data.getUser();
+                        LoginResponse.User user = data.getUser();
                         sharedPrefManager.saveUser(user);
 
                         OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));

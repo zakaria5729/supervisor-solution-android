@@ -19,4 +19,20 @@ public class GroupStatusList implements Serializable {
     public List<GroupStatus> getGroupStatusList() {
         return groupStatusList;
     }
+
+    public static class GroupStatus implements Serializable {
+        @SerializedName("supervisor_email")
+        private String supervisorEmail;
+
+        @SerializedName("is_accepted")
+        private int isAccepted;
+
+        public String getSupervisorEmail() {
+            return supervisorEmail;
+        }
+
+        public int getIsAccepted() {
+            return isAccepted;
+        }
+    }
 }

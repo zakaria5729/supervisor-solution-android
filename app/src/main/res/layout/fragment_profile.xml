@@ -13,12 +13,14 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvProfile"
             style="@style/MaterialCardViewProperties"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:targetApi="lollipop">
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -31,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:background="@color/colorDarkerGray"
-                    android:padding="8dp"
+                    android:padding="6dp"
                     android:text="Profile Information" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -91,6 +93,16 @@
                 android:layout_margin="8dp"
                 android:text="Loading group list, please wait..."/>
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Retry"
+            android:visibility="gone"
+            android:drawableStart="@drawable/ic_menu_manage"
+            tools:visibility="visible"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/glsCardView"

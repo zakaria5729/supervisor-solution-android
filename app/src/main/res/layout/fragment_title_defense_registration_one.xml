@@ -3,26 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="3dp"
     tools:context=".fragments.TitleDefenseRegistrationOneFragment">
 
-    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            style="@style/MaterialCardViewProperties">
-
             <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:orientation="vertical">
+
+                <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    style="@style/MaterialCardViewProperties">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textVie"
@@ -39,11 +46,26 @@
                     android:text="Choose the total number of students in your group. (In case of having 4 members in a team, you need to take the permission from honorable Head of the department through proper application, and have to fill up a different form which is available in CSE department, then you need not to fill up this form anymore)"
                     android:textAppearance="?android:textAppearanceSmall" />
 
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    style="@style/MaterialCardViewProperties">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:text="@string/number_of_students"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="@color/colorForBold" />
@@ -159,14 +181,14 @@
                     android:textColor="@color/colorForBold" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilProjectInternshipTitle"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
+                    app:errorEnabled="true"
                     style="@style/TextInputLayoutProperties">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/tietProjectInternshipTitle"
+                        android:id="@+id/etProjectInternshipTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:elevation="8dp"
@@ -198,9 +220,10 @@
                         android:layout_marginEnd="8dp"
                         android:text="Page 1 of 3"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </com.google.android.material.card.MaterialCardView>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </com.google.android.material.card.MaterialCardView>
-
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

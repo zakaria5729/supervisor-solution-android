@@ -13,7 +13,7 @@ import com.zakariahossain.supervisorsolution.fragments.TabFragment;
 import com.zakariahossain.supervisorsolution.fragments.TitleDefenseRegistrationOneFragment;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
-import com.zakariahossain.supervisorsolution.models.TitleDefenseRegistration;
+import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.preferences.ShowCaseAndTabSelectionPreference;
 import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
@@ -209,10 +209,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onMyTitleDefenseRegistrationMessage(Fragment fragment, TitleDefenseRegistration titleDefenseRegistration) {
-        if (titleDefenseRegistration != null) {
+    public void onMyTitleDefenseRegistrationMessage(Fragment fragment, TitleDefense titleDefense) {
+        if (titleDefense != null) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE, titleDefenseRegistration);
+            bundle.putSerializable(IntentAndBundleKey.KEY_FRAGMENT_TITLE_DEFENSE, titleDefense);
             fragment.setArguments(bundle);
         }
 

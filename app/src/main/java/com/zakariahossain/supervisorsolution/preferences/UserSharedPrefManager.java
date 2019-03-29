@@ -3,9 +3,7 @@ package com.zakariahossain.supervisorsolution.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.models.User;
-import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
+import com.zakariahossain.supervisorsolution.models.LoginResponse;
 
 public class UserSharedPrefManager {
     private static final String SHARED_PREF_NAME = "supervisor_shared_preference";
@@ -18,7 +16,7 @@ public class UserSharedPrefManager {
         editor.apply();
     }
 
-    public void saveUser(User user) {
+    public void saveUser(LoginResponse.User user) {
         editor.putInt("id", user.getId());
         editor.putString("name", user.getName());
         editor.putString("email", user.getEmail());
@@ -31,8 +29,8 @@ public class UserSharedPrefManager {
         return sharedPreferences.getInt("id", -1) != -1;
     }
 
-    public User getUser() {
-        return new User(
+    public LoginResponse.User getUser() {
+        return new LoginResponse.User(
                 sharedPreferences.getInt("id", -1),
                 sharedPreferences.getString("name", null),
                 sharedPreferences.getString("email", null),

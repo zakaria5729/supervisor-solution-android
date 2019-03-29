@@ -24,14 +24,12 @@ class RetrofitApiClient {
     private Retrofit retrofit;
 
     private RetrofitApiClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        /*HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
+        httpClient.addInterceptor(logging);*/
 
-
-
-        /*OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @NonNull
                     @Override
@@ -45,13 +43,13 @@ class RetrofitApiClient {
                         Request request = requestBuilder.build();
                         return chain.proceed(request);
                     }
-                }).build();*/
+                }).build();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                /*.client(okHttpClient)*/
-                .client(httpClient.build())
+                .client(okHttpClient)
+                /*.client(httpClient.build())*/
                 .build();
     }
 

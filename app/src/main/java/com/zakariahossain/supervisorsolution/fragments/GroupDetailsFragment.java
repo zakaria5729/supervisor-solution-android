@@ -15,6 +15,7 @@ import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
+import com.zakariahossain.supervisorsolution.models.Student;
 import com.zakariahossain.supervisorsolution.preferences.UserSharedPrefManager;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
@@ -34,7 +35,7 @@ import androidx.fragment.app.Fragment;
 public class GroupDetailsFragment extends Fragment implements View.OnClickListener, OnFragmentBackPressedListener {
 
     private OnMyMessageListener onMyMessageListener;
-    private ArrayList<RequestedOrAcceptedGroup> requestedOrAcceptedGroupList;
+    private ArrayList<Student> requestedOrAcceptedGroupList;
 
     private MaterialButton acceptGroupButton, declineGroupButton, sendGroupMailButton;
     private MaterialCardView studentOneCardView, studentTwoCardView, studentThreeCardView;
@@ -124,14 +125,14 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
                     case IntentAndBundleKey.KEY_REQUEST:
                         sendGroupMailButton.setVisibility(View.GONE);
 
-                        requestedOrAcceptedGroupList = (ArrayList<RequestedOrAcceptedGroup>) getArguments().getSerializable(IntentAndBundleKey.KEY_REQUEST_GROUP_DETAILS);
+                        requestedOrAcceptedGroupList = (ArrayList<Student>) getArguments().getSerializable(IntentAndBundleKey.KEY_REQUEST_GROUP_DETAILS);
                         break;
 
                     case IntentAndBundleKey.KEY_ACCEPT:
                         acceptGroupButton.setVisibility(View.GONE);
                         declineGroupButton.setVisibility(View.GONE);
 
-                        requestedOrAcceptedGroupList = (ArrayList<RequestedOrAcceptedGroup>) getArguments().getSerializable(IntentAndBundleKey.KEY_ACCEPT_GROUP_DETAILS);
+                        requestedOrAcceptedGroupList = (ArrayList<Student>) getArguments().getSerializable(IntentAndBundleKey.KEY_ACCEPT_GROUP_DETAILS);
                         break;
                 }
             }
@@ -273,4 +274,3 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
         }
     }
 }
-

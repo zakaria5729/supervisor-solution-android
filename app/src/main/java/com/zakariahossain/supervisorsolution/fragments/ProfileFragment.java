@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -23,7 +24,6 @@ import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedLis
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.AcceptedGroupList;
-import com.zakariahossain.supervisorsolution.models.GroupStatus;
 import com.zakariahossain.supervisorsolution.models.GroupStatusList;
 import com.zakariahossain.supervisorsolution.models.RequestedGroupList;
 import com.zakariahossain.supervisorsolution.models.Student;
@@ -55,10 +55,11 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
     private RequestedGroupAdapter requestedGroupAdapter;
     private AcceptedGroupAdapter acceptedGroupAdapter;
     private GroupStatusAdapter groupListStatusAdapter;
-    private List<GroupStatus> groupStatusList;
+    private List<GroupStatusList.GroupStatus> groupStatusList;
     private List<List<Student>> requestedGroupList;
     private List<List<Student>> acceptedGroupList;
 
+    private MaterialButton retryButton;
     private MaterialCardView requestedGroupListCardView, acceptedGroupListCardView, groupListStatusCardView;
     private AppCompatTextView userName, userEmail, userRoleAndCreatedDate;
 
@@ -98,6 +99,7 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
         acceptedGroupListCardView = view.findViewById(R.id.aglCardView);
         groupListStatusCardView = view.findViewById(R.id.glsCardView);
         MaterialButton sendMailToAllAcceptedGroupsButton = view.findViewById(R.id.btnSendMailToAllAcceptedGroups);
+        retryButton = view.findViewById(R.id.btnRetry);
         requestedGroupListRecyclerView = view.findViewById(R.id.rglRecyclerView);
         acceptedGroupListRecyclerView = view.findViewById(R.id.aglRecyclerView);
         groupListStatusRecyclerView = view.findViewById(R.id.glsRecyclerView);
@@ -107,9 +109,12 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
         loadingIndicatorViewProfileLL = view.findViewById(R.id.avLoadingViewProfileLinearLayout);
 
         sendMailToAllAcceptedGroupsButton.setOnClickListener(ProfileFragment.this);
+        retryButton.setOnClickListener(ProfileFragment.this);
 
         sharedPrefManager = new UserSharedPrefManager(context);
         myApiService = new NetworkCall();
+
+        view.findViewById(R.id.llProfile).setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
     }
 
     @Override
@@ -150,6 +155,7 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
                     if(data.getError().equals(false)) {
                         loadingIndicatorViewProfile.hide();
                         loadingIndicatorViewProfileLL.setVisibility(View.GONE);
+                        retryButton.setVisibility(View.GONE);
                         groupListStatusCardView.setVisibility(View.VISIBLE);
 
                         groupStatusList = data.getGroupStatusList();
@@ -173,8 +179,10 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
             @Override
             public void onError(Throwable th) {
                 Toast.makeText(context, "Error: "+th.getMessage(), Toast.LENGTH_LONG).show();
+                loadingIndicatorViewProfile.hide();
                 loadingIndicatorTextViewProfile.setText("Check your internet connection");
                 loadingIndicatorTextViewProfile.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                retryButton.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -187,6 +195,7 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
                     if(data.getError().equals(false)) {
                         loadingIndicatorViewProfile.hide();
                         loadingIndicatorViewProfileLL.setVisibility(View.GONE);
+                        retryButton.setVisibility(View.GONE);
                         requestedGroupListCardView.setVisibility(View.VISIBLE);
 
                         requestedGroupList = data.getRequestedGroupList();
@@ -210,8 +219,10 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
             @Override
             public void onError(Throwable th) {
                 Toast.makeText(context, "Error: "+th.getMessage(), Toast.LENGTH_SHORT).show();
+                loadingIndicatorViewProfile.hide();
                 loadingIndicatorTextViewProfile.setText("Check your internet connection");
                 loadingIndicatorTextViewProfile.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                retryButton.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -224,6 +235,7 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
                     if(data.getError().equals(false)) {
                         loadingIndicatorViewProfile.hide();
                         loadingIndicatorViewProfileLL.setVisibility(View.GONE);
+                        retryButton.setVisibility(View.GONE);
                         acceptedGroupListCardView.setVisibility(View.VISIBLE);
 
                         acceptedGroupList = data.getAcceptedGroupList();
@@ -247,8 +259,10 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
             @Override
             public void onError(Throwable th) {
                 Toast.makeText(context, "Error: "+th.getMessage(), Toast.LENGTH_SHORT).show();
+                loadingIndicatorViewProfile.hide();
                 loadingIndicatorTextViewProfile.setText("Check your internet connection");
                 loadingIndicatorTextViewProfile.setTextColor(context.getResources().getColor(R.color.colorAccent));
+                retryButton.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -328,13 +342,22 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
             StringBuilder emailRecipients = new StringBuilder();
 
             for (List<Student> req: acceptedGroupList) {
-                for (Student  r: req) {
-                    emailRecipients.append(r.getEmail()).append(",");
+                for (Student student: req) {
+                    emailRecipients.append(student.getEmail()).append(",");
                 }
             }
 
             if (!TextUtils.isEmpty(emailRecipients.toString())) {
                 new OthersUtil(context).openEmailDialog(emailRecipients.toString(), "Send Email");
+            }
+        } else if(view.getId() == R.id.btnRetry) {
+            loadingIndicatorViewProfile.show();
+
+            if (sharedPrefManager.getUser().getUserRole().equals("Student")) {
+                loadGroupListStatusFromServer();
+            } else if (sharedPrefManager.getUser().getUserRole().equals("Supervisor")) {
+                loadRequestedGroupListFromServer();
+                loadAcceptedGroupListFromServer();
             }
         }
     }

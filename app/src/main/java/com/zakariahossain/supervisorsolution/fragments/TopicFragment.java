@@ -3,7 +3,6 @@ package com.zakariahossain.supervisorsolution.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,33 +14,29 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
-import com.wang.avi.Indicator;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailActivity;
 import com.zakariahossain.supervisorsolution.adapters.TopicAdapter;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
-import com.zakariahossain.supervisorsolution.models.Topic;
 import com.zakariahossain.supervisorsolution.models.TopicList;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
 import com.zakariahossain.supervisorsolution.retrofits.NetworkCall;
 import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TopicFragment extends Fragment implements OnMyClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private Context context;
-    private List<Topic> topicList;
+    private List<TopicList.Topic> topicList;
     private RecyclerView topicRecyclerView;
     private TopicAdapter topicAdapter;
     private SwipeRefreshLayout swipeRefreshLayoutTopic;
@@ -87,17 +82,6 @@ public class TopicFragment extends Fragment implements OnMyClickListener, SwipeR
         swipeRefreshLayoutTopic.setOnRefreshListener(this);
         swipeRefreshLayoutTopic.setColorSchemeResources(R.color.colorPrimaryDark);
     }
-
-   /* @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            screenOrientation = 0;
-        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            screenOrientation = 1;
-        }
-    }*/
 
     private void loadTopicsFromServer() {
         MyApiService myApiService = new NetworkCall();
@@ -152,7 +136,7 @@ public class TopicFragment extends Fragment implements OnMyClickListener, SwipeR
 
     @Override
     public void onMyClick(int position) {
-        Topic topic = new Topic(topicList.get(position).getId(), topicList.get(position).getTopicName(), topicList.get(position).getImagePath(), topicList.get(position).getSupervisorInitial(), topicList.get(position).getDescriptionOne(), topicList.get(position).getDescriptionTwo(), topicList.get(position).getVideoPath());
+        TopicList.Topic topic = new TopicList.Topic(topicList.get(position).getId(), topicList.get(position).getTopicName(), topicList.get(position).getImagePath(), topicList.get(position).getSupervisorInitial(), topicList.get(position).getDescriptionOne(), topicList.get(position).getDescriptionTwo(), topicList.get(position).getVideoPath());
 
         Intent intent = new Intent(context, TopicSupervisorDetailActivity.class);
         intent.putExtra(IntentAndBundleKey.KEY_TOPIC_AND_SUPERVISOR, "topic_intent");

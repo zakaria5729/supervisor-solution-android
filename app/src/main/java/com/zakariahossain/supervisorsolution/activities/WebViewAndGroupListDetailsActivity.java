@@ -6,6 +6,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -60,7 +61,7 @@ public class WebViewAndGroupListDetailsActivity extends AppCompatActivity implem
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
+        onBackPressed();
         return super.onSupportNavigateUp();
     }
 
@@ -86,6 +87,7 @@ public class WebViewAndGroupListDetailsActivity extends AppCompatActivity implem
             super.onPageFinished(view, url);
             swipeRefreshLayoutWebView.setRefreshing(false);
             progressBar.setVisibility(View.GONE);
+            webView.setAnimation(AnimationUtils.loadAnimation(WebViewAndGroupListDetailsActivity.this, R.anim.zoom_in));
         }
     }
 }

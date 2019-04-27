@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class TitleDefense implements Serializable {
-
     @SerializedName("project_internship")
     private String projectInternship;
 

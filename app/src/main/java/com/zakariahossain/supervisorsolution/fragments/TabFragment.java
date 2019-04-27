@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.zakariahossain.supervisorsolution.R;
@@ -45,7 +44,6 @@ public class TabFragment extends Fragment implements OnFragmentBackPressedListen
             getActivity().setTitle("Topic and Supervisor");
         }
         tabSelectionPreference = new ShowCaseAndTabSelectionPreference(container.getContext());
-
         return view;
     }
 
@@ -70,14 +68,10 @@ public class TabFragment extends Fragment implements OnFragmentBackPressedListen
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
     }
 

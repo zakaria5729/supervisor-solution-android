@@ -13,7 +13,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
@@ -45,10 +44,7 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
 
     private TextInputLayout textInputLayoutEnterEmail, textInputLayoutVerificationCode, textInputLayoutResetPassword, textInputLayoutResetConfirmPassword;
 
-    private String email;
-    private String verificationCode;
-    private String newPassword;
-    private String bundleKey;
+    private String email, verificationCode, newPassword, bundleKey;
 
     public ForgotAndResetPasswordFragment() {
         // Required empty public constructor
@@ -111,14 +107,12 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
 
     private void setUpEnterEmailUi(View view) {
         textInputLayoutEnterEmail = view.findViewById(R.id.tilEnterEmail);
-        MaterialButton enterEmailBackButton = view.findViewById(R.id.btnBackEnterEmail);
-        MaterialButton enterEmailNextButton = view.findViewById(R.id.btnNextEnterEmail);
         TextInputEditText editTextEnterEmail = view.findViewById(R.id.etEnterEmail);
 
         textInputLayoutEnterEmail.requestFocus();
 
-        enterEmailBackButton.setOnClickListener(this);
-        enterEmailNextButton.setOnClickListener(this);
+        view.findViewById(R.id.btnBackEnterEmail).setOnClickListener(this);
+        view.findViewById(R.id.btnNextEnterEmail).setOnClickListener(this);
         editTextEnterEmail.setOnEditorActionListener(editorActionListener);
     }
 
@@ -126,14 +120,12 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         textInputLayoutVerificationCode = view.findViewById(R.id.tilVerificationCode);
         textInputLayoutResetPassword = view.findViewById(R.id.tilResetPassword);
         textInputLayoutResetConfirmPassword = view.findViewById(R.id.tilResetConfirmPassword);
-        MaterialButton resetPasswordBackButton = view.findViewById(R.id.btnBackResetPassword);
-        MaterialButton resetPasswordButton = view.findViewById(R.id.btnResetPassword);
         TextInputEditText editTextResetConfirmPassword = view.findViewById(R.id.etResetConfirmPassword);
 
         textInputLayoutVerificationCode.requestFocus();
 
-        resetPasswordBackButton.setOnClickListener(this);
-        resetPasswordButton.setOnClickListener(this);
+        view.findViewById(R.id.btnBackResetPassword).setOnClickListener(this);
+        view.findViewById(R.id.btnResetPassword).setOnClickListener(this);
         editTextResetConfirmPassword.setOnEditorActionListener(editorActionListener);
     }
 

@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public class RequestedGroupList implements Serializable {
-
     @SerializedName("error")
     private Boolean error;
 

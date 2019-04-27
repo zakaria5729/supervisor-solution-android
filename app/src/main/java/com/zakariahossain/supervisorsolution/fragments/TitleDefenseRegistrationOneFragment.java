@@ -85,16 +85,17 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
     private void setUpPageOneUi(View view) {
         MaterialButton buttonNextPageOne = view.findViewById(R.id.btnNextPageOne);
         spProjectInternship = view.findViewById(R.id.spProjectInternship);
-        RadioGroup radioGroupNumberOfStudents = view.findViewById(R.id.rgNumberOfStudents);
-        RadioGroup radioGroupDayEvening = view.findViewById(R.id.rgDayEvening);
-        RadioGroup radioGroupProjectInternship = view.findViewById(R.id.rgProjectInternship);
         rbDay = view.findViewById(R.id.rbDay);
         rbProject = view.findViewById(R.id.rbProject);
         rbOneNumOfStudents = view.findViewById(R.id.rbStudentNumberOne);
         editTextProjectInternshipTitle = view.findViewById(R.id.etProjectInternshipTitle);
         tilProjectInternshipTitle = view.findViewById(R.id.tilProjectInternshipTitle);
 
-        buttonNextPageOne.setOnClickListener(this);
+        RadioGroup radioGroupNumberOfStudents = view.findViewById(R.id.rgNumberOfStudents);
+        RadioGroup radioGroupDayEvening = view.findViewById(R.id.rgDayEvening);
+        RadioGroup radioGroupProjectInternship = view.findViewById(R.id.rgProjectInternship);
+
+        view.findViewById(R.id.btnNextPageOne).setOnClickListener(this);
         radioGroupNumberOfStudents.setOnCheckedChangeListener(this);
         radioGroupDayEvening.setOnCheckedChangeListener(this);
         radioGroupProjectInternship.setOnCheckedChangeListener(this);

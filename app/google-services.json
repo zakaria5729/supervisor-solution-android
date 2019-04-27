@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1008807411201",
+    "firebase_url": "https://supervisorsolution.firebaseio.com",
+    "project_id": "supervisorsolution",
+    "storage_bucket": "supervisorsolution.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008807411201:android:e28585c3353717fb",
+        "android_client_info": {
+          "package_name": "com.zakariahossain.supervisorsolution"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008807411201-vpic3crusl5ko7u2hihd5ctmqkjnpado.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB57IzuDrJIZtFHpH5qXG2tJAdvqR5oxiY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

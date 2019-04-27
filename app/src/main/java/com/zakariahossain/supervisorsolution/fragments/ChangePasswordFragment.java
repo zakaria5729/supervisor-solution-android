@@ -12,7 +12,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
@@ -69,13 +68,11 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
         newPasswordTextInputLayout = view.findViewById(R.id.tilNewChangedPassword);
         confirmPasswordTextInputLayout = view.findViewById(R.id.tilChangedConfirmPassword);
         TextInputEditText changeConfirmPasswordEditText = view.findViewById(R.id.etChangeConfirmPassword);
-        MaterialButton changePasswordButton = view.findViewById(R.id.btnChangePassword);
-        MaterialButton backChangePasswordButton = view.findViewById(R.id.btnBackChangePassword);
 
         currentPasswordTextInputLayout.requestFocus();
 
-        changePasswordButton.setOnClickListener(this);
-        backChangePasswordButton.setOnClickListener(this);
+        view.findViewById(R.id.btnChangePassword).setOnClickListener(this);
+        view.findViewById(R.id.btnBackChangePassword).setOnClickListener(this);
         changeConfirmPasswordEditText.setOnEditorActionListener(editorActionListener);
     }
 

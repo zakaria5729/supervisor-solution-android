@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
@@ -27,13 +27,10 @@ import com.zakariahossain.supervisorsolution.retrofits.ResponseCallback;
 import com.zakariahossain.supervisorsolution.utils.OthersUtil;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener, OnFragmentBackPressedListener {
@@ -87,14 +84,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, On
         textInputSignUpEmail = view.findViewById(R.id.tilSignUpEmail);
         textInputSignUpPassword = view.findViewById(R.id.tilSignUpPassword);
         textInputSignUpConfirmPassword = view.findViewById(R.id.tilSignUpConfirmPassword);
-        AppCompatTextView loginTextView = view.findViewById(R.id.tvLogin);
-        MaterialButton signUpButton = view.findViewById(R.id.btnSignUp);
         TextInputEditText editTextSignUpConfirmPassword = view.findViewById(R.id.etSignUpConfirmPassword);
 
         textInputSignUpName.requestFocus();
 
-        loginTextView.setOnClickListener(this);
-        signUpButton.setOnClickListener(this);
+        view.findViewById(R.id.tvLogin).setOnClickListener(this);
+        view.findViewById(R.id.btnSignUp).setOnClickListener(this);
         editTextSignUpConfirmPassword.setOnEditorActionListener(editorActionListener);
 
         view.findViewById(R.id.imageView).setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
@@ -128,15 +123,18 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, On
                         onMyMessageSendListener.onMyFragmentAndEmail(new LoginFragment(), signUpEmail);
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
+                        Log.v("my", data.getMessage()+" "+data.getError());
                         Toast.makeText(context, data.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
+                    Log.v("my", data.getMessage()+" "+data.getError());
                     Toast.makeText(getContext(), "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(Throwable th) {
+                Log.v("my", th.getMessage());
                 alertDialog.dismiss();
                 Toast.makeText(context, th.getMessage(), Toast.LENGTH_LONG).show();
             }

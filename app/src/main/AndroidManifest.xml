@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <dist:module dist:instant="true" />
+    <!--<dist:module dist:instant="true" />-->
 
     <application
         android:allowBackup="true"
@@ -15,10 +15,10 @@
         android:roundIcon="@drawable/ic_school_black_24dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.WebViewAndGroupListDetailsActivity" />
-        <activity android:name=".activities.TrialActivity" />
+        <activity android:name="com.zakariahossain.supervisorsolution.activities.WebViewAndGroupListDetailsActivity" />
+        <activity android:name="com.zakariahossain.supervisorsolution.activities.TrialActivity" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.zakariahossain.supervisorsolution.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TopicSupervisorDetailActivity" />
+        <activity android:name="com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailActivity" />
     </application>
 
 </manifest>

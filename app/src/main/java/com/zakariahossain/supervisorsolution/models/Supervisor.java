@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Supervisor implements Serializable {
-
     @SerializedName("supervisor_email")
     private String supervisorEmail;
 

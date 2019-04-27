@@ -98,7 +98,6 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
         requestedGroupListCardView = view.findViewById(R.id.rglCardView);
         acceptedGroupListCardView = view.findViewById(R.id.aglCardView);
         groupListStatusCardView = view.findViewById(R.id.glsCardView);
-        MaterialButton sendMailToAllAcceptedGroupsButton = view.findViewById(R.id.btnSendMailToAllAcceptedGroups);
         retryButton = view.findViewById(R.id.btnRetry);
         requestedGroupListRecyclerView = view.findViewById(R.id.rglRecyclerView);
         acceptedGroupListRecyclerView = view.findViewById(R.id.aglRecyclerView);
@@ -108,7 +107,7 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
         loadingIndicatorTextViewProfile = view.findViewById(R.id.avLoadingTextViewProfile);
         loadingIndicatorViewProfileLL = view.findViewById(R.id.avLoadingViewProfileLinearLayout);
 
-        sendMailToAllAcceptedGroupsButton.setOnClickListener(ProfileFragment.this);
+        view.findViewById(R.id.btnSendMailToAllAcceptedGroups).setOnClickListener(ProfileFragment.this);
         retryButton.setOnClickListener(ProfileFragment.this);
 
         sharedPrefManager = new UserSharedPrefManager(context);

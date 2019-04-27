@@ -6,10 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.card.MaterialCardView;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
 import com.zakariahossain.supervisorsolution.models.TopicList;

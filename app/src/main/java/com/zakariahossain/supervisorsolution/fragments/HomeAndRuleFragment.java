@@ -1,12 +1,9 @@
 package com.zakariahossain.supervisorsolution.fragments;
 
-import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,8 +12,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
-import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.utils.IntentAndBundleKey;
 
 public class HomeAndRuleFragment extends Fragment {

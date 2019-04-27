@@ -20,14 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.zakariahossain.supervisorsolution.R;
-import com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailActivity;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

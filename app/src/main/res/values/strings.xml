@@ -76,12 +76,10 @@
     </string-array>
 
     <string-array name="supervisors">
-        <item>sattar@diu.edu.bd</item>
-        <item>akther@diu.edu.bd</item>
-        <item>AZH</item>
-        <item>KMS</item>
-        <item>MSS</item>
-        <item>SSH</item>
+        <item>abdus.cse@diu.edu.bd</item>
+        <item>akterhossain@daffodilvarsity.edu.bd</item>
+        <item>saiful.cse@diu.edu.bd</item>
+        <item>bonny.cse@diu.edu.bd</item>
     </string-array>
 
     <string-array name="project_internship_type">

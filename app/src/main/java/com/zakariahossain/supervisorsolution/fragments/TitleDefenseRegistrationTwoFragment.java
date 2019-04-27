@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
@@ -99,11 +98,8 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
         textInputLayoutEmailThree = view.findViewById(R.id.tilEmailThree);
         textInputLayoutPhoneThree = view.findViewById(R.id.tilPhoneThree);
 
-        MaterialButton buttonBackPageTwo = view.findViewById(R.id.btnBackPageTwo);
-        MaterialButton buttonNextPageTwo = view.findViewById(R.id.btnSignUp);
-
-        buttonBackPageTwo.setOnClickListener(this);
-        buttonNextPageTwo.setOnClickListener(this);
+        view.findViewById(R.id.btnBackPageTwo).setOnClickListener(this);
+        view.findViewById(R.id.btnSignUp).setOnClickListener(this);
     }
 
     private void getBundleDataPageTwo() {

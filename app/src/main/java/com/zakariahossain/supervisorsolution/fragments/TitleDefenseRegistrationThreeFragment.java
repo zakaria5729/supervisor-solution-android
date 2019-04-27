@@ -19,7 +19,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
@@ -108,8 +107,6 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     }
 
     private void setUpPageThreeUi(View view) {
-        MaterialButton buttonBackPageThree = view.findViewById(R.id.btnBackPageThree);
-        MaterialButton buttonSubmit = view.findViewById(R.id.btnSubmit);
         autoCompleteTextViewOneEmail = view.findViewById(R.id.acTextViewInitialOne);
         autoCompleteTextViewTwoEmail = view.findViewById(R.id.acTextViewInitialTwo);
         autoCompleteTextViewThreeEmail = view.findViewById(R.id.acTextViewInitialThree);
@@ -120,8 +117,8 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         tilThirdSupervisorEmail = view.findViewById(R.id.tilThirdSupervisorEmail);
         textInputLayoutOtherAreaOfInterest = view.findViewById(R.id.textInputLayoutAreaOfInterest);
 
-        buttonBackPageThree.setOnClickListener(this);
-        buttonSubmit.setOnClickListener(this);
+        view.findViewById(R.id.btnBackPageThree).setOnClickListener(this);
+        view.findViewById(R.id.btnSubmit).setOnClickListener(this);
         Objects.requireNonNull(tilThirdSupervisorEmail.getEditText()).setOnEditorActionListener(editorActionListener);
     }
 
@@ -173,21 +170,21 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         if (titleDefense != null) {
             switch (titleDefense.getNumberOfStudents()) {
                 case 1:
-                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdOne()), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
+                    studentList.add(new Student(titleDefense.getEditTextIdOne(), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
                     break;
 
                 case 2:
-                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdOne()), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
+                    studentList.add(new Student(titleDefense.getEditTextIdOne(), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
 
-                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdTwo()), titleDefense.getEditTextNameTwo(), titleDefense.getEditTextEmailTwo(), titleDefense.getEditTextPhoneTwo()));
+                    studentList.add(new Student(titleDefense.getEditTextIdTwo(), titleDefense.getEditTextNameTwo(), titleDefense.getEditTextEmailTwo(), titleDefense.getEditTextPhoneTwo()));
                     break;
 
                 case 3:
-                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdOne()), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
+                    studentList.add(new Student(titleDefense.getEditTextIdOne(), titleDefense.getEditTextNameOne(), titleDefense.getEditTextEmailOne(), titleDefense.getEditTextPhoneOne()));
 
-                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdTwo()), titleDefense.getEditTextNameTwo(), titleDefense.getEditTextEmailTwo(), titleDefense.getEditTextPhoneTwo()));
+                    studentList.add(new Student(titleDefense.getEditTextIdTwo(), titleDefense.getEditTextNameTwo(), titleDefense.getEditTextEmailTwo(), titleDefense.getEditTextPhoneTwo()));
 
-                    studentList.add(new Student(Integer.parseInt(titleDefense.getEditTextIdThree()), titleDefense.getEditTextNameThree(), titleDefense.getEditTextEmailThree(), titleDefense.getEditTextPhoneThree()));
+                    studentList.add(new Student(titleDefense.getEditTextIdThree(), titleDefense.getEditTextNameThree(), titleDefense.getEditTextEmailThree(), titleDefense.getEditTextPhoneThree()));
                     break;
             }
         }

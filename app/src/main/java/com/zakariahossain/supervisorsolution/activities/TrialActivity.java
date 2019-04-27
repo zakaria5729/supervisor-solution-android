@@ -3,9 +3,7 @@ package com.zakariahossain.supervisorsolution.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 
 import com.zakariahossain.supervisorsolution.R;
 

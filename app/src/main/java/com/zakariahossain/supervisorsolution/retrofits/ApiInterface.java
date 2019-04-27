@@ -91,17 +91,6 @@ public interface ApiInterface {
             @Field("accept_or_decline") int acceptOrDecline
     );
 
-    /*@POST("title_defense_registration")
-    Call<ServerResponse> titleDefenseRegistration(
-            @Query("project_internship") String projectInternship,
-            @Query("project_internship_type") String projectInternshipType,
-            @Query("project_internship_title") String projectInternshipTitle,
-            @Query("area_of_interest") String areaOfInterest,
-            @Query("day_evening") String dayEvening,
-            @Body List<RequestedOrAcceptedGroup> studentList,
-            @Body List<Super> supervisorList
-            );*/
-
     @POST("title_defense_registration")
     Call<ServerResponse> titleDefenseRegistration(@Body TitleDefense titleDefense);
 }

@@ -344,42 +344,10 @@ public class NetworkCall implements MyApiService {
         });
     }
 
-    /*@Override
-    public void titleDefenseRegistration(String projectInternship, String projectInternshipType, String projectInternshipTitle, String areaOfInterest, String dayEvening, List<RequestedOrAcceptedGroup> studentList, List<Super> supervisorList, final ResponseCallback<ServerResponse> responseCallback) {
-
-        Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(projectInternship, projectInternshipType, projectInternshipTitle, areaOfInterest, dayEvening, studentList, supervisorList);
-
-        *//*Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(studentList, supervisorList);*//*
-
-        titleDefenseRegistrationCall.enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<ServerResponse> call, @NonNull Response<ServerResponse> response) {
-                if(response.isSuccessful()) {
-                    ServerResponse serverResponse = response.body();
-
-                    if (serverResponse != null) {
-                        responseCallback.onSuccess(serverResponse);
-                    } else {
-                        responseCallback.onError(new Exception(response.message()));
-                    }
-                } else {
-                    responseCallback.onError(new Exception(response.message()));
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ServerResponse> call, @NonNull Throwable t) {
-                responseCallback.onError(new Exception(t.getMessage()));
-            }
-        });
-    }*/
-
     @Override
     public void titleDefenseRegistration(TitleDefense titleDefense, final ResponseCallback<ServerResponse> responseCallback) {
 
         Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(titleDefense);
-
-        /*Call<ServerResponse> titleDefenseRegistrationCall = apiInterface.titleDefenseRegistration(studentList, supervisorList);*/
 
         titleDefenseRegistrationCall.enqueue(new Callback<ServerResponse>() {
             @Override

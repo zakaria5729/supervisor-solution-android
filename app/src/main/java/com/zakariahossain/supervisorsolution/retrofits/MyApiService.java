@@ -9,6 +9,8 @@ import com.zakariahossain.supervisorsolution.models.SupervisorList;
 import com.zakariahossain.supervisorsolution.models.TitleDefense;
 import com.zakariahossain.supervisorsolution.models.TopicList;
 
+import retrofit2.http.Field;
+
 public interface MyApiService {
     void getTopicsFromServer(ResponseCallback<TopicList> responseCallback);
 
@@ -33,8 +35,6 @@ public interface MyApiService {
     void acceptedGroupList(String supervisorEmail, ResponseCallback<AcceptedGroupList> responseCallback);
 
     void groupAcceptOrDecline(String supervisorEmail, String groupEmail, int acceptOrDecline, ResponseCallback<ServerResponse> responseCallback);
-
-    /*void titleDefenseRegistration(String projectInternship, String projectInternshipType, String projectInternshipTitle, String areaOfInterest, String dayEvening, List<RequestedOrAcceptedGroup> studentList, List<Super> supervisorList, ResponseCallback<ServerResponse> responseCallback);*/
 
     void titleDefenseRegistration(TitleDefense titleDefense, ResponseCallback<ServerResponse> responseCallback);
 }

@@ -5,9 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Student implements Serializable {
-
     @SerializedName("student_id")
-    private Integer studentId;
+    private String studentId;
 
     @SerializedName("name")
     private String name;
@@ -18,14 +17,14 @@ public class Student implements Serializable {
     @SerializedName("phone")
     private String phone;
 
-    public Student(Integer studentId, String name, String email, String phone) {
+    public Student(String studentId, String name, String email, String phone) {
         this.studentId = studentId;
         this.name = name;
         this.email = email;
         this.phone = phone;
     }
 
-    public Integer getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 

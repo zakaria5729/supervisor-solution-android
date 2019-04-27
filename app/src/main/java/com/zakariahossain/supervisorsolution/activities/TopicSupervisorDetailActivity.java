@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -32,8 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, View.OnClickListener {
 
-    //account in mail: zakariaallinone@gmail.com
-    private static final String YOUTUBE_API_KEY = "AIzaSyCgM8RIaByCtXNKlGCM8v2RcAGb7mPsfIk";
+    private static final String YOUTUBE_API_KEY = "AIzaSyCgM8RIaByCtXNKlGCM8v2RcAGb7mPsfIk"; //account in mail: zakariaallinone@gmail.com
 
     private static final int RECOVERY_REQUEST = 123;
     private YouTubePlayerView youTubePlayerView;
@@ -264,8 +262,7 @@ public class TopicSupervisorDetailActivity extends YouTubeBaseActivity implement
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RECOVERY_REQUEST && resultCode == RESULT_OK) {
-            // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(YOUTUBE_API_KEY, this);
+            getYouTubePlayerProvider().initialize(YOUTUBE_API_KEY, this); // Retry initialization if user performed a recovery action
         }
     }
 

@@ -3,6 +3,7 @@ package com.zakariahossain.supervisorsolution.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,7 +28,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
@@ -63,7 +63,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
     private AppCompatSpinner userRoleSpinner;
     private AppCompatTextView userRoleErrorTexVew;
     private TextInputLayout textInputLoginEmail, textInputLoginPassword;
-
     private TextInputEditText editTextLoginEmail;
 
     private String userLoginRole, loginEmail, loginPassword, emailExtension;
@@ -123,10 +122,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
     private void setUpLoginUi(View view) {
         textInputLoginEmail = view.findViewById(R.id.tilLoginEmail);
         textInputLoginPassword = view.findViewById(R.id.tilLoginPassword);
-        AppCompatTextView signUpTextView = view.findViewById(R.id.tvSignUp);
-        AppCompatTextView forgotPasswordTextView = view.findViewById(R.id.tvForgotPassword);
         userRoleErrorTexVew = view.findViewById(R.id.tvErrorUserRole);
-        MaterialButton loginButton = view.findViewById(R.id.btnLogin);
         userRoleSpinner = view.findViewById(R.id.spUserRole);
         googleSignInButton = view.findViewById(R.id.btnGoogleSignIn);
         TextInputEditText editTextLoginPassword = view.findViewById(R.id.etLoginPassword);
@@ -137,9 +133,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
             textInputLoginEmail.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS);
         }
 
-        signUpTextView.setOnClickListener(this);
-        forgotPasswordTextView.setOnClickListener(this);
-        loginButton.setOnClickListener(this);
+        view.findViewById(R.id.tvSignUp).setOnClickListener(this);
+        view.findViewById(R.id.tvForgotPassword).setOnClickListener(this);
+        view.findViewById(R.id.btnLogin).setOnClickListener(this);
         googleSignInButton.setOnClickListener(this);
         userRoleSpinner.setOnItemSelectedListener(this);
         editTextLoginPassword.setOnEditorActionListener(editorActionListener);
@@ -212,6 +208,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
                 textInputLoginPassword.setError("Please enter a password.");
             }
             if (userLoginRole.equals("Choose a role to login")) {
+                TextView userRole = (TextView) userRoleSpinner.getSelectedView();
+                userRole.setTextColor(Color.RED);
                 userRoleErrorTexVew.setText("Please choose your role first");
                 userRoleErrorTexVew.setTextColor(getResources().getColor(R.color.colorPink));
                 userRoleErrorTexVew.setVisibility(View.VISIBLE);
@@ -269,25 +267,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
                     String[] split = account.getEmail().split("@");
                     String emailExtension = split[1];
 
-                    if (emailExtension.equals("diu.edu.bd") && userLoginRole.equals("Student")) {
+                    if ((emailExtension.equals("diu.edu.bd") || emailExtension.equals("daffodilvarsity.edu.bd")) && !userLoginRole.equals("Choose a role to login")) {
                         loginOrSignInUser(account.getDisplayName(), account.getEmail(), ".", account.getId(), userLoginRole, "google_sign_in");
+
                     } else {
-                        if (!emailExtension.equals("diu.edu.bd") && !userLoginRole.equals("Student")) {
-                            userRoleErrorTexVew.setText("Please choose your role as a Student");
+                        if (userLoginRole.equals("Choose a role to login")) {
+
+                            TextView userRole = (TextView) userRoleSpinner.getSelectedView();
+                            userRole.setTextColor(Color.RED);
+                            userRoleErrorTexVew.setText("Please choose your role first");
                             userRoleErrorTexVew.setTextColor(getResources().getColor(R.color.colorPink));
                             userRoleErrorTexVew.setVisibility(View.VISIBLE);
-                            Toast.makeText(context, "Please choose your role as a Student and select a DIU email", Toast.LENGTH_LONG).show();
-                        } else {
-                            if (!userLoginRole.equals("Student")) {
-                                userRoleErrorTexVew.setText("Please choose your role as a Student");
-                                userRoleErrorTexVew.setTextColor(getResources().getColor(R.color.colorPink));
-                                userRoleErrorTexVew.setVisibility(View.VISIBLE);
-                                Toast.makeText(context, "Please choose your role as a Student", Toast.LENGTH_LONG).show();
-                            }
+                            Toast.makeText(context, "Please choose your role first", Toast.LENGTH_LONG).show();
 
-                            if (!emailExtension.equals("diu.edu.bd")) {
-                                Toast.makeText(context, "Please select a DIU email (Ex: example15-1234@diu.edu.bd)", Toast.LENGTH_LONG).show();
-                            }
+                        } else {
+                            Toast.makeText(context, "Please select a DIU email (Ex: example15-1234@diu.edu.bd or example@daffodilvarsity.edu.bd)", Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -297,7 +291,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
                 Toast.makeText(context, "Something went wrong! Try again later", Toast.LENGTH_LONG).show();
             }
         } catch (ApiException e) {
-            Toast.makeText(context, "Error: "+e.getMessage()+" Try again", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Error: "+e.getMessage()+". Try again", Toast.LENGTH_LONG).show();
         }
     }
 

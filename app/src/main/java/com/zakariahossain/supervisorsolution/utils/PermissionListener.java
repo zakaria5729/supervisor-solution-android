@@ -4,7 +4,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
-import com.zakariahossain.supervisorsolution.activities.TopicSupervisorDetailActivity;
 
 public class PermissionListener implements com.karumi.dexter.listener.single.PermissionListener {
     private OthersUtil activity;

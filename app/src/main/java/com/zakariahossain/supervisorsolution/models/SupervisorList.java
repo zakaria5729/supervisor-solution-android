@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class SupervisorList implements Serializable
-{
+public class SupervisorList implements Serializable {
     @SerializedName("error")
     private Boolean error;
 

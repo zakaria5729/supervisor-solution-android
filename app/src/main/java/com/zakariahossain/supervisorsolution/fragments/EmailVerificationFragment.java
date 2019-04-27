@@ -12,12 +12,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.zakariahossain.supervisorsolution.R;
 import com.zakariahossain.supervisorsolution.interfaces.OnFragmentBackPressedListener;
-import com.zakariahossain.supervisorsolution.interfaces.OnMyClickListener;
 import com.zakariahossain.supervisorsolution.interfaces.OnMyMessageListener;
 import com.zakariahossain.supervisorsolution.models.ServerResponse;
 import com.zakariahossain.supervisorsolution.retrofits.MyApiService;
@@ -67,14 +65,12 @@ public class EmailVerificationFragment extends Fragment implements View.OnClickL
 
     private void setUpEmailVerificationUi(View view) {
         textInputVerificationCode = view.findViewById(R.id.tilVerificationCode);
-        MaterialButton verificationBackButton = view.findViewById(R.id.btnBackVerification);
-        MaterialButton verificationSendButton = view.findViewById(R.id.btnSendVerification);
         TextInputEditText editTextVerificationCode = view.findViewById(R.id.etVerificationCode);
 
         textInputVerificationCode.requestFocus();
 
-        verificationBackButton.setOnClickListener(this);
-        verificationSendButton.setOnClickListener(this);
+        view.findViewById(R.id.btnBackVerification).setOnClickListener(this);
+        view.findViewById(R.id.btnSendVerification).setOnClickListener(this);
         editTextVerificationCode.setOnEditorActionListener(editorActionListener);
     }
 

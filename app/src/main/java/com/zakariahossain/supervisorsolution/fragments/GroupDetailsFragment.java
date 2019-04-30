@@ -60,15 +60,15 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        myApiService = new NetworkCall();
-        othersUtil = new OthersUtil(getContext());
         setUpGroupDetailsUI(view);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        myApiService = new NetworkCall();
+        othersUtil = new OthersUtil(getContext());
         getGroupDetailsBundleData();
 
         if (getActivity() != null) {
@@ -77,8 +77,8 @@ public class GroupDetailsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         setDataToGroupDetailsUI();
     }
 

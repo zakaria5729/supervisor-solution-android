@@ -29,16 +29,14 @@ import androidx.fragment.app.Fragment;
 
 public class TitleDefenseRegistrationTwoFragment extends Fragment implements View.OnClickListener, OnFragmentBackPressedListener {
 
-    private UserSharedPrefManager sharedPrefManager;
-    private OnMyMessageListener onMyMessageSendListener;
-    private TitleDefense titleDefense;
-
     private Context context;
-    private TextInputLayout textInputLayoutIdOne, textInputLayoutNameOne, textInputLayoutEmailOne, textInputLayoutPhoneOne, textInputLayoutIdTwo, textInputLayoutNameTwo, textInputLayoutEmailTwo, textInputLayoutPhoneTwo, textInputLayoutIdThree, textInputLayoutNameThree, textInputLayoutEmailThree, textInputLayoutPhoneThree;
+    private int numberOfStudents;
+    private TitleDefense titleDefense;
+    private OnMyMessageListener onMyMessageSendListener;
+    private UserSharedPrefManager sharedPrefManager;
 
     private LinearLayoutCompat studentOneEditTextLL, studentTwoEditTextLL, studentThreeEditTextLL;
-
-    private int numberOfStudents;
+    private TextInputLayout textInputLayoutIdOne, textInputLayoutNameOne, textInputLayoutEmailOne, textInputLayoutPhoneOne, textInputLayoutIdTwo, textInputLayoutNameTwo, textInputLayoutEmailTwo, textInputLayoutPhoneTwo, textInputLayoutIdThree, textInputLayoutNameThree, textInputLayoutEmailThree, textInputLayoutPhoneThree;
 
     public TitleDefenseRegistrationTwoFragment() {
         // Required empty public constructor
@@ -46,9 +44,8 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_title_defense_registration_two, container, false);
         context = container.getContext();
-        return view;
+        return inflater.inflate(R.layout.fragment_title_defense_registration_two, container, false);
     }
 
     @Override
@@ -58,20 +55,20 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
         if (getActivity() != null) {
             getActivity().setTitle("Title Defense Registration");
         }
+        setUpPageTwoUi(view);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         sharedPrefManager = new UserSharedPrefManager(context);
-        setUpPageTwoUi(view);
+        getBundleDataPageTwo();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getBundleDataPageTwo();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
@@ -233,10 +230,8 @@ public class TitleDefenseRegistrationTwoFragment extends Fragment implements Vie
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_GO:
-                    nextTwo();
-                    break;
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                nextTwo();
             }
             return true;
         }

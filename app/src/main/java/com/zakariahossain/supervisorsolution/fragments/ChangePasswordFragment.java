@@ -39,8 +39,7 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
     private UserSharedPrefManager sharedPrefManager;
     private TextInputLayout currentPasswordTextInputLayout, newPasswordTextInputLayout, confirmPasswordTextInputLayout;
 
-    private String currentPassword;
-    private String newPassword;
+    private String currentPassword, newPassword;
 
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -48,32 +47,37 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_password_change, container, false);
-
         context = container.getContext();
-        return view;
+        return inflater.inflate(R.layout.fragment_password_change, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getActivity() != null) {
-            getActivity().setTitle("Change Password");
-        }
-
-        sharedPrefManager = new UserSharedPrefManager(context);
-
         currentPasswordTextInputLayout = view.findViewById(R.id.tilCurrentPassword);
         newPasswordTextInputLayout = view.findViewById(R.id.tilNewChangedPassword);
         confirmPasswordTextInputLayout = view.findViewById(R.id.tilChangedConfirmPassword);
         TextInputEditText changeConfirmPasswordEditText = view.findViewById(R.id.etChangeConfirmPassword);
-
         currentPasswordTextInputLayout.requestFocus();
 
         view.findViewById(R.id.btnChangePassword).setOnClickListener(this);
         view.findViewById(R.id.btnBackChangePassword).setOnClickListener(this);
         changeConfirmPasswordEditText.setOnEditorActionListener(editorActionListener);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            getActivity().setTitle("Change Password");
+        }
+        sharedPrefManager = new UserSharedPrefManager(context);
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
     }
 
     private boolean getPasswordChangeFragmentData() {
@@ -107,15 +111,6 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
             }
 
             return false;
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (getActivity() != null) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
     }
 
@@ -168,14 +163,12 @@ public class ChangePasswordFragment extends Fragment implements View.OnClickList
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_GO:
-                    if (getPasswordChangeFragmentData()) {
-                        OthersUtil othersUtil = new OthersUtil(context);
-                        alertDialog = othersUtil.setCircularProgressBar();
-                        serverCallForPasswordChange();
-                    }
-                    break;
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                if (getPasswordChangeFragmentData()) {
+                    OthersUtil othersUtil = new OthersUtil(context);
+                    alertDialog = othersUtil.setCircularProgressBar();
+                    serverCallForPasswordChange();
+                }
             }
             return true;
         }

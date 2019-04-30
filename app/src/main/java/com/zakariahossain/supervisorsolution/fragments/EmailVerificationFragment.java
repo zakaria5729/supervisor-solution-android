@@ -58,7 +58,15 @@ public class EmailVerificationFragment extends Fragment implements View.OnClickL
             getActivity().setTitle("Verification");
         }
         setUpEmailVerificationUi(view);
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         progressBar = new OthersUtil(context);
         myApiService = new NetworkCall();
     }
@@ -148,26 +156,15 @@ public class EmailVerificationFragment extends Fragment implements View.OnClickL
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_SEND:
-                    if (getValueFromVerificationTextInputLayout()) {
-                        alertDialog = progressBar.setCircularProgressBar();
-                        verificationForUserLogin();
-                    }
-                    break;
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                if (getValueFromVerificationTextInputLayout()) {
+                    alertDialog = progressBar.setCircularProgressBar();
+                    verificationForUserLogin();
+                }
             }
             return true;
         }
     };
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (getActivity() != null) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {

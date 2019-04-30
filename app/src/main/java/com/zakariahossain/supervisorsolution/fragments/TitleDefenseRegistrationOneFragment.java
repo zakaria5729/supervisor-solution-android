@@ -52,30 +52,29 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_title_defense_registration_one, container, false);
         context = container.getContext();
-        return view;
+        return inflater.inflate(R.layout.fragment_title_defense_registration_one, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setUpPageOneUi(view);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         if (getActivity() != null) {
             getActivity().setTitle("Title Defense Registration");
         }
-        setUpPageOneUi(view);
+        addProjectInternshipTypeSpinner();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        addProjectInternshipTypeSpinner();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
@@ -99,6 +98,7 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
         radioGroupNumberOfStudents.setOnCheckedChangeListener(this);
         radioGroupDayEvening.setOnCheckedChangeListener(this);
         radioGroupProjectInternship.setOnCheckedChangeListener(this);
+
         spProjectInternship.setOnItemSelectedListener(this);
         editTextProjectInternshipTitle.setOnEditorActionListener(editorActionListener);
     }
@@ -144,15 +144,13 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btnNextPageOne:
-                if (getAllData()) {
-                    TitleDefense titleDefense = new TitleDefense(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
+        if (view.getId() == R.id.btnNextPageOne) {
+            if (getAllData()) {
+                TitleDefense titleDefense = new TitleDefense(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
 
-                    OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
-                    onMyMessageListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), titleDefense);
-                }
-                break;
+                OthersUtil.closeVisibleSoftKeyBoard(Objects.requireNonNull(getActivity()));
+                onMyMessageListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), titleDefense);
+            }
         }
     }
 
@@ -200,14 +198,12 @@ public class TitleDefenseRegistrationOneFragment extends Fragment implements Vie
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_GO:
-                    if (getAllData()) {
-                        TitleDefense titleDefense = new TitleDefense(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                if (getAllData()) {
+                    TitleDefense titleDefense = new TitleDefense(numberOfStudents, dayEvening, projectInternship, projectInternshipType, projectInternshipTitle);
 
-                        onMyMessageListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), titleDefense);
-                    }
-                    break;
+                    onMyMessageListener.onMyTitleDefenseRegistrationMessage(new TitleDefenseRegistrationTwoFragment(), titleDefense);
+                }
             }
             return true;
         }

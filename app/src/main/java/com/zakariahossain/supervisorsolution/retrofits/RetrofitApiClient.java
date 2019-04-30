@@ -18,7 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class RetrofitApiClient {
     private static final String BASIC_AUTH = "Basic " + Base64.encodeToString(("diu_supervisor_solution:admin@diu_supervisor_solution").getBytes(), Base64.NO_WRAP);
 
-    private static final String BASE_URL = "https://diusupervisorsolution.000webhostapp.com/public/";
+    /*private static final String BASE_URL = "https://diusupervisorsolution.000webhostapp.com/public/";*/
+    private static final String BASE_URL = "http://192.168.100.3/supervisor/public/";
 
     private static RetrofitApiClient instance;
     private Retrofit retrofit;
@@ -57,9 +58,13 @@ class RetrofitApiClient {
             .setLenient()
             .create();
 
-    static synchronized RetrofitApiClient getRetrofitInstance() {
+    static RetrofitApiClient getRetrofitInstance() {
         if (instance == null) {
-            instance = new RetrofitApiClient();
+            synchronized (RetrofitApiClient.class) {  //double check lock with thread safety
+                if (instance == null) {
+                    instance = new RetrofitApiClient();
+                }
+            }
         }
         return instance;
     }

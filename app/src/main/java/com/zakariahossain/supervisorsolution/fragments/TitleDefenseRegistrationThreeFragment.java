@@ -2,6 +2,7 @@ package com.zakariahossain.supervisorsolution.fragments;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,11 +57,11 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     private List<Supervisor> supervisorList;
     private AlertDialog alertDialog;
 
+    private String areaOfInterest = "Mobile Application (Traditional)";
+    private boolean agreeCheckBox;
+
     private TextInputLayout textInputLayoutOtherAreaOfInterest, tilFirstSupervisorEmail, tilSecondSupervisorEmail, tilThirdSupervisorEmail;
     private AppCompatAutoCompleteTextView autoCompleteTextViewOneEmail, autoCompleteTextViewTwoEmail, autoCompleteTextViewThreeEmail;
-
-    private String areaOfInterest;
-    private boolean agreeCheckBox;
 
     public TitleDefenseRegistrationThreeFragment() {
         // Required empty public constructor
@@ -68,9 +69,8 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_title_defense_registration_three, container, false);
         context = container.getContext();
-        return view;
+        return inflater.inflate(R.layout.fragment_title_defense_registration_three, container, false);
     }
 
     @Override
@@ -80,30 +80,28 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         if (getActivity() != null) {
             getActivity().setTitle("Title Defense Registration");
         }
-
         studentList = new ArrayList<>();
         supervisorList = new ArrayList<>();
-
         setUpPageThreeUi(view);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         agreeTermsAndCondition();
+        addRadioButtonAreaOfInterests();
+        addSupervisorAutoCompleteTextView();
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        addRadioButtonAreaOfInterests();
-        addSupervisorAutoCompleteTextView();
-        getBundleDataPageThree();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         }
+        getBundleDataPageThree();
     }
 
     private void setUpPageThreeUi(View view) {
@@ -131,33 +129,6 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
 
         ArrayAdapter<String> adapter3 = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.supervisors));
         autoCompleteTextViewThreeEmail.setAdapter(adapter3);
-    }
-
-    private void addRadioButtonAreaOfInterests() {
-        RadioGroup radioGroup = new RadioGroup(context);
-        radioGroup.setOrientation(LinearLayout.VERTICAL);
-        RadioGroup.LayoutParams layoutParams;
-
-        for (final String anAreaOfInterest : getResources().getStringArray(R.array.area_of_interests)) {
-            RadioButton radioButton = new RadioButton(context);
-            radioButton.setText(anAreaOfInterest);
-            layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT);
-            radioGroup.addView(radioButton, layoutParams);
-            radioGroup.check(radioGroup.getChildAt(0).getId()); //default checked at 0 position
-
-            radioButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (anAreaOfInterest.equals("Other")) {
-                        textInputLayoutOtherAreaOfInterest.setVisibility(View.VISIBLE);
-                    } else {
-                        textInputLayoutOtherAreaOfInterest.setVisibility(View.GONE);
-                    }
-                    areaOfInterest = anAreaOfInterest;
-                }
-            });
-        }
-        rgAreaOfInterest.addView(radioGroup);
     }
 
     private void getBundleDataPageThree() {
@@ -204,7 +175,8 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
                         alertDialog = new OthersUtil(context).setCircularProgressBar();
                         nextThree();
                     } else {
-                        Toast.makeText(context, "Please, tik the agree checkbox", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Please tik the right", Toast.LENGTH_SHORT).show();
+                        cbAgree.setTextColor(getResources().getColor(R.color.colorAccent));
                     }
                 }
                 break;
@@ -243,20 +215,49 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
         });
     }
 
+    private void addRadioButtonAreaOfInterests() {
+        RadioGroup radioGroup = new RadioGroup(context);
+        radioGroup.setOrientation(LinearLayout.VERTICAL);
+        RadioGroup.LayoutParams layoutParams;
+
+        for (final String anAreaOfInterest : getResources().getStringArray(R.array.area_of_interests)) {
+            RadioButton radioButton = new RadioButton(context);
+            radioButton.setText(anAreaOfInterest);
+            layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT);
+            radioGroup.addView(radioButton, layoutParams);
+            radioGroup.check(radioGroup.getChildAt(0).getId()); //default checked at 0 position
+
+            radioButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (anAreaOfInterest.equals("Other")) {
+                        textInputLayoutOtherAreaOfInterest.setVisibility(View.VISIBLE);
+                    } else {
+                        textInputLayoutOtherAreaOfInterest.setVisibility(View.GONE);
+                    }
+                    areaOfInterest = anAreaOfInterest;
+                }
+            });
+        }
+        rgAreaOfInterest.addView(radioGroup);
+    }
+
     private boolean getSupervisorsEmailAndAreaOfInterest() {
-        /*if (areaOfInterest.equals("Other")) {
-            areaOfInterest = Objects.requireNonNull(textInputLayoutOtherAreaOfInterest.getEditText()).getText().toString();
-        }*/
-
-        Log.e("inter", areaOfInterest);
-
         String firstSupervisorEmail = autoCompleteTextViewOneEmail.getText().toString().trim();
         String secondSupervisorEmail = autoCompleteTextViewTwoEmail.getText().toString().trim();
         String thirdSupervisorEmail = autoCompleteTextViewThreeEmail.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(areaOfInterest.trim()) && Patterns.EMAIL_ADDRESS.matcher(firstSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(secondSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(thirdSupervisorEmail).matches()) {
-            supervisorList = new ArrayList<>();
+        if (areaOfInterest.equals("Other")) {
+            if (!TextUtils.isEmpty(Objects.requireNonNull(textInputLayoutOtherAreaOfInterest.getEditText()).getText().toString().trim())) {
+                areaOfInterest = Objects.requireNonNull(textInputLayoutOtherAreaOfInterest.getEditText()).getText().toString();
+            } else {
+                Toast.makeText(context, "Can not empty area of interest", Toast.LENGTH_SHORT).show();
+            }
+        }
 
+        if ((!TextUtils.isEmpty(areaOfInterest.trim()) && !areaOfInterest.trim().equals("Other")) && Patterns.EMAIL_ADDRESS.matcher(firstSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(secondSupervisorEmail).matches() && Patterns.EMAIL_ADDRESS.matcher(thirdSupervisorEmail).matches()) {
+
+            supervisorList = new ArrayList<>();
             supervisorList.add(new Supervisor(firstSupervisorEmail));
             supervisorList.add(new Supervisor(secondSupervisorEmail));
             supervisorList.add(new Supervisor(thirdSupervisorEmail));
@@ -280,17 +281,15 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_GO:
-                    if (getSupervisorsEmailAndAreaOfInterest()) {
-                        if (agreeCheckBox) {
-                            alertDialog = new OthersUtil(context).setCircularProgressBar();
-                            nextThree();
-                        } else {
-                            Toast.makeText(context, "Please, tik the agree checkbox", Toast.LENGTH_SHORT).show();
-                        }
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                if (getSupervisorsEmailAndAreaOfInterest()) {
+                    if (agreeCheckBox) {
+                        alertDialog = new OthersUtil(context).setCircularProgressBar();
+                        nextThree();
+                    } else {
+                        Toast.makeText(context, "Please, tik the agree checkbox", Toast.LENGTH_SHORT).show();
                     }
-                    break;
+                }
             }
             return true;
         }
@@ -301,6 +300,12 @@ public class TitleDefenseRegistrationThreeFragment extends Fragment implements V
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 agreeCheckBox = isChecked;
+
+                if (isChecked) {
+                    cbAgree.setTextColor(Color.BLACK);
+                } else {
+                    cbAgree.setTextColor(getResources().getColor(R.color.colorAccent));
+                }
             }
         });
     }

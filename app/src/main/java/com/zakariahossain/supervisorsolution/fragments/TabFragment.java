@@ -29,6 +29,7 @@ import java.util.Objects;
 public class TabFragment extends Fragment implements OnFragmentBackPressedListener{
 
     private TabLayout tabLayout;
+    private ViewPager viewPager;
     private OnMyMessageListener onMyMessageListener;
     private ShowCaseAndTabSelectionPreference tabSelectionPreference;
 
@@ -38,13 +39,7 @@ public class TabFragment extends Fragment implements OnFragmentBackPressedListen
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab, container, false);
-
-        if (getActivity() != null) {
-            getActivity().setTitle("Topic and Supervisor");
-        }
-        tabSelectionPreference = new ShowCaseAndTabSelectionPreference(container.getContext());
-        return view;
+        return inflater.inflate(R.layout.fragment_tab, container, false);
     }
 
     @Override
@@ -52,7 +47,17 @@ public class TabFragment extends Fragment implements OnFragmentBackPressedListen
         super.onViewCreated(view, savedInstanceState);
 
         tabLayout = view.findViewById(R.id.tabLayout);
-        ViewPager viewPager = view.findViewById(R.id.viewPager);
+        viewPager = view.findViewById(R.id.viewPager);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            getActivity().setTitle("Topic and Supervisor");
+        }
+        tabSelectionPreference = new ShowCaseAndTabSelectionPreference(Objects.requireNonNull(getContext()));
 
         ViewPageAdapter topicViewPageAdapter = new ViewPageAdapter(getChildFragmentManager());
         topicViewPageAdapter.addFragment(new TopicFragment(), "Topic");

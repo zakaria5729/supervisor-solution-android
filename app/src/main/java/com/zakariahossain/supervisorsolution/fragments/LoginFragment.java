@@ -88,30 +88,38 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
         if (getActivity() != null) {
             getActivity().setTitle("Login");
         }
+        setUpLoginUi(view);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         sharedPrefManager = new UserSharedPrefManager(context);
         showCasePreference = new ShowCaseAndTabSelectionPreference(context);
-
         progressBar = new OthersUtil(context);
         myApiService = new NetworkCall();
 
-        setUpLoginUi(view);
         setGooglePlusButtonText(googleSignInButton);
         seUserRoleSpinner();
+
+        if(getArguments() != null) {
+            editTextLoginEmail.setText(getArguments().getString("key_email"));
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(context, gso);
-
-        if(getArguments() != null) {
-            editTextLoginEmail.setText(getArguments().getString("key_email"));
-        }
 
         if (showCasePreference.isNotShownCasePreference(IntentAndBundleKey.KEY_SHOW_CASE_GOOGLE_SIGN_IN)) {
             OthersUtil.popUpShow(getActivity(), R.id.btnGoogleSignIn, "Google Sign In", "This button only works to sign in for Student account. Click on the button to sign in using google account.");
@@ -231,13 +239,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_GO:
-                    if (getValueFromLoginTextInputLayout()) {
-                        alertDialog = progressBar.setCircularProgressBar();
-                        loginOrSignInUser(".", loginEmail, loginPassword, ".", userLoginRole, "login_email");
-                    }
-                    break;
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                if (getValueFromLoginTextInputLayout()) {
+                    alertDialog = progressBar.setCircularProgressBar();
+                    loginOrSignInUser(".", loginEmail, loginPassword, ".", userLoginRole, "login_email");
+                }
             }
             return true;
         }
@@ -340,15 +346,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Ada
                 Toast.makeText(context, th.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (getActivity() != null) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
     }
 
     @Override

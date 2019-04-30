@@ -40,9 +40,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, On
 
     private TextInputLayout textInputSignUpName, textInputSignUpEmail, textInputSignUpPassword, textInputSignUpConfirmPassword;
 
-    private String signUpName;
-    private String signUpEmail;
-    private String signUpPassword;
+    private String signUpName, signUpEmail, signUpPassword;
     private MyApiService myApiService;
     private OthersUtil progressBar;
     private AlertDialog alertDialog;
@@ -64,15 +62,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, On
         if (getActivity() != null) {
             getActivity().setTitle("Sign up");
         }
-
         setUpSignUpUi(view);
-        progressBar = new OthersUtil(context);
-        myApiService = new NetworkCall();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        progressBar = new OthersUtil(context);
+        myApiService = new NetworkCall();
 
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -189,13 +187,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, On
     private TextView.OnEditorActionListener editorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            switch (actionId) {
-                case EditorInfo.IME_ACTION_GO:
-                    if (getValueFromSignUpTextInputLayout()) {
-                        alertDialog = progressBar.setCircularProgressBar();
-                        signUpUser();
-                    }
-                    break;
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                if (getValueFromSignUpTextInputLayout()) {
+                    alertDialog = progressBar.setCircularProgressBar();
+                    signUpUser();
+                }
             }
             return true;
         }

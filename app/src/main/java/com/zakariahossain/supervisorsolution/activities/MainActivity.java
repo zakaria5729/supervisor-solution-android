@@ -204,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void replaceFragment(Fragment fragment) {
         new ShowCaseAndTabSelectionPreference(this).updateSelectedTabPosition(0); //set selected tab position 0 when replace any fragment
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 

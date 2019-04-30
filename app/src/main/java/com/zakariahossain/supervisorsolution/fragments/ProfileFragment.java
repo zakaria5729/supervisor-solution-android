@@ -56,15 +56,13 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
     private AcceptedGroupAdapter acceptedGroupAdapter;
     private GroupStatusAdapter groupListStatusAdapter;
     private List<GroupStatusList.GroupStatus> groupStatusList;
-    private List<List<Student>> requestedGroupList;
-    private List<List<Student>> acceptedGroupList;
+    private List<List<Student>> requestedGroupList, acceptedGroupList;
 
     private MaterialButton retryButton;
     private MaterialCardView requestedGroupListCardView, acceptedGroupListCardView, groupListStatusCardView;
-    private AppCompatTextView userName, userEmail, userRoleAndCreatedDate;
+    private AppCompatTextView userName, userEmail, userRoleAndCreatedDate, loadingIndicatorTextViewProfile;
 
     private AVLoadingIndicatorView loadingIndicatorViewProfile;
-    private AppCompatTextView loadingIndicatorTextViewProfile;
     private LinearLayoutCompat loadingIndicatorViewProfileLL;
 
     public ProfileFragment() {
@@ -109,16 +107,16 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
 
         view.findViewById(R.id.btnSendMailToAllAcceptedGroups).setOnClickListener(ProfileFragment.this);
         retryButton.setOnClickListener(ProfileFragment.this);
-
-        sharedPrefManager = new UserSharedPrefManager(context);
-        myApiService = new NetworkCall();
-
         view.findViewById(R.id.llProfile).setAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in));
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        sharedPrefManager = new UserSharedPrefManager(context);
+        myApiService = new NetworkCall();
+
         String roleAndCreatedDate = sharedPrefManager.getUser().getUserRole()+", "+sharedPrefManager.getUser().getCreatedAt();
 
         userName.setText(sharedPrefManager.getUser().getName());
@@ -132,8 +130,8 @@ public class ProfileFragment extends Fragment implements OnMyClickListener, OnFr
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         if (getActivity() != null) {
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);

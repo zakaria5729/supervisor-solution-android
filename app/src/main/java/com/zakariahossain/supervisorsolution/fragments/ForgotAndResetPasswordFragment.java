@@ -61,18 +61,10 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
                 switch (bundleKey) {
                     case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL:
                         view = inflater.inflate(R.layout.fragment_forgot_password_enter_email, container, false);
-
-                        if (getActivity() != null) {
-                            getActivity().setTitle("Email Verification");
-                        }
                         break;
 
                     case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET:
                         view = inflater.inflate(R.layout.fragment_forgot_password_reset, container, false);
-
-                        if (getActivity() != null) {
-                            getActivity().setTitle("Reset Password");
-                        }
                         break;
                 }
             }
@@ -92,18 +84,31 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         if (bundleKey != null) {
             switch (bundleKey) {
                 case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_ENTER_EMAIL:
+                    if (getActivity() != null) {
+                        getActivity().setTitle("Email Verification");
+                    }
                     setUpEnterEmailUi(view);
                     break;
 
                 case IntentAndBundleKey.KEY_FRAGMENT_FORGOT_PASSWORD_RESET:
+                    if (getActivity() != null) {
+                        getActivity().setTitle("Reset Password");
+                    }
                     setUpResetPasswordUi(view);
                     break;
             }
         }
-
-        progressBar = new OthersUtil(context);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        progressBar = new OthersUtil(context);
+    }
 
     private void setUpEnterEmailUi(View view) {
         textInputLayoutEnterEmail = view.findViewById(R.id.tilEnterEmail);
@@ -137,15 +142,6 @@ public class ForgotAndResetPasswordFragment extends Fragment implements View.OnC
         } else {
             textInputLayoutEnterEmail.setError("Please enter a valid email address");
             return false;
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (getActivity() != null) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 
